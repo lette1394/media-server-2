@@ -5,10 +5,10 @@ import static org.hamcrest.Matchers.is;
 
 import org.junit.jupiter.api.Test;
 
-public class AppTest {
+class AppTest {
   @Test
   void test() {
 
-    assertThat(1, is(1));
+    assertThat("1 = 1", 1, is(1));
   }
 }
