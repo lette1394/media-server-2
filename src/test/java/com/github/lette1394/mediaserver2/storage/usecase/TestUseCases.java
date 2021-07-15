@@ -7,7 +7,7 @@ import com.github.lette1394.mediaserver2.storage.lock.infrastructure.LoggedLocke
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedUploading;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.AllUseCases;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.LockedUploading;
-import com.github.lette1394.mediaserver2.storage.persistence.usecase.Uploading;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploading;
 
 public class TestUseCases implements AllUseCases {
   @Override

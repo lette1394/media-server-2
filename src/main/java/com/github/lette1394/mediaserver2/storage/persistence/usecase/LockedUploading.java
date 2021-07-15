@@ -5,16 +5,17 @@ import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStag
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploading;
 import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class LockedUploading implements Uploading {
-  private final Uploading uploading;
+public class LockedUploading<P extends Payload> implements Uploading<P> {
+  private final Uploading<P> uploading;
   private final Locker locker;
 
   @Override
-  public <P extends Payload> CompletionStage<Void> upload(UploadingCommand<P> command) {
+  public CompletionStage<Void> upload(UploadingCommand<P> command) {
     return start()
       .thenCompose(__ -> locker.lock())
       .thenCompose(__ -> uploading.upload(command))

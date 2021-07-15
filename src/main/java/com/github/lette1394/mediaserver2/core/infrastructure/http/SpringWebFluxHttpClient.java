@@ -33,7 +33,7 @@ public class SpringWebFluxHttpClient implements HttpClient<DataBufferPayload> {
       .build();
     return webClient
       .get()
-      .uri(getRequest.url().toString())
+      .uri(getRequest.url())
       .headers(toHeaders(getRequest))
       .retrieve()
       .toEntityFlux(toPayload())

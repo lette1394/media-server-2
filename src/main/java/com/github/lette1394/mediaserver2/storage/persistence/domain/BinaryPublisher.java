@@ -7,11 +7,18 @@ import org.reactivestreams.Subscriber;
 public interface BinaryPublisher<P extends Payload> extends Publisher<P> {
   long length();
 
+  Attributes attributes();
+
   static <P extends Payload> BinaryPublisher<P> adapt(long length, Publisher<? extends P> publisher) {
     return new BinaryPublisher<>() {
       @Override
       public long length() {
         return length;
+      }
+
+      @Override
+      public Attributes attributes() {
+        return Attributes.empty();
       }
 
       @Override
