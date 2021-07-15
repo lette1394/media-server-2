@@ -4,6 +4,8 @@ import static org.springframework.http.HttpHeaders.CONTENT_LENGTH;
 
 import com.github.lette1394.mediaserver2.core.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublisher;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.internal.ThreadExecutorMap;
 import io.vavr.control.Option;
 import java.time.Duration;
 import java.util.List;
@@ -20,10 +22,11 @@ import reactor.core.publisher.Mono;
 public class SpringWebFluxHttpClient implements HttpClient<DataBufferPayload> {
   @Override
   public CompletionStage<GetResponse<DataBufferPayload>> get(GetRequest getRequest) {
+    final var channels = new DefaultChannelGroup("", ThreadExecutorMap.currentExecutor());
     final var client = reactor.netty.http.client.HttpClient.create()
+      .channelGroup(channels)
       .secure()
-      .keepAlive(true)
-      .responseTimeout(Duration.ofSeconds(1));
+      .responseTimeout(Duration.ofSeconds(10));
 
     final var webClient = WebClient.builder()
       .clientConnector(new ReactorClientHttpConnector(client))

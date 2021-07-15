@@ -20,8 +20,4 @@ public class LockedUploading implements Uploading {
       .thenCompose(__ -> uploading.upload(command))
       .whenComplete(consumeFinally(__ -> locker.unlock()));
   }
-
-  int getValid() {
-    return 1;
-  }
 }

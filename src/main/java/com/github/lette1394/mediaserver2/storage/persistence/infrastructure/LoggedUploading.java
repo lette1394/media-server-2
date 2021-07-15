@@ -25,5 +25,4 @@ public class LoggedUploading implements Uploading {
 
     return result;
   }
-
 }

@@ -22,13 +22,8 @@ class LoggedSubscriber<P extends Payload> extends DelegatingSubscriber<P> {
   }
 
   @Override
-  public void onNext(P item) {
-    log.info("{} on next", trace);
-  }
-
-  @Override
   public void onComplete() {
     super.onComplete();
-    log.info("{} upload done", trace);
+    log.info("{} done", trace);
   }
 }
