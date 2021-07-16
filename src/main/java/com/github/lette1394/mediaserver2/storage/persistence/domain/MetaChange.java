@@ -9,5 +9,5 @@ public interface MetaChange<T> {
 
   void remove(T entity);
 
-  CompletionStage<Void> flush();
+  CompletionStage<Void> flushToAll();
 }
