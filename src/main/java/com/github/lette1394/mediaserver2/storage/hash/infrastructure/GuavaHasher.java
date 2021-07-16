@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.storage.hash.infrastructure;
 
-import com.github.lette1394.mediaserver2.storage.hash.domain.HashCode;
+import com.github.lette1394.mediaserver2.storage.hash.domain.Hash;
 import com.github.lette1394.mediaserver2.storage.hash.domain.Hasher;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +15,7 @@ public class GuavaHasher implements Hasher {
   }
 
   @Override
-  public HashCode hash() {
-    return new HashCode(hasher.hash().toString());
+  public Hash hash() {
+    return new Hash(hasher.hash().toString());
   }
 }

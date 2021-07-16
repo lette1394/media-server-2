@@ -4,7 +4,7 @@ import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStag
 import static com.github.lette1394.mediaserver2.storage.hash.usecase.HashingBinaryPublisher.HASHER_ATTRIBUTE;
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
-import com.github.lette1394.mediaserver2.storage.hash.domain.HashCode;
+import com.github.lette1394.mediaserver2.storage.hash.domain.Hash;
 import com.github.lette1394.mediaserver2.storage.hash.domain.Hasher;
 import com.github.lette1394.mediaserver2.storage.identification.domain.Id;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.AllBinaries;
@@ -39,11 +39,11 @@ public class ObjectUploading<P extends Payload> implements Uploading<P> {
     return new Meta(id, size, timestamp, hashCode);
   }
 
-  private HashCode hashCode(BinaryPublisher<P> publisher) {
+  private Hash hashCode(BinaryPublisher<P> publisher) {
     return publisher
       .attributes()
       .getAttribute(HASHER_ATTRIBUTE)
       .map(Hasher::hash)
-      .getOrElse(() -> new HashCode(""));
+      .getOrElse(() -> new Hash(""));
   }
 }
