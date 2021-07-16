@@ -17,6 +17,6 @@ public class FlushingUploading<P extends Payload> implements Uploading<P> {
   public CompletionStage<Void> upload(UploadingCommand<P> command) {
     return start()
       .thenCompose(__ -> uploading.upload(command))
-      .thenCompose(__ -> metaChange.flushToAll());
+      .thenCompose(__ -> metaChange.flush());
   }
 }
