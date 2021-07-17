@@ -5,6 +5,6 @@ import com.github.lette1394.mediaserver2.storage.persistence.usecase.UploadingCo
 import java.util.concurrent.CompletionStage;
 
 @FunctionalInterface
-public interface Uploading<P extends Payload> {
+public interface Uploader<P extends Payload> {
   CompletionStage<Void> upload(UploadingCommand<P> command);
 }

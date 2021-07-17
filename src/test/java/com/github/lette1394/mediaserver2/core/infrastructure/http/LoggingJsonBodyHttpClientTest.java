@@ -2,12 +2,16 @@ package com.github.lette1394.mediaserver2.core.infrastructure.http;
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
 import com.github.lette1394.mediaserver2.core.domain.StringPayload;
+import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.core.infrastructure.UuidTraceFactory;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.AdaptedBinaryPublisher;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublisher;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublishers;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import org.junit.jupiter.api.Test;
+import org.reactivestreams.Publisher;
 import reactor.core.publisher.Mono;
 
 class LoggingJsonBodyHttpClientTest {
@@ -15,6 +19,12 @@ class LoggingJsonBodyHttpClientTest {
   @Test
   void test() {
     final var trace = new UuidTraceFactory().create();
+    final var binaryPublishers = new BinaryPublishers<>() {
+      @Override
+      public BinaryPublisher<Payload> adapt(Trace trace, Publisher<Payload> publisher, long length) {
+        return new AdaptedBinaryPublisher<>(publisher, length);
+      }
+    };
     final var httpClient = new HttpClient<>() {
       @Override
       public CompletionStage<GetResponse<Payload>> get(GetRequest getRequest) {
@@ -25,7 +35,7 @@ class LoggingJsonBodyHttpClientTest {
         map.put("response-3", "3");
         map.put("response-1", "1");
         final var headers = new Headers(map);
-        final var publisher = BinaryPublisher.adapt(0L, Mono.empty());
+        final var publisher = binaryPublishers.adapt(trace, Mono.empty(), 0L);
         final var response = new GetResponse<>(headers, publisher);
 
         return CompletableFuture.completedFuture(response);
@@ -51,6 +61,12 @@ class LoggingJsonBodyHttpClientTest {
   @Test
   void test1() {
     final var trace = new UuidTraceFactory().create();
+    final var binaryPublishers = new BinaryPublishers<StringPayload>() {
+      @Override
+      public BinaryPublisher<StringPayload> adapt(Trace trace, Publisher<StringPayload> publisher, long length) {
+        return new AdaptedBinaryPublisher<>(publisher, length);
+      }
+    };
     final var httpClient = new HttpClient<StringPayload>() {
       @Override
       public CompletionStage<GetResponse<StringPayload>> get(GetRequest getRequest) {
@@ -61,7 +77,7 @@ class LoggingJsonBodyHttpClientTest {
         map.put("header-3", "3");
         map.put("header-1", "1");
         final var headers = new Headers(map);
-        final var publisher = BinaryPublisher.adapt(0L, Mono.just(new StringPayload("""
+        final var publisher = binaryPublishers.adapt(trace, Mono.just(new StringPayload("""
           {
               "glossary": {
                   "title": "example glossary",
@@ -85,7 +101,7 @@ class LoggingJsonBodyHttpClientTest {
               }
           }
                     
-          """)));
+          """)), 0L);
         final var response = new GetResponse<>(headers, publisher);
 
         return CompletableFuture.completedFuture(response);

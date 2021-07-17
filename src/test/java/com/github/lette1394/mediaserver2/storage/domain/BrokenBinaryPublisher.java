@@ -3,6 +3,7 @@ package com.github.lette1394.mediaserver2.storage.domain;
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Attributes;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublisher;
 import org.reactivestreams.Subscriber;
 
@@ -29,5 +30,10 @@ public class BrokenBinaryPublisher<P extends Payload> implements BinaryPublisher
   @Override
   public long length() {
     return binaryPublisher.length();
+  }
+
+  @Override
+  public Attributes attributes() {
+    return binaryPublisher.attributes();
   }
 }

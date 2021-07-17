@@ -12,12 +12,12 @@ import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublis
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Timestamp;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploading;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
 import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class ObjectUploading<P extends Payload> implements Uploading<P> {
+public class ObjectUploader<P extends Payload> implements Uploader<P> {
   private final MetaChange<Meta> metaChange;
   private final AllBinaries<P> allBinaries;
 
@@ -44,6 +44,6 @@ public class ObjectUploading<P extends Payload> implements Uploading<P> {
       .attributes()
       .getAttribute(HASHER_ATTRIBUTE)
       .map(Hasher::hash)
-      .getOrElse(() -> new Hash(""));
+      .getOrNull();
   }
 }

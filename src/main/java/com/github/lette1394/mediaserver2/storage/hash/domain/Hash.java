@@ -5,4 +5,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Hash {
   private final String value;
+
+  @Override
+  public String toString() {
+    return value;
+  }
 }

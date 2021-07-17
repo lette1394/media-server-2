@@ -41,6 +41,6 @@ public class ExhaustiveMetaFlusher<T extends Entity> implements Flusher<T> {
       .filter(metaClass::isInstance)
       .map(entity -> (R) entity)
       .findAny()
-      .get(); // FIXME (jaeeun) 2021/07/17: naive impl
+      .orElse(null); // FIXME (jaeeun) 2021/07/17: naive impl
   }
 }

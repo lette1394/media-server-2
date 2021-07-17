@@ -4,18 +4,18 @@ import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
 import com.github.lette1394.mediaserver2.storage.domain.NoOpLocker;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.LoggedLocker;
-import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedUploading;
+import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedUploader;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.AllUseCases;
-import com.github.lette1394.mediaserver2.storage.persistence.usecase.LockedUploading;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploading;
+import com.github.lette1394.mediaserver2.storage.persistence.usecase.LockedUploader;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
 
 public class TestUseCases implements AllUseCases {
   @Override
   @SuppressWarnings("PMD.UnnecessaryLocalBeforeReturn")
-  public Uploading uploading(Trace trace) {
-    final var noOp = new JustReadAllUploading();
-    final var locked = new LockedUploading(noOp, locker(trace));
-    final var logged = new LoggedUploading(locked, trace);
+  public Uploader uploading(Trace trace) {
+    final var noOp = new JustReadAllUploader();
+    final var locked = new LockedUploader(noOp, locker(trace));
+    final var logged = new LoggedUploader(locked, trace);
 
     return logged;
   }

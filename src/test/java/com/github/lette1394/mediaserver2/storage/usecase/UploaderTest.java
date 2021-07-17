@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.core.io.buffer.NettyDataBufferFactory;
 
-class UploadingTest {
+class UploaderTest {
 
   @Test
   @SneakyThrows
@@ -27,17 +27,11 @@ class UploadingTest {
       .read(path, new NettyDataBufferFactory(ByteBufAllocator.DEFAULT), 1)
       .map(DataBufferPayload::new);
 
-    final var binaryPublisher = BinaryPublisher.adapt(
-      path.toFile().length(),
-      publisher);
+//    final var binaryPublisher = BinaryPublisher.adapt(
+//      path.toFile().length(),
+//      publisher);
+//
+//    final var brokenPublisher = new BrokenBinaryPublisher<>(binaryPublisher, 11);
 
-    final var brokenPublisher = new BrokenBinaryPublisher<>(binaryPublisher, 11);
-
-    useCases
-      .uploading(traceFactory.create())
-      .upload(new UploadingCommand<>(new Id(), brokenPublisher))
-      .toCompletableFuture()
-      .exceptionally(throwable -> null)
-      .join();
   }
 }

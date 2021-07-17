@@ -5,12 +5,13 @@ import com.github.lette1394.mediaserver2.storage.persistence.domain.Flusher;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class SequentialMetaChange<T extends Entity> implements MetaChange<T> {
-  private final Flusher flusher;
+  private final Flusher<T> flusher;
 
   private final List<T> forAdd = new ArrayList<>();
   private final List<T> forUpdate = new ArrayList<>();
@@ -40,11 +41,9 @@ public class SequentialMetaChange<T extends Entity> implements MetaChange<T> {
 
   @Override
   public CompletionStage<Void> flush() {
-    flusher.flush(forAdd);
-    flusher.flush(forUpdate);
-    flusher.flush(forRemove);
-
-    // db 연산
-    return null;
+    return CompletableFuture.allOf(
+      flusher.flush(forAdd).toCompletableFuture(),
+      flusher.flush(forUpdate).toCompletableFuture(),
+      flusher.flush(forRemove).toCompletableFuture());
   }
 }
