@@ -4,6 +4,7 @@ import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStag
 import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStage.start;
 
 import com.github.lette1394.mediaserver2.core.domain.Trace;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Entity;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoggedMetaChange<T> implements MetaChange<T> {
+public class LoggedMetaChange<T extends Entity> implements MetaChange<T> {
   private final MetaChange<T> metaChange;
   private final Trace trace;
 

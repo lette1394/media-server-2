@@ -7,6 +7,5 @@ public record Meta(
   Id id,
   long size,
   Timestamp timestamp,
-  Hash hash
-) {
+  Hash hash) implements Entity {
 }

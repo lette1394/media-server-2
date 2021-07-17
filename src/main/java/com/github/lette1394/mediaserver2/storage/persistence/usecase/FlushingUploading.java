@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FlushingUploading<P extends Payload> implements Uploading<P> {
   private final Uploading<P> uploading;
-  private final MetaChange<P> metaChange;
+  private final MetaChange<?> metaChange;
 
   @Override
   public CompletionStage<Void> upload(UploadingCommand<P> command) {

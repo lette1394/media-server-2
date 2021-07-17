@@ -1,4 +1,4 @@
 package com.github.lette1394.mediaserver2.storage.identification.domain;
 
-public class Id {
+public record Id() {
 }

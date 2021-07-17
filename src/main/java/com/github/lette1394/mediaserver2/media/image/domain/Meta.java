@@ -1,10 +1,11 @@
 package com.github.lette1394.mediaserver2.media.image.domain;
 
-import lombok.RequiredArgsConstructor;
+import com.github.lette1394.mediaserver2.storage.identification.domain.Id;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Entity;
 
-@RequiredArgsConstructor
-public class Meta {
-  private final long width;
-  private final long height;
-  private final Format format;
+public record Meta(
+  Id id,
+  long width,
+  long height,
+  Format format) implements Entity {
 }

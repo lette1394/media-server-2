@@ -1,5 +1,6 @@
 package com.github.lette1394.mediaserver2.storage.persistence.usecase;
 
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Entity;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Flusher;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SequentialMetaChange<T> implements MetaChange<T> {
+public class SequentialMetaChange<T extends Entity> implements MetaChange<T> {
   private final Flusher flusher;
 
   private final List<T> forAdd = new ArrayList<>();
