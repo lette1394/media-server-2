@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class JacksonLoader implements UnsafeFileResources {
+class JacksonFileLoader implements UnsafeFileResources {
   private final ObjectMapper objectMapper;
 
   @Override

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.FileExtensionAware.FileExtension;
 
 public class ExhaustiveAllResourcesFactory {
@@ -24,18 +25,20 @@ public class ExhaustiveAllResourcesFactory {
   private final AllMappedResourceTypes scanned;
 
   public ExhaustiveAllResourcesFactory(String baseClassPath, String baseEntityScanningPackage) {
-    var jackson = new JacksonLoader(objectMapper);
+    var jackson = new JacksonFileLoader(objectMapper);
     var logged = new Slf4jLoggingAware(jackson);
     var yamlAware = new FileExtensionAware(FileExtension.YAML, logged);
-    var baseAware = new BaseClassPathAware(new ClassPath(baseClassPath), yamlAware);
-    var cached = new CachedLoader(baseAware);
+    var basePathAware = new BaseClassPathAware(new ClassPath(baseClassPath), yamlAware);
+    var cached = new CachedLoader(basePathAware);
 
     resources = cached;
     scanned = new TypeScanningCachedMappedResourceTypes(baseEntityScanningPackage);
   }
 
   public AllSingleResources single() {
-    return new MappedSingleResources(new AnnotatedSingleFileResources(resources), scanned);
+    final var annotated = new AnnotatedSingleFileResources(resources);
+    final var mapped = new MappedSingleResources(annotated, scanned);
+    return new AutoReloadSingleResource(mapped);
   }
 
   public AllMultipleResources multiple() {

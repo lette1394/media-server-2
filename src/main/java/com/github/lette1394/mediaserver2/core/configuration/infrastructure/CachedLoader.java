@@ -22,4 +22,8 @@ class CachedLoader implements UnsafeFileResources {
     holder.put(fileResource, ret);
     return ret;
   }
+
+  public void evict() {
+    holder.clear();
+  }
 }
