@@ -21,7 +21,7 @@ public class ExhaustiveAllResourcesFactory {
     .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
   private final UnsafeFileResources resources;
-  private final AllEntityTypes scanned;
+  private final AllMappedResourceTypes scanned;
 
   public ExhaustiveAllResourcesFactory(String baseClassPath, String baseEntityScanningPackage) {
     var jackson = new JacksonLoader(objectMapper);
@@ -31,7 +31,7 @@ public class ExhaustiveAllResourcesFactory {
     var cached = new CachedLoader(baseAware);
 
     resources = cached;
-    scanned = new TypeScanningCachedEntityTypes(baseEntityScanningPackage);
+    scanned = new TypeScanningCachedMappedResourceTypes(baseEntityScanningPackage);
   }
 
   public AllSingleResources single() {

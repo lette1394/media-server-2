@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class MappedMultipleResources implements AllMultipleResources {
   private final AllMultipleResources resources;
-  private final AllEntityTypes allEntityTypes;
+  private final AllMappedResourceTypes allMappedResourceTypes;
 
   @Override
   public <T> Option<T> find(Class<T> type, String name) {
-    return allEntityTypes
-      .relatedEntityType(type)
-      .map(entity -> resources.find(entity, name).map(Entity::toMapped))
+    return allMappedResourceTypes
+      .findMappedResource(type)
+      .map(entity -> resources.find(entity, name).map(MappedResource::toMapped))
       .getOrElse(() -> resources.find(type, name));
   }
 }

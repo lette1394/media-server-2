@@ -13,25 +13,25 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 @SuppressWarnings("rawtypes")
-class TypeScanningCachedEntityTypes implements AllEntityTypes {
-  private final Map<Class<?>, ? extends Class<? extends Entity>> cached;
+class TypeScanningCachedMappedResourceTypes implements AllMappedResourceTypes {
+  private final Map<Class<?>, ? extends Class<? extends MappedResource>> cached;
 
-  public TypeScanningCachedEntityTypes(String basePackage) {
+  public TypeScanningCachedMappedResourceTypes(String basePackage) {
     requires(isNotBlank(basePackage), "isNotBlank(basePackage)");
     this.cached = scan(basePackage);
   }
 
   @SuppressWarnings("unchecked")
-  public <T, R extends Entity<T>> Option<Class<R>> relatedEntityType(Class<T> type) {
-    if (cached.containsKey(type)) {
-      return Option.of((Class<R>) cached.get(type));
+  public <T, R extends MappedResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType) {
+    if (cached.containsKey(mappedType)) {
+      return Option.of((Class<R>) cached.get(mappedType));
     }
     return Option.none();
   }
 
-  private static Map<Class<?>, ? extends Class<? extends Entity>> scan(String basePackage) {
+  private static Map<Class<?>, ? extends Class<? extends MappedResource>> scan(String basePackage) {
     return new Reflections(basePackage, new SubTypesScanner())
-      .getSubTypesOf(Entity.class)
+      .getSubTypesOf(MappedResource.class)
       .stream()
       .map(entityClassType -> {
         final Type[] genericInterfaces = entityClassType.getGenericInterfaces();
