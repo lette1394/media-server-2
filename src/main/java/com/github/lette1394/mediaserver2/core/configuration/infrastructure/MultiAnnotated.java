@@ -8,21 +8,21 @@ import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class AnnotatedMultipleFileResources implements AllMultipleResources {
+class MultiAnnotated implements AllMultipleResources {
   private final UnsafeFileResources unsafe;
   private final ClassPathFactory classPathFactory;
 
   @Override
   public <T> Option<T> find(Class<T> type, String name) {
     return Option
-      .of(type.getAnnotation(MultipleResource.class))
+      .of(type.getAnnotation(MultiResource.class))
       .map(annotation -> fileResource(type, annotation, name))
       .flatMap(this::load);
   }
 
   private <T> FileResource<T> fileResource(
     Class<T> type,
-    MultipleResource annotation,
+    MultiResource annotation,
     String name) {
 
     final var directoryPath = annotation.directoryPath();

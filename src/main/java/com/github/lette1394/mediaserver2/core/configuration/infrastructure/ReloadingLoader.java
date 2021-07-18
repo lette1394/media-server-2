@@ -6,7 +6,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
 import io.vavr.control.Option;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ReloadingLoader implements Reloader, AllSingleResources, AllMultipleResources {
+class ReloadingLoader implements Reloader, AllSingleResources, AllMultipleResources {
   private final AtomicReference<AllSingleResources> singleRef;
   private final AtomicReference<AllMultipleResources> multiRef;
 

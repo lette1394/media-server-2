@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-class Slf4jLoggingAware implements UnsafeFileResources {
+class Logging implements UnsafeFileResources {
   private final UnsafeFileResources delegate;
 
   @Override

@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class JacksonFileLoader implements UnsafeFileResources {
+class Jackson implements UnsafeFileResources {
   private final ObjectMapper objectMapper;
 
   @Override

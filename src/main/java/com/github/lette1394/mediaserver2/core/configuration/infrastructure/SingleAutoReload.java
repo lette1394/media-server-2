@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class AutoReloadSingleResource implements AllSingleResources {
+class SingleAutoReload implements AllSingleResources {
   private final AllSingleResources resources;
 
   @Override

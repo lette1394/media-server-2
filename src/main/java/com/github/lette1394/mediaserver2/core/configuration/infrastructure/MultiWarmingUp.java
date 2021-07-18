@@ -10,11 +10,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.reflections.Reflections;
 
-public class WarmUpFileMultiLoader implements AllMultipleResources {
+class MultiWarmingUp implements AllMultipleResources {
   private final AllMultipleResources resources;
   private final ClassPathFactory classPathFactory;
 
-  public WarmUpFileMultiLoader(
+  public MultiWarmingUp(
     AllMultipleResources resources,
     String basePackage,
     ClassPathFactory classPathFactory) {
@@ -28,9 +28,9 @@ public class WarmUpFileMultiLoader implements AllMultipleResources {
 
   private void warmUpMultiple(AllMultipleResources allMultipleResources, Reflections reflections) {
     reflections
-      .getTypesAnnotatedWith(MultipleResource.class)
+      .getTypesAnnotatedWith(MultiResource.class)
       .forEach(type -> {
-        final var directoryPath = type.getAnnotation(MultipleResource.class).directoryPath();
+        final var directoryPath = type.getAnnotation(MultiResource.class).directoryPath();
         final var path = classPathFactory.create(directoryPath).toPath();
         final var names = Try
           .of(() -> Files

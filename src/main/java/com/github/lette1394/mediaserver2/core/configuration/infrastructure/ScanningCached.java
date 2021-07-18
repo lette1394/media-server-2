@@ -13,10 +13,10 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 
 @SuppressWarnings("rawtypes")
-class TypeScanningCachedMappedResourceTypes implements AllMappedResourceTypes {
+class ScanningCached implements AllMappedResourceTypes {
   private final Map<Class<?>, ? extends Class<? extends MappedResource>> cached;
 
-  public TypeScanningCachedMappedResourceTypes(String basePackage) {
+  public ScanningCached(String basePackage) {
     requires(isNotBlank(basePackage), "isNotBlank(basePackage)");
     this.cached = scan(basePackage);
   }

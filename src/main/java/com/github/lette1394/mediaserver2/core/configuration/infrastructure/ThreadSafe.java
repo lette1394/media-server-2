@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class ThreadSafeLoader implements UnsafeFileResources {
+class ThreadSafe implements UnsafeFileResources {
   private final UnsafeFileResources resources;
   private final Map<FileResource<?>, Object> locks = new ConcurrentHashMap<>();
 

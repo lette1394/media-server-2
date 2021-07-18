@@ -11,32 +11,31 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleReso
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class ResourcesFactory {
   private static final ObjectMapper OBJECT_MAPPER = objectMapper();
-
   private static final String SCANNING_PACKAGE = "com.github.lette1394.mediaserver2.core.configuration.domain";
 
   public AllSingleResources singleResources() {
-    final var annotated = new AnnotatedSingleFileResources(unsafeFileResources(), classPathFactory());
-    final var mapped = new MappedSingleResources(annotated, allMappedResourceTypes());
-    final var single = new AutoReloadSingleResource(mapped);
-    final var warmedUp = new WarmUpFileLoader(single, SCANNING_PACKAGE);
+    final var annotated  = new SingleAnnotated(unsafeFileResources(), classPathFactory());
+    final var mapped     = new SingleMapped(annotated, allMappedResourceTypes());
+    final var autoReload = new SingleAutoReload(mapped);
+    final var warmingUp  = new SingleWarmingUp(autoReload, SCANNING_PACKAGE);
 
-    return warmedUp;
+    return warmingUp;
   }
 
   public AllMultipleResources multiResources() {
-    final var annotated = new AnnotatedMultipleFileResources(unsafeFileResources(), classPathFactory());
-    final var mapped = new MappedMultipleResources(annotated, allMappedResourceTypes());
-    final var multi = new AutoReloadMultiResource(mapped);
-    final var warmedUp = new WarmUpFileMultiLoader(multi, SCANNING_PACKAGE, classPathFactory());
+    final var annotated  = new MultiAnnotated(unsafeFileResources(), classPathFactory());
+    final var mapped     = new MultiMapped(annotated, allMappedResourceTypes());
+    final var autoReload = new MultiAutoReload(mapped);
+    final var warmingUp  = new MultiWarmingUp(autoReload, SCANNING_PACKAGE, classPathFactory());
 
-    return warmedUp;
+    return warmingUp;
   }
 
   private static UnsafeFileResources unsafeFileResources() {
-    final var jackson = new JacksonFileLoader(OBJECT_MAPPER);
-    final var logged = new Slf4jLoggingAware(jackson);
-    final var threadSafe = new ThreadSafeLoader(logged);
-    final var cached = new CachedLoader(threadSafe);
+    final var jackson    = new Jackson(OBJECT_MAPPER);
+    final var logged     = new Logging(jackson);
+    final var threadSafe = new ThreadSafe(logged);
+    final var cached     = new Caching(threadSafe);
 
     return cached;
   }
@@ -46,7 +45,7 @@ public class ResourcesFactory {
   }
 
   private static AllMappedResourceTypes allMappedResourceTypes() {
-    return new TypeScanningCachedMappedResourceTypes(SCANNING_PACKAGE);
+    return new ScanningCached(SCANNING_PACKAGE);
   }
 
   private static ObjectMapper objectMapper() {

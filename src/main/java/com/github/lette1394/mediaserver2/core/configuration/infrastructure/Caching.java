@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-class CachedLoader implements UnsafeFileResources {
+class Caching implements UnsafeFileResources {
   private final Map<FileResource<?>, Object> holder = new ConcurrentHashMap<>();
   private final UnsafeFileResources resourcesRef;
 
-  public CachedLoader(UnsafeFileResources unsafeFileResources) {
+  public Caching(UnsafeFileResources unsafeFileResources) {
     this.resourcesRef = unsafeFileResources;
   }
 

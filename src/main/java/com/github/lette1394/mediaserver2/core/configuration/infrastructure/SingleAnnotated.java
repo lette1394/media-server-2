@@ -5,7 +5,7 @@ import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class AnnotatedSingleFileResources implements AllSingleResources {
+class SingleAnnotated implements AllSingleResources {
   private final UnsafeFileResources unsafe;
   private final ClassPathFactory classPathFactory;
 

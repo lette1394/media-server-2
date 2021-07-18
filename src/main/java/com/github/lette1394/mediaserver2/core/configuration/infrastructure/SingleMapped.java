@@ -5,7 +5,7 @@ import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class MappedSingleResources implements AllSingleResources {
+class SingleMapped implements AllSingleResources {
   private final AllSingleResources resources;
   private final AllMappedResourceTypes allMappedResourceTypes;
 

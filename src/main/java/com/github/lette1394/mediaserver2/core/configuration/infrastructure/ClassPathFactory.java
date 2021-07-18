@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
-public class ClassPathFactory {
+class ClassPathFactory {
   private final ClassPath basePath;
 
   public ClassPathFactory(String basePath) {

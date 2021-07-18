@@ -4,10 +4,10 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleReso
 import io.vavr.control.Option;
 import org.reflections.Reflections;
 
-public class WarmUpFileLoader implements AllSingleResources {
+class SingleWarmingUp implements AllSingleResources {
   private final AllSingleResources allSingleResources;
 
-  public WarmUpFileLoader(AllSingleResources allSingleResources, String basePackage) {
+  public SingleWarmingUp(AllSingleResources allSingleResources, String basePackage) {
     this.allSingleResources = allSingleResources;
 
     var reflections = new Reflections(basePackage);
