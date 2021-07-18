@@ -23,25 +23,24 @@ public class ExhaustiveAllResourcesFactory {
 
   private final UnsafeFileResources resources;
   private final AllMappedResourceTypes scanned;
+  private final ClassPaths classPaths;
 
   public ExhaustiveAllResourcesFactory(String baseClassPath, String baseEntityScanningPackage) {
     var jackson = new JacksonFileLoader(objectMapper);
     var logged = new Slf4jLoggingAware(jackson);
-    var yamlAware = new FileExtensionAware(FileExtension.YAML, logged);
-    var basePathAware = new BaseClassPathAware(new ClassPath(baseClassPath), yamlAware);
-    var cached = new CachedLoader(basePathAware);
+    var cached = new CachedLoader(logged);
 
     resources = cached;
     scanned = new TypeScanningCachedMappedResourceTypes(baseEntityScanningPackage);
   }
 
   public AllSingleResources single() {
-    final var annotated = new AnnotatedSingleFileResources(resources);
+    final var annotated = new AnnotatedSingleFileResources(resources, classPaths);
     final var mapped = new MappedSingleResources(annotated, scanned);
     return new AutoReloadSingleResource(mapped);
   }
 
   public AllMultipleResources multiple() {
-    return new MappedMultipleResources(new AnnotatedMultipleFileResources(resources), scanned);
+    return new MappedMultipleResources(new AnnotatedMultipleFileResources(resources, classPaths), scanned);
   }
 }

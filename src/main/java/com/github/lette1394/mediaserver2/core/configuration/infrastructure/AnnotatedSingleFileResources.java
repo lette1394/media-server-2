@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class AnnotatedSingleFileResources implements AllSingleResources {
   private final UnsafeFileResources unsafe;
+  private final ClassPaths classPaths;
 
   @Override
   public <T> Option<T> find(Class<T> type) {
@@ -17,7 +18,7 @@ class AnnotatedSingleFileResources implements AllSingleResources {
   }
 
   private <T> FileResource<T> fileResource(Class<T> type, SingleResource annotation) {
-    return new FileResource<>(type, new ClassPath(annotation.filePath()));
+    return new FileResource<>(type, classPaths.create(annotation.filePath()));
   }
 
   private <T> Option<T> load(FileResource<T> fileResource) {

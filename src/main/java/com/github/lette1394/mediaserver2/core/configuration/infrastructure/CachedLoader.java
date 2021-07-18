@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import lombok.RequiredArgsConstructor;
+import java.util.concurrent.atomic.AtomicReference;
 
-@RequiredArgsConstructor
+
 class CachedLoader implements UnsafeFileResources {
   private final Map<FileResource<?>, Object> holder = new ConcurrentHashMap<>();
-  private final UnsafeFileResources resources;
+  private final AtomicReference<UnsafeFileResources> resourcesRef;
+
+  public CachedLoader(UnsafeFileResources unsafeFileResources) {
+    this.resourcesRef = new AtomicReference<>(unsafeFileResources);
+  }
 
   @Override
   @SuppressWarnings("unchecked")
@@ -18,12 +22,12 @@ class CachedLoader implements UnsafeFileResources {
       return (T) holder.get(fileResource);
     }
 
-    final T ret = resources.load(fileResource);
+    final T ret = resourcesRef.get().load(fileResource);
     holder.put(fileResource, ret);
     return ret;
   }
 
-  public void evict() {
+  public void updateWith() {
     holder.clear();
   }
 }
