@@ -11,7 +11,6 @@ class Logging implements UnsafeFileResources {
 
   @Override
   public <T> T load(FileResource<T> fileResource) throws IOException {
-    log.info("loading: [{}]", fileResource);
     try {
       final T result = delegate.load(fileResource);
       log.info("loaded: [{}]", fileResource);

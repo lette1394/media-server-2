@@ -25,10 +25,11 @@ class MultiAnnotated implements AllMultipleResources {
     MultiResource annotation,
     String name) {
 
-    final var directoryPath = annotation.directoryPath();
-    requires(isNotBlank(directoryPath), "isNotBlank(directoryPath)");
-    final var classPath = classPathFactory.create("%s/%s".formatted(directoryPath, name));
-    return new FileResource<>(type, classPath);
+    final var path = annotation.directoryPath();
+    requires(isNotBlank(path), "isNotBlank(path)");
+    final var directory = classPathFactory.create(path);
+    final var file = directory.concat("/%s".formatted(name));
+    return new FileResource<>(type, file);
   }
 
   private <T> Option<T> load(FileResource<T> fileResource) {

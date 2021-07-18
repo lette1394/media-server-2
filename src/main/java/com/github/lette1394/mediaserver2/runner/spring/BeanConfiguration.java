@@ -1,5 +1,6 @@
-package com.github.lette1394.mediaserver2.storage.persistence.infrastructure.spring;
+package com.github.lette1394.mediaserver2.runner.spring;
 
+import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AllResources;
 import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.core.domain.TraceFactory;
 import com.github.lette1394.mediaserver2.core.infrastructure.DataBufferPayload;
@@ -18,10 +19,10 @@ import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublis
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploaders;
+import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.DrainingAllBinaries;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedBinaryPublisher;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedMetaChange;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedUploader;
-import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.DrainingAllBinaries;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.StandardOutputFlusher;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.FlushingUploader;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.LockedUploader;
@@ -31,10 +32,16 @@ import com.google.common.hash.Hashing;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@SuppressWarnings("UnnecessaryLocalVariable")
 @Configuration
-public class SpringWebFluxConfiguration {
+@SuppressWarnings("UnnecessaryLocalVariable")
+public class BeanConfiguration {
+  private final AllResources allResources = new AllResources();
   private final TraceFactory traceFactory = new UuidTraceFactory();
+
+  @Bean
+  public ConfigurationApi configurationApi() {
+    return new ConfigurationApi(allResources, traceFactory);
+  }
 
   @Bean
   public PersistenceApi persistenceApi() {

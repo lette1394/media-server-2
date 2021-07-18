@@ -16,13 +16,12 @@ class MultiWarmingUp implements AllMultipleResources {
 
   public MultiWarmingUp(
     AllMultipleResources resources,
-    String basePackage,
+    Reflections reflections,
     ClassPathFactory classPathFactory) {
 
     this.resources = resources;
     this.classPathFactory = classPathFactory;
 
-    var reflections = new Reflections(basePackage);
     warmUpMultiple(resources, reflections);
   }
 

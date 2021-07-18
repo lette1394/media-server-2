@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class MultiAutoReload implements AllMultipleResources {
+class MultiAutoReloading implements AllMultipleResources {
   private final AllMultipleResources resources;
 
   @Override

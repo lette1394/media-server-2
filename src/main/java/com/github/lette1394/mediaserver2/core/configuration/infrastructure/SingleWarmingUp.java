@@ -7,10 +7,9 @@ import org.reflections.Reflections;
 class SingleWarmingUp implements AllSingleResources {
   private final AllSingleResources allSingleResources;
 
-  public SingleWarmingUp(AllSingleResources allSingleResources, String basePackage) {
+  public SingleWarmingUp(AllSingleResources allSingleResources, Reflections reflections) {
     this.allSingleResources = allSingleResources;
 
-    var reflections = new Reflections(basePackage);
     warmUp(allSingleResources, reflections);
   }
 

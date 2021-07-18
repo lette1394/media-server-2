@@ -2,7 +2,6 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import io.vavr.control.Option;
 import java.lang.reflect.ParameterizedType;
@@ -10,15 +9,13 @@ import java.lang.reflect.Type;
 import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 import org.reflections.Reflections;
-import org.reflections.scanners.SubTypesScanner;
 
 @SuppressWarnings("rawtypes")
 class ScanningCached implements AllMappedResourceTypes {
   private final Map<Class<?>, ? extends Class<? extends MappedResource>> cached;
 
-  public ScanningCached(String basePackage) {
-    requires(isNotBlank(basePackage), "isNotBlank(basePackage)");
-    this.cached = scan(basePackage);
+  public ScanningCached(Reflections reflections) {
+    this.cached = scan(reflections);
   }
 
   @SuppressWarnings("unchecked")
@@ -29,8 +26,8 @@ class ScanningCached implements AllMappedResourceTypes {
     return Option.none();
   }
 
-  private static Map<Class<?>, ? extends Class<? extends MappedResource>> scan(String basePackage) {
-    return new Reflections(basePackage, new SubTypesScanner())
+  private static Map<Class<?>, ? extends Class<? extends MappedResource>> scan(Reflections reflections) {
+    return reflections
       .getSubTypesOf(MappedResource.class)
       .stream()
       .map(entityClassType -> {
