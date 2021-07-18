@@ -1,5 +1,10 @@
 package com.github.lette1394.mediaserver2.runner.spring;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AllResources;
 import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.core.domain.TraceFactory;
@@ -35,12 +40,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class BeanConfiguration {
-  private final AllResources allResources = new AllResources();
+  private final AllResources allResources = new AllResources(
+    "/plugins",
+    "com.github.lette1394.mediaserver2",
+    configurationObjectMapper());
+
   private final TraceFactory traceFactory = new UuidTraceFactory();
 
   @Bean
   public ConfigurationApi configurationApi() {
-    return new ConfigurationApi(allResources, traceFactory);
+    return new ConfigurationApi(allResources, traceFactory, allResources.single());
   }
 
   @Bean
@@ -63,7 +72,8 @@ public class BeanConfiguration {
   public Uploaders<DataBufferPayload> uploaders() {
     return trace -> {
       final var metaChange = metaChange(trace);
-      final var object = new ObjectUploader<>(metaChange, new DrainingAllBinaries<DataBufferPayload>());
+      final var object = new ObjectUploader<>(metaChange,
+        new DrainingAllBinaries<DataBufferPayload>());
       final var flushed = new FlushingUploader<>(object, metaChange);
       final var locked = new LockedUploader<>(flushed, locker(trace));
       final var logged = new LoggedUploader<>(locked, trace);
@@ -93,5 +103,17 @@ public class BeanConfiguration {
 
   private Hasher hasher() {
     return new GuavaHasher(Hashing.sha256().newHasher());
+  }
+
+  private ObjectMapper configurationObjectMapper() {
+    return new ObjectMapper(new YAMLFactory())
+      .enable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
+      .enable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE)
+      .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+      .enable(DeserializationFeature.FAIL_ON_TRAILING_TOKENS)
+      .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+      .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+      .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_VALUES)
+      .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
   }
 }
