@@ -14,10 +14,10 @@ public final class AllResources implements Reloader {
   private final Reflections reflections;
   private final ObjectMapper objectMapper;
 
-  private final Reloader reloader;
-
   private final SingleReloading singleReloading;
   private final MultiReloading multiReloading;
+
+  private final Reloader reloader;
 
   public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
     this.classPathFactory = new ClassPathFactory(baseClassPath);
