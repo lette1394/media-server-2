@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class AnnotatedMultipleFileResources implements AllMultipleResources {
   private final UnsafeFileResources unsafe;
-  private final ClassPaths classPaths;
+  private final ClassPathFactory classPathFactory;
 
   @Override
   public <T> Option<T> find(Class<T> type, String name) {
@@ -27,7 +27,7 @@ class AnnotatedMultipleFileResources implements AllMultipleResources {
 
     final var directoryPath = annotation.directoryPath();
     requires(isNotBlank(directoryPath), "isNotBlank(directoryPath)");
-    final var classPath = classPaths.create("%s/%s".formatted(directoryPath, name);
+    final var classPath = classPathFactory.create("%s/%s".formatted(directoryPath, name));
     return new FileResource<>(type, classPath);
   }
 

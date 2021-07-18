@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode
 class ClassPath {
   private final String stringPath;
   private final Path path;
@@ -21,14 +23,10 @@ class ClassPath {
     this.stringPath = path;
     this.path = Option
       .of(getClass().getResource(path))
-      .toTry(() -> new FileNotFoundException("illegal path: [%s]".formatted(path)))
+      .toTry(() -> new FileNotFoundException("not found: [%s]".formatted(path)))
       .mapTry(URL::toURI)
       .map(Paths::get)
       .get();
-  }
-
-  ClassPath concat(ClassPath other) {
-    return new ClassPath(this.stringPath + other.stringPath);
   }
 
   ClassPath concat(String path) {
@@ -37,10 +35,6 @@ class ClassPath {
 
   public Path toPath() {
     return path;
-  }
-
-  public boolean endsWith(String path) {
-    return stringPath.endsWith(path);
   }
 
   @Override
