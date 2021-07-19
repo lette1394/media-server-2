@@ -4,5 +4,5 @@ import io.vavr.control.Option;
 
 @FunctionalInterface
 interface AllMappedResourceTypes {
-  <T, R extends MappedResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType);
+  <T, R extends MappedFileResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType);
 }

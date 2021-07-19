@@ -13,7 +13,7 @@ class MultiMapped implements AllMultipleResources {
   public <T> Option<T> find(Class<T> type, String name) {
     return allMappedResourceTypes
       .findMappedResource(type)
-      .map(entity -> resources.find(entity, name).map(MappedResource::toMapped))
+      .map(entity -> resources.find(entity, name).map(MappedFileResource::toMapped))
       .getOrElse(() -> resources.find(type, name));
   }
 }

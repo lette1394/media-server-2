@@ -12,23 +12,23 @@ import org.reflections.Reflections;
 
 @SuppressWarnings("rawtypes")
 class ScanningCached implements AllMappedResourceTypes {
-  private final Map<Class<?>, ? extends Class<? extends MappedResource>> cached;
+  private final Map<Class<?>, ? extends Class<? extends MappedFileResource>> cached;
 
   public ScanningCached(Reflections reflections) {
     this.cached = scan(reflections);
   }
 
   @SuppressWarnings("unchecked")
-  public <T, R extends MappedResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType) {
+  public <T, R extends MappedFileResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType) {
     if (cached.containsKey(mappedType)) {
       return Option.of((Class<R>) cached.get(mappedType));
     }
     return Option.none();
   }
 
-  private static Map<Class<?>, ? extends Class<? extends MappedResource>> scan(Reflections reflections) {
+  private static Map<Class<?>, ? extends Class<? extends MappedFileResource>> scan(Reflections reflections) {
     return reflections
-      .getSubTypesOf(MappedResource.class)
+      .getSubTypesOf(MappedFileResource.class)
       .stream()
       .map(entityClassType -> {
         final Type[] genericInterfaces = entityClassType.getGenericInterfaces();

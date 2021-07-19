@@ -13,7 +13,7 @@ class SingleMapped implements AllSingleResources {
   public <T> Option<T> find(Class<T> type) {
     return allMappedResourceTypes
       .findMappedResource(type)
-      .map(entity -> resources.find(entity).map(MappedResource::toMapped))
+      .map(entity -> resources.find(entity).map(MappedFileResource::toMapped))
       .getOrElse(() -> resources.find(type));
   }
 }
