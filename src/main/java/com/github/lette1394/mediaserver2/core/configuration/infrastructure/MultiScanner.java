@@ -13,7 +13,7 @@ import org.reflections.Reflections;
 
 @RequiredArgsConstructor
 class MultiScanner implements ResourceScanner {
-  private static final Class<MultiResource> SCANNING_TYPE = MultiResource.class;
+  private static final Class<MultiFileResource> SCANNING_TYPE = MultiFileResource.class;
 
   private final ClassPathFactory classPathFactory;
   private final Reflections reflections;

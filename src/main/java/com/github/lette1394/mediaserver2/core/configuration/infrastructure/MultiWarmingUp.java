@@ -27,9 +27,9 @@ class MultiWarmingUp implements AllMultipleResources {
 
   private void warmUpMultiple(AllMultipleResources allMultipleResources, Reflections reflections) {
     reflections
-      .getTypesAnnotatedWith(MultiResource.class)
+      .getTypesAnnotatedWith(MultiFileResource.class)
       .forEach(type -> {
-        final var directoryPath = type.getAnnotation(MultiResource.class).directoryPath();
+        final var directoryPath = type.getAnnotation(MultiFileResource.class).directoryPath();
         final var path = classPathFactory.create(directoryPath).toPath();
         final var names = Try
           .of(() -> Files

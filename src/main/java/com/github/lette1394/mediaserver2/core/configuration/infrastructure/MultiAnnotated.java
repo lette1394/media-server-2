@@ -15,14 +15,14 @@ class MultiAnnotated implements AllMultipleResources {
   @Override
   public <T> Option<T> find(Class<T> type, String name) {
     return Option
-      .of(type.getAnnotation(MultiResource.class))
+      .of(type.getAnnotation(MultiFileResource.class))
       .map(annotation -> fileResource(type, annotation, name))
       .flatMap(this::load);
   }
 
   private <T> FileResource<T> fileResource(
     Class<T> type,
-    MultiResource annotation,
+    MultiFileResource annotation,
     String name) {
 
     final var path = annotation.directoryPath();

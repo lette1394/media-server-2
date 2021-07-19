@@ -15,7 +15,7 @@ class SingleWarmingUp implements AllSingleResources {
 
   private void warmUp(AllSingleResources allSingleResources, Reflections reflections) {
     reflections
-      .getTypesAnnotatedWith(SingleResource.class)
+      .getTypesAnnotatedWith(SingleFileResource.class)
       .forEach(allSingleResources::find);
   }
 

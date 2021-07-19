@@ -8,7 +8,7 @@ import org.reflections.Reflections;
 
 @RequiredArgsConstructor
 class SingleScanner implements ResourceScanner {
-  private static final Class<SingleResource> SCANNING_TYPE = SingleResource.class;
+  private static final Class<SingleFileResource> SCANNING_TYPE = SingleFileResource.class;
 
   private final ClassPathFactory classPathFactory;
   private final Reflections reflections;
