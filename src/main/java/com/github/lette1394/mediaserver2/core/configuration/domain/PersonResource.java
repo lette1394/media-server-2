@@ -1,15 +1,15 @@
 package com.github.lette1394.mediaserver2.core.configuration.domain;
 
-import com.github.lette1394.mediaserver2.core.configuration.infrastructure.MappedFileResource;
+import com.github.lette1394.mediaserver2.core.configuration.infrastructure.MappedResource;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.SingleFileResource;
 
 @SingleFileResource(filePath = "/person.yaml")
-public record PersonFileResource(
+public record PersonResource(
   String name,
   Type type,
   int age1,
   int age2
-) implements MappedFileResource<Person> {
+) implements MappedResource<Person> {
 
   @Override
   public Person toMapped() {
