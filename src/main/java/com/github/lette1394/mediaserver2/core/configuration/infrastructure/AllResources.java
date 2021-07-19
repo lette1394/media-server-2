@@ -14,6 +14,7 @@ public final class AllResources implements Reloader {
   private final Reflections reflections;
   private final ObjectMapper objectMapper;
 
+  private final ResourceScanner resourceScanner;
   private final SingleReloading singleReloading;
   private final MultiReloading multiReloading;
 
@@ -24,6 +25,7 @@ public final class AllResources implements Reloader {
     this.reflections = new Reflections(basePackage);
     this.objectMapper = objectMapper;
 
+    this.resourceScanner = resourceScanner();
     this.singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
     this.multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
 
@@ -41,6 +43,15 @@ public final class AllResources implements Reloader {
   @Override
   public Try<Void> reload() {
     return reloader.reload();
+  }
+
+  private ResourceScanner resourceScanner() {
+    final var single = new SingleScanner(classPathFactory, reflections);
+    final var multi = new MultiScanner(classPathFactory, reflections);
+    final var merged = new Merging(single, multi);
+    final var cached = new EagerCachingScanner(merged);
+
+    return cached;
   }
 
   private Try<AllSingleResources> createSingle() {
@@ -73,7 +84,7 @@ public final class AllResources implements Reloader {
       final var logged = new Logging(jackson);
       final var thread = new ThreadSafe(logged);
       final var cached = new Caching(thread);
-      final var warmed = new WarmingUp(cached, reflections, classPathFactory);
+      final var warmed = new WarmingUp(cached, resourceScanner);
 
       return warmed;
     });
