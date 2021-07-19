@@ -46,12 +46,20 @@ public final class AllResources implements Reloader {
   }
 
   private ResourceScanner resourceScanner() {
-    final var single = new SingleScanner(classPathFactory, reflections);
-    final var multi = new MultiScanner(classPathFactory, reflections);
+    final var single = singleScanner();
+    final var multi = multiScanner();
     final var merged = new Merging(single, multi);
     final var cached = new EagerCachingScanner(merged);
 
     return cached;
+  }
+
+  private SingleScanner singleScanner() {
+    return new SingleScanner(classPathFactory, reflections);
+  }
+
+  private MultiScanner multiScanner() {
+    return new MultiScanner(classPathFactory, reflections);
   }
 
   private Try<AllSingleResources> createSingle() {
@@ -60,7 +68,7 @@ public final class AllResources implements Reloader {
         final var annotated = new SingleAnnotated(unsafeFileResources, classPathFactory);
         final var mapped = new SingleMapped(annotated, allMappedResourceTypes());
         final var cached = new SingleCache(mapped);
-        final var warmed = new SingleWarmingUp(cached, reflections);
+        final var warmed = new SingleWarmingUp(cached, singleScanner());
 
         return warmed;
       });
@@ -72,7 +80,7 @@ public final class AllResources implements Reloader {
         final var annotated = new MultiAnnotated(unsafeFileResources, classPathFactory);
         final var mapped = new MultiMapped(annotated, allMappedResourceTypes());
         final var cached = new MultiCache(mapped);
-        final var warmed = new MultiWarmingUp(cached, reflections, classPathFactory);
+        final var warmed = new MultiWarmingUp(cached, multiScanner());
 
         return warmed;
       });

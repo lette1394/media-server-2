@@ -1,48 +1,24 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
-import static java.util.stream.Collectors.toSet;
-
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
 import io.vavr.control.Option;
-import io.vavr.control.Try;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import org.reflections.Reflections;
+import java.util.Set;
+import org.apache.commons.lang3.tuple.Pair;
 
 class MultiWarmingUp implements AllMultipleResources {
   private final AllMultipleResources resources;
-  private final ClassPathFactory classPathFactory;
 
   public MultiWarmingUp(
     AllMultipleResources resources,
-    Reflections reflections,
-    ClassPathFactory classPathFactory) {
+    MultiScanner multiScanner) {
 
     this.resources = resources;
-    this.classPathFactory = classPathFactory;
-
-    warmUpMultiple(resources, reflections);
+    warmUp(multiScanner.scanMulti());
   }
 
-  private void warmUpMultiple(AllMultipleResources allMultipleResources, Reflections reflections) {
-    reflections
-      .getTypesAnnotatedWith(MultiFileResource.class)
-      .forEach(type -> {
-        final var directoryPath = type.getAnnotation(MultiFileResource.class).directoryPath();
-        final var path = classPathFactory.create(directoryPath).toPath();
-        final var names = Try
-          .of(() -> Files
-            .walk(path)
-            .map(Path::toFile)
-            .filter(File::isFile)
-            .filter(File::exists)
-            .map(File::getName)
-            .collect(toSet()))
-          .get();
-
-        names.forEach(name -> allMultipleResources.find(type, name));
-      });
+  private void warmUp(Set<? extends Pair<? extends Class<?>, String>> typeAndNames) {
+    typeAndNames
+      .forEach(typeAndName -> resources.find(typeAndName.getLeft(), typeAndName.getRight()));
   }
 
   @Override

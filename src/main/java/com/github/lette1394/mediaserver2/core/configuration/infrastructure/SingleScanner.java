@@ -15,16 +15,20 @@ class SingleScanner implements ResourceScanner {
 
   @Override
   public Set<? extends FileResource<?>> scan() {
-    return reflections
-      .getTypesAnnotatedWith(SCANNING_TYPE)
+    return scanSingle()
       .stream()
       .map(this::singleFileResources)
       .collect(toUnmodifiableSet());
   }
 
+  public Set<Class<?>> scanSingle() {
+    return reflections
+      .getTypesAnnotatedWith(SCANNING_TYPE);
+  }
+
   private FileResource<?> singleFileResources(Class<?> type) {
-    final var path = type.getAnnotation(SCANNING_TYPE).filePath();
-    final var classPath = classPathFactory.create(path);
+    final var annotation = type.getAnnotation(SCANNING_TYPE);
+    final var classPath = classPathFactory.create(annotation);
 
     return new FileResource<>(type, classPath);
   }

@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Sequence implements Reloader {
+class Sequence implements Reloader {
   private final List<Reloader> reloaders;
 
   @Override

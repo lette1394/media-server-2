@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.Set;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.reflections.Reflections;
 
 @RequiredArgsConstructor
@@ -20,14 +21,27 @@ class MultiScanner implements ResourceScanner {
 
   @Override
   public Set<? extends FileResource<?>> scan() {
-    return reflections
-      .getTypesAnnotatedWith(SCANNING_TYPE)
+    return scanMulti()
       .stream()
-      .flatMap(this::multiFileResources)
+      .map(typeAndName -> {
+        final var type = typeAndName.getLeft();
+        final var name = typeAndName.getRight();
+        final var annotation = type.getAnnotation(SCANNING_TYPE);
+
+        return new FileResource<>(type, classPathFactory.create(annotation, name));
+      })
       .collect(toUnmodifiableSet());
   }
 
-  private Stream<? extends FileResource<?>> multiFileResources(Class<?> type) {
+  public Set<? extends Pair<? extends Class<?>, String>> scanMulti() {
+    return reflections
+      .getTypesAnnotatedWith(SCANNING_TYPE)
+      .stream()
+      .flatMap(this::multiFile)
+      .collect(toUnmodifiableSet());
+  }
+
+  private Stream<? extends Pair<? extends Class<?>, String>> multiFile(Class<?> type) {
     final var path = type.getAnnotation(SCANNING_TYPE).directoryPath();
     final var directory = classPathFactory.create(path);
     return Try
@@ -37,7 +51,7 @@ class MultiScanner implements ResourceScanner {
         .filter(File::isFile)
         .filter(File::exists)
         .map(File::getName)
-        .map(name -> new FileResource<>(type, directory.concat("/%s".formatted(name)))))
+        .map(name -> Pair.of(type, name)))
       .get();
   }
 }

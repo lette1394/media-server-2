@@ -33,6 +33,10 @@ class ClassPath {
     return new ClassPath(this.stringPath + path);
   }
 
+  ClassPath concat(ClassPath other) {
+    return new ClassPath(this.stringPath + other.stringPath);
+  }
+
   public Path toPath() {
     return path;
   }
