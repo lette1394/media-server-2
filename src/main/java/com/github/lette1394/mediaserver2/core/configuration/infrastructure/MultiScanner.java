@@ -16,7 +16,7 @@ import org.reflections.Reflections;
 class MultiScanner implements ResourceScanner {
   private static final Class<MultiFileResource> SCANNING_TYPE = MultiFileResource.class;
 
-  private final ClassPathFactory classPathFactory;
+  private final FileResourcePathFactory fileResourcePathFactory;
   private final Reflections reflections;
 
   @Override
@@ -28,7 +28,7 @@ class MultiScanner implements ResourceScanner {
         final var name = typeAndName.getRight();
         final var annotation = type.getAnnotation(SCANNING_TYPE);
 
-        return new FileResource<>(type, classPathFactory.create(annotation, name));
+        return new FileResource<>(type, fileResourcePathFactory.create(annotation, name));
       })
       .collect(toUnmodifiableSet());
   }
@@ -43,7 +43,7 @@ class MultiScanner implements ResourceScanner {
 
   private Stream<? extends Pair<? extends Class<?>, String>> multiFile(Class<?> type) {
     final var path = type.getAnnotation(SCANNING_TYPE).directoryPath();
-    final var directory = classPathFactory.create(path);
+    final var directory = fileResourcePathFactory.create(path);
     return Try
       .of(() -> Files
         .walk(directory.toPath())

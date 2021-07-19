@@ -7,13 +7,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class SingleAnnotated implements AllSingleResources {
   private final UnsafeFileResources unsafe;
-  private final ClassPathFactory classPathFactory;
+  private final FileResourcePathFactory fileResourcePathFactory;
 
   @Override
   public <T> Option<T> find(Class<T> type) {
     return Option
       .of(type.getAnnotation(SingleFileResource.class))
-      .map(annotation -> new FileResource<>(type, classPathFactory.create(annotation)))
+      .map(annotation -> new FileResource<>(type, fileResourcePathFactory.create(annotation)))
       .flatMap(this::load);
   }
 

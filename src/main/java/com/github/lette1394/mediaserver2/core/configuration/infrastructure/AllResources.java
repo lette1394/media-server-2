@@ -10,7 +10,7 @@ import org.reflections.Reflections;
 
 @SuppressWarnings({"UnnecessaryLocalVariable", "Convert2MethodRef"})
 public final class AllResources implements Reloader {
-  private final ClassPathFactory classPathFactory;
+  private final FileResourcePathFactory fileResourcePathFactory;
   private final Reflections reflections;
   private final ObjectMapper objectMapper;
 
@@ -21,7 +21,7 @@ public final class AllResources implements Reloader {
   private final Reloader reloader;
 
   public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
-    this.classPathFactory = new ClassPathFactory(baseClassPath);
+    this.fileResourcePathFactory = new FileResourcePathFactory(baseClassPath);
     this.reflections = new Reflections(basePackage);
     this.objectMapper = objectMapper;
 
@@ -55,17 +55,17 @@ public final class AllResources implements Reloader {
   }
 
   private SingleScanner singleScanner() {
-    return new SingleScanner(classPathFactory, reflections);
+    return new SingleScanner(fileResourcePathFactory, reflections);
   }
 
   private MultiScanner multiScanner() {
-    return new MultiScanner(classPathFactory, reflections);
+    return new MultiScanner(fileResourcePathFactory, reflections);
   }
 
   private Try<AllSingleResources> createSingle() {
     return unsafeFileResources()
       .map(unsafeFileResources -> {
-        final var annotated = new SingleAnnotated(unsafeFileResources, classPathFactory);
+        final var annotated = new SingleAnnotated(unsafeFileResources, fileResourcePathFactory);
         final var mapped = new SingleMapped(annotated, allMappedResourceTypes());
         final var cached = new SingleCache(mapped);
         final var warmed = new SingleWarmingUp(cached, singleScanner());
@@ -77,7 +77,7 @@ public final class AllResources implements Reloader {
   private Try<AllMultipleResources> createMulti() {
     return unsafeFileResources()
       .map(unsafeFileResources -> {
-        final var annotated = new MultiAnnotated(unsafeFileResources, classPathFactory);
+        final var annotated = new MultiAnnotated(unsafeFileResources, fileResourcePathFactory);
         final var mapped = new MultiMapped(annotated, allMappedResourceTypes());
         final var cached = new MultiCache(mapped);
         final var warmed = new MultiWarmingUp(cached, multiScanner());

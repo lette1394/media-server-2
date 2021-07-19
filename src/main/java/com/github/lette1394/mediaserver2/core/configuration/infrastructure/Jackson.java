@@ -11,7 +11,7 @@ class Jackson implements UnsafeFileResources {
 
   @Override
   public <T> T load(FileResource<T> fileResource) throws IOException {
-    final var path = fileResource.classPath().toPath();
+    final var path = fileResource.fileResourcePath().toPath();
     final var bytes = Files.readAllBytes(path);
     return objectMapper.readValue(bytes, fileResource.type());
   }

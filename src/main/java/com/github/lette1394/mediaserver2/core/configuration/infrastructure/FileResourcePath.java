@@ -11,11 +11,11 @@ import java.nio.file.Paths;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
-class ClassPath {
+class FileResourcePath {
   private final String stringPath;
   private final Path path;
 
-  ClassPath(String path) {
+  FileResourcePath(String path) {
     requires(isNoneBlank(path), "isNoneBlank(path)");
     requires(path.startsWith("/"), "path.startsWith(\"/\")");
     requires(!path.endsWith("/"), "!path.endsWith(\"/\")");
@@ -29,12 +29,12 @@ class ClassPath {
       .get();
   }
 
-  ClassPath concat(String path) {
-    return new ClassPath(this.stringPath + path);
+  FileResourcePath concat(String path) {
+    return new FileResourcePath(this.stringPath + path);
   }
 
-  ClassPath concat(ClassPath other) {
-    return new ClassPath(this.stringPath + other.stringPath);
+  FileResourcePath concat(FileResourcePath other) {
+    return new FileResourcePath(this.stringPath + other.stringPath);
   }
 
   public Path toPath() {
