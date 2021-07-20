@@ -18,10 +18,6 @@ class MultiAnnotated implements AllMultipleResources {
   }
 
   private <T> Option<T> load(FileResource<T> fileResource) {
-    try {
-      return Option.of(loader.load(fileResource));
-    } catch (Exception e) {
-      return Option.none();
-    }
+    return loader.load(fileResource).toOption();
   }
 }

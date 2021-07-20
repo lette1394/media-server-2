@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
-import java.io.IOException;
+import io.vavr.control.Try;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ class ThreadSafe implements FileResourceLoader {
   private final Map<FileResource<?>, Object> locks = new ConcurrentHashMap<>();
 
   @Override
-  public <T> T load(FileResource<T> fileResource) throws IOException {
+  public <T> Try<T> load(FileResource<T> fileResource) {
     synchronized (locks.computeIfAbsent(fileResource, __ -> new Object())) {
       return loader.load(fileResource);
     }

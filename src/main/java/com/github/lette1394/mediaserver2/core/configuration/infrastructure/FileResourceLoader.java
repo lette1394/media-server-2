@@ -1,8 +1,8 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
-import java.io.IOException;
+import io.vavr.control.Try;
 
 @FunctionalInterface
 interface FileResourceLoader {
-  <T> T load(FileResource<T> fileResource) throws IOException;
+  <T> Try<T> load(FileResource<T> fileResource);
 }

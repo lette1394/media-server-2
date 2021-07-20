@@ -1,5 +1,6 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
+import io.vavr.control.Try;
 import java.io.IOException;
 import java.util.Set;
 
@@ -21,7 +22,7 @@ class WarmingUp implements FileResourceLoader {
   }
 
   @Override
-  public <T> T load(FileResource<T> fileResource) throws IOException {
+  public <T> Try<T> load(FileResource<T> fileResource) {
     return loader.load(fileResource);
   }
 }

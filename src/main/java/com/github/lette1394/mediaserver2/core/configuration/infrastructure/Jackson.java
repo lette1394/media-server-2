@@ -1,7 +1,7 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import io.vavr.control.Try;
 import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 
@@ -10,9 +10,11 @@ class Jackson implements FileResourceLoader {
   private final ObjectMapper objectMapper;
 
   @Override
-  public <T> T load(FileResource<T> fileResource) throws IOException {
-    final var path = fileResource.fileResourcePath().toPath();
-    final var bytes = Files.readAllBytes(path);
-    return objectMapper.readValue(bytes, fileResource.type());
+  public <T> Try<T> load(FileResource<T> fileResource) {
+    return Try.of(() -> {
+      final var path = fileResource.fileResourcePath().toPath();
+      final var bytes = Files.readAllBytes(path);
+      return objectMapper.readValue(bytes, fileResource.type());
+    });
   }
 }
