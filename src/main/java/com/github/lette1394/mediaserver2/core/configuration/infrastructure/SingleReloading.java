@@ -2,7 +2,6 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
-import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -28,7 +27,7 @@ class SingleReloading implements Reloader, AllSingleResources {
   }
 
   @Override
-  public <T> Option<T> find(Class<T> type) {
+  public <T> T find(Class<T> type) {
     return ref.get().find(type);
   }
 }

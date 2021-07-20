@@ -1,7 +1,6 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
-import io.vavr.control.Option;
 import java.util.Set;
 
 class SingleWarmingUp implements AllSingleResources {
@@ -17,7 +16,7 @@ class SingleWarmingUp implements AllSingleResources {
   }
 
   @Override
-  public <T> Option<T> find(Class<T> type) {
+  public <T> T find(Class<T> type) {
     return allSingleResources.find(type);
   }
 }

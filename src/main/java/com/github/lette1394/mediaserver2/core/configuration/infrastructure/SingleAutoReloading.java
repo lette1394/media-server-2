@@ -3,6 +3,7 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AutoReloaded;
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -14,24 +15,18 @@ class SingleAutoReloading implements AllSingleResources {
   private final AllSingleResources resources;
 
   @Override
-  public <T> Option<T> find(Class<T> type) {
+  public <T> T find(Class<T> type) {
     return Option
       .of(type.getAnnotation(AutoReloaded.class))
-      .flatMap(__ -> autoReloaded(type))
-      .orElse(() -> resources.find(type));
-  }
-
-  private <T> Option<T> autoReloaded(Class<T> type) {
-    return resources
-      .find(type)
-      .map(resource -> createProxyFor(type, resource));
+      .map(__ -> autoReloaded(type, resources.find(type)))
+      .getOrElse(() -> resources.find(type));
   }
 
   @SuppressWarnings("unchecked")
-  private <T> T createProxyFor(Class<T> type, T loadedResource) {
+  private <T> T autoReloaded(Class<T> type, T loadedResource) {
     return (T) Proxy.newProxyInstance(
       type.getClassLoader(),
-      new Class[] { type },
+      new Class[]{type},
       new AutoReloadHandler<>(resources, type, new AtomicReference<>(loadedResource)));
   }
 
@@ -43,8 +38,8 @@ class SingleAutoReloading implements AllSingleResources {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-      return resources
-        .find(type)
+      return Try
+        .of(() -> resources.find(type))
         .peek(fallbackResourceRef::set)
         .toTry()
         .mapTry(resource -> method.invoke(resource, args))

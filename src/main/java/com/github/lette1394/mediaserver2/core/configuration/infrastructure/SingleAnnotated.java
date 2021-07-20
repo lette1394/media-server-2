@@ -10,14 +10,11 @@ class SingleAnnotated implements AllSingleResources {
   private final FileResourcePathFactory fileResourcePathFactory;
 
   @Override
-  public <T> Option<T> find(Class<T> type) {
-    return Option
-      .of(type.getAnnotation(SingleFileResource.class))
-      .map(annotation -> new FileResource<>(type, fileResourcePathFactory.create(annotation)))
-      .flatMap(this::load);
-  }
-
-  private <T> Option<T> load(FileResource<T> fileResource) {
-    return loader.load(fileResource).toOption();
+  public <T> T find(Class<T> type) {
+    return Option.of(type.getAnnotation(SingleFileResource.class)).toTry()
+      .map(fileResourcePathFactory::create)
+      .map(path -> new FileResource<>(type, path))
+      .flatMap(loader::load)
+      .get();
   }
 }

@@ -32,19 +32,17 @@ public class ConfigurationApi {
     this.traceFactory = traceFactory;
     this.resources = resources;
 
-    final var preloadedPerson = this.resources.find(Person.class).get();
-    final var preloadedAnimal = this.resources.find(Animal.class).get();
+    final var preloadedPerson = this.resources.find(Person.class);
+    final var preloadedAnimal = this.resources.find(Animal.class);
     final var atomicLong = new AtomicLong();
 
     scheduledExecutorService.scheduleWithFixedDelay(() -> {
-      this.resources
-        .find(Person.class)
-        .peek(person -> System.out.printf("%s - %s%n", atomicLong.getAndIncrement(), person.hello()));
+      final var person = this.resources.find(Person.class);
+      System.out.printf("%s - %s%n", atomicLong.getAndIncrement(), person.hello());
       System.out.printf("%s - %s[preloaded]%n", atomicLong.getAndIncrement(), preloadedPerson.hello());
 
-      this.resources
-        .find(Animal.class)
-        .peek(animal -> System.out.printf("%s - %s%n", atomicLong.getAndIncrement(), animal.type() + animal.name()));
+      final var animal = this.resources.find(Animal.class);
+      System.out.printf("%s - %s%n", atomicLong.getAndIncrement(), animal.type() + animal.name());
       System.out.printf("%s - %s[preloaded]%n", atomicLong.getAndIncrement(), preloadedAnimal.type() + preloadedAnimal.name());
     }, 0L, 1000L, TimeUnit.MILLISECONDS);
   }
