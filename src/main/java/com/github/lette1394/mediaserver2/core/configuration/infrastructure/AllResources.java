@@ -86,7 +86,7 @@ public final class AllResources implements Reloader {
       });
   }
 
-  private Try<UnsafeFileResources> unsafeFileResources() {
+  private Try<FileResourceLoader> unsafeFileResources() {
     return Try.of(() -> {
       final var jackson = new Jackson(objectMapper);
       final var logged = new Logging(jackson);

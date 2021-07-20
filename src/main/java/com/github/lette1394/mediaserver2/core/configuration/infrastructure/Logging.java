@@ -6,13 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-class Logging implements UnsafeFileResources {
-  private final UnsafeFileResources delegate;
+class Logging implements FileResourceLoader {
+  private final FileResourceLoader loader;
 
   @Override
   public <T> T load(FileResource<T> fileResource) throws IOException {
     try {
-      final T result = delegate.load(fileResource);
+      final T result = loader.load(fileResource);
       log.info("loaded: [{}]", fileResource);
       return result;
     } catch (Exception exception) {

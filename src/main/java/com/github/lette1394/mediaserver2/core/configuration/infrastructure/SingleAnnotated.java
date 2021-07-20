@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class SingleAnnotated implements AllSingleResources {
-  private final UnsafeFileResources unsafe;
+  private final FileResourceLoader loader;
   private final FileResourcePathFactory fileResourcePathFactory;
 
   @Override
@@ -19,7 +19,7 @@ class SingleAnnotated implements AllSingleResources {
 
   private <T> Option<T> load(FileResource<T> fileResource) {
     try {
-      return Option.of(unsafe.load(fileResource));
+      return Option.of(loader.load(fileResource));
     } catch (Exception e) {
       return Option.none();
     }
