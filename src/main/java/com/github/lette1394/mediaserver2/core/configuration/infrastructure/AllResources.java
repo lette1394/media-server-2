@@ -12,23 +12,19 @@ import org.reflections.Reflections;
 public final class AllResources implements Reloader {
   private final FileResourcePathFactory fileResourcePathFactory;
   private final Reflections reflections;
-  private final ObjectMapper objectMapper;
+  private final FileResourceLoaders fileResourceLoaders;
 
-  private final ResourceScanner resourceScanner;
   private final SingleReloading singleReloading;
   private final MultiReloading multiReloading;
-
   private final Reloader reloader;
 
   public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
     this.fileResourcePathFactory = new FileResourcePathFactory(baseClassPath);
     this.reflections = new Reflections(basePackage);
-    this.objectMapper = objectMapper;
+    this.fileResourceLoaders = new FileResourceLoaders(objectMapper);
 
-    this.resourceScanner = resourceScanner();
     this.singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
     this.multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
-
     this.reloader = new Sequence(List.of(singleReloading, multiReloading));
   }
 
@@ -45,57 +41,42 @@ public final class AllResources implements Reloader {
     return reloader.reload();
   }
 
-  private ResourceScanner resourceScanner() {
-    final var single = singleScanner();
-    final var multi = multiScanner();
-    final var merged = new Merging(single, multi);
-    final var cached = new EagerCachingScanner(merged);
-
-    return cached;
-  }
-
-  private SingleScanner singleScanner() {
-    return new SingleScanner(fileResourcePathFactory, reflections);
-  }
-
-  private MultiScanner multiScanner() {
-    return new MultiScanner(fileResourcePathFactory, reflections);
-  }
-
   private Try<AllSingleResources> createSingle() {
-    return unsafeFileResources()
-      .map(unsafeFileResources -> {
-        final var annotated = new SingleAnnotated(unsafeFileResources, fileResourcePathFactory);
-        final var mapped = new SingleMapped(annotated, allMappedResourceTypes());
-        final var cached = new SingleCache(mapped);
-        final var warmed = new SingleWarmingUp(cached, singleScanner());
+    return singleScanner().flatMap(
+      scanner -> fileResourceLoaders.create(scanner).flatMap(
+        loader -> {
+          final var annotated = new SingleAnnotated(loader, fileResourcePathFactory);
+          final var mapped = new SingleMapped(annotated, allMappedResourceTypes());
+          final var cached = new SingleCache(mapped);
+          final var warmed = SingleWarmingUp.create(cached, scanner);
 
-        return warmed;
-      });
+          return warmed;
+        }));
   }
 
   private Try<AllMultipleResources> createMulti() {
-    return unsafeFileResources()
-      .map(unsafeFileResources -> {
-        final var annotated = new MultiAnnotated(unsafeFileResources, fileResourcePathFactory);
-        final var mapped = new MultiMapped(annotated, allMappedResourceTypes());
-        final var cached = new MultiCache(mapped);
-        final var warmed = new MultiWarmingUp(cached, multiScanner());
+    return multiScanner().flatMap(
+      scanner -> fileResourceLoaders.create(scanner).flatMap(
+        loader -> {
+          final var annotated = new MultiAnnotated(loader, fileResourcePathFactory);
+          final var mapped = new MultiMapped(annotated, allMappedResourceTypes());
+          final var cached = new MultiCache(mapped);
+          final var warmed = MultiWarmingUp.create(cached, scanner);
 
-        return warmed;
-      });
+          return warmed;
+        }));
   }
 
-  private Try<FileResourceLoader> unsafeFileResources() {
-    return Try.of(() -> {
-      final var jackson = new Jackson(objectMapper);
-      final var logged = new Logging(jackson);
-      final var thread = new ThreadSafe(logged);
-      final var cached = new Caching(thread);
-      final var warmed = new WarmingUp(cached, resourceScanner);
+  private Try<ResourceScanner> singleScanner() {
+    final var scanner = new SingleScanner(fileResourcePathFactory, reflections);
+    final var cached = EagerCachingScanner.create(scanner);
+    return cached;
+  }
 
-      return warmed;
-    });
+  private Try<ResourceScanner> multiScanner() {
+    final var scanner = new MultiScanner(fileResourcePathFactory, reflections);
+    final var cached = EagerCachingScanner.create(scanner);
+    return cached;
   }
 
   private AllMappedResourceTypes allMappedResourceTypes() {

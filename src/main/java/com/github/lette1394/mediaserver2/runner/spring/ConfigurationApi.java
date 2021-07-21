@@ -44,6 +44,9 @@ public class ConfigurationApi {
       final var animal = this.resources.find(Animal.class);
       System.out.printf("%s - %s%n", atomicLong.getAndIncrement(), animal.type() + animal.name());
       System.out.printf("%s - %s[preloaded]%n", atomicLong.getAndIncrement(), preloadedAnimal.type() + preloadedAnimal.name());
+
+
+
     }, 0L, 1000L, TimeUnit.MILLISECONDS);
   }
 

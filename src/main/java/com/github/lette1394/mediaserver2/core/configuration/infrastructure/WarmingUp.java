@@ -1,24 +1,35 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import io.vavr.control.Try;
-import java.io.IOException;
 import java.util.Set;
 
 class WarmingUp implements FileResourceLoader {
   private final FileResourceLoader loader;
 
-  public WarmingUp(
-    FileResourceLoader loader,
-    ResourceScanner resourceScanner) throws IOException {
-
+  private WarmingUp(FileResourceLoader loader) {
     this.loader = loader;
-    loadAll(resourceScanner.scan());
   }
 
-  private void loadAll(Set<? extends FileResource<?>> resourceSet) throws IOException {
-    for (var fileResource : resourceSet) {
-      loader.load(fileResource);
-    }
+  static Try<FileResourceLoader> create(
+    FileResourceLoader loader,
+    ResourceScanner resourceScanner) {
+
+    return resourceScanner
+      .scan()
+      .flatMap(fileResources -> warmUp(loader, fileResources))
+      .map(__ -> new WarmingUp(loader));
+  }
+
+  private static Try<Void> warmUp(
+    FileResourceLoader loader,
+    Set<? extends FileResource<?>> resourceSet) {
+
+    return resourceSet
+      .stream()
+      .map(loader::load)
+      .reduce(Try.success(null),
+        (t1, t2) -> t2.flatMap(__ -> t1),
+        (t1, t2) -> t1.flatMap(__ -> t2));
   }
 
   @Override

@@ -1,20 +1,30 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
+import io.vavr.control.Try;
 import java.util.Set;
-import org.apache.commons.lang3.tuple.Pair;
 
 class MultiWarmingUp implements AllMultipleResources {
   private final AllMultipleResources resources;
 
-  public MultiWarmingUp(AllMultipleResources resources, MultiScanner multiScanner) {
+  private MultiWarmingUp(AllMultipleResources resources) {
     this.resources = resources;
-    warmUp(multiScanner.scanMulti());
   }
 
-  private void warmUp(Set<? extends Pair<? extends Class<?>, String>> typeAndNames) {
-    typeAndNames
-      .forEach(typeAndName -> resources.find(typeAndName.getLeft(), typeAndName.getRight()));
+  public static Try<AllMultipleResources> create(
+    AllMultipleResources resources,
+    ResourceScanner scanner) {
+
+    return scanner.scan()
+      .andThen(fileResources -> warmUp(resources, fileResources))
+      .map(__ -> new MultiWarmingUp(resources));
+  }
+
+  private static void warmUp(
+    AllMultipleResources resources,
+    Set<? extends FileResource<?>> fileResources) {
+
+    fileResources.forEach(fileResource -> resources.find(fileResource.type(), fileResource.name()));
   }
 
   @Override

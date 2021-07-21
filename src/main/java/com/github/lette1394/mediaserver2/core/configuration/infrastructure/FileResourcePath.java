@@ -37,8 +37,12 @@ class FileResourcePath {
     return new FileResourcePath(this.stringPath + other.stringPath);
   }
 
-  public Path toPath() {
+  Path toPath() {
     return path;
+  }
+
+  String name() {
+    return path.toFile().getName();
   }
 
   @Override

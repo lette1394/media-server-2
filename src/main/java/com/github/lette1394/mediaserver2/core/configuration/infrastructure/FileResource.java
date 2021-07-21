@@ -4,4 +4,8 @@ record FileResource<T>(
   Class<T> type,
   FileResourcePath fileResourcePath
 ) {
+
+  String name() {
+    return fileResourcePath.name();
+  }
 }
