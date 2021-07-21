@@ -15,13 +15,7 @@ class SingleCache implements AllSingleResources {
   @Override
   @SuppressWarnings("unchecked")
   public <T> T find(Class<T> type) {
-    if (holder.containsKey(type)) {
-      return (T) holder.get(type);
-    }
-
-    final var result = resources.find(type);
-    holder.put(type, result);
-    return result;
+    return (T) holder.computeIfAbsent(type, resources::find);
   }
 }
 

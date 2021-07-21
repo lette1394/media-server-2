@@ -16,12 +16,6 @@ class Caching implements FileResourceLoader {
   @Override
   @SuppressWarnings("unchecked")
   public <T> Try<T> load(FileResource<T> fileResource) {
-    if (holder.containsKey(fileResource)) {
-      return (Try<T>) holder.get(fileResource);
-    }
-
-    final Try<T> ret = loader.load(fileResource);
-    holder.put(fileResource, ret);
-    return ret;
+    return (Try<T>) holder.computeIfAbsent(fileResource, loader::load);
   }
 }

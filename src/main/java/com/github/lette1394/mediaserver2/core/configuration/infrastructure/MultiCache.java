@@ -15,14 +15,7 @@ class MultiCache implements AllMultipleResources {
   @Override
   @SuppressWarnings("unchecked")
   public <T> T find(Class<T> type, String name) {
-    final var key = new Key(type, name);
-    if (holder.containsKey(key)) {
-      return (T) holder.get(key);
-    }
-
-    final var result = resources.find(type, name);
-    holder.put(key, result);
-    return result;
+    return (T) holder.computeIfAbsent(new Key(type, name), __ -> resources.find(type, name));
   }
 
   private record Key(Class<?> type, String name) {
