@@ -474,7 +474,7 @@ class Org {
 
 @Value
 @SerializedType(List.class)
-@MultiFileResource(directoryPath = "/heavy")
+//@MultiFileResource(directoryPath = "/heavy")
 public class Root {
   public String id;
   public String type;

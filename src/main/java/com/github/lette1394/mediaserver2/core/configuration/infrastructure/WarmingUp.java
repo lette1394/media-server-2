@@ -26,6 +26,7 @@ class WarmingUp implements FileResourceLoader {
 
     return resourceSet
       .stream()
+      .parallel()
       .map(loader::load)
       .reduce(Try.success(null),
         (t1, t2) -> t2.flatMap(__ -> t1),

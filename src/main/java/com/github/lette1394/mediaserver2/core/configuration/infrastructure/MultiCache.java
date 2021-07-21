@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class MultiCache implements AllMultipleResources {
   private final AllMultipleResources resources;
-  private final Map<Key, Object> holder = new ConcurrentHashMap<>();
+  private final Map<Key, Object> holder = new ConcurrentHashMap<>(4096);
 
   public MultiCache(AllMultipleResources resources) {
     this.resources = resources;

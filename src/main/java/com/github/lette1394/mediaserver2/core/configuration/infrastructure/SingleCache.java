@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 class SingleCache implements AllSingleResources {
   private final AllSingleResources resources;
-  private final Map<Class<?>, Object> holder = new ConcurrentHashMap<>();
+  private final Map<Class<?>, Object> holder = new ConcurrentHashMap<>(4096);
 
   public SingleCache(AllSingleResources resources) {
     this.resources = resources;

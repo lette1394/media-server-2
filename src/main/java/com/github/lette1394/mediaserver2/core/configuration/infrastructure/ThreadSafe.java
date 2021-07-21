@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class ThreadSafe implements FileResourceLoader {
   private final FileResourceLoader loader;
-  private final Map<FileResource<?>, Object> locks = new ConcurrentHashMap<>();
+  private final Map<FileResource<?>, Object> locks = new ConcurrentHashMap<>(4096);
 
   @Override
   public <T> Try<T> load(FileResource<T> fileResource) {

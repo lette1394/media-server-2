@@ -49,7 +49,7 @@ public class BeanConfiguration {
 
   @Bean
   public ConfigurationApi configurationApi() {
-    return new ConfigurationApi(allResources, traceFactory, allResources.single());
+    return new ConfigurationApi(allResources, traceFactory, allResources.single(), allResources.multi());
   }
 
   @Bean
