@@ -2,6 +2,7 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 
+import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,10 +31,21 @@ class FileResourcePathFactory {
   }
 
   public Try<FileResourcePath> create(MultiFileResource annotation, String name) {
-//    Option.of(EXTENSION_MAP.get(annotation.resourceType()))
-//      .map()
+    final var directoryPath = annotation.directoryPath();
+    final var extension = Option.of(EXTENSION_MAP.get(annotation.resourceType()))
+      .getOrElseThrow(() -> new UnsupportedFileResourceType(
+        "unsupported file resource type. filename: [%s]".formatted(name)));
+    final var dotExtension = ".%s".formatted(extension);
 
-    return create(annotation.directoryPath())
-      .flatMap(path -> path.concat("/%s".formatted(name)));
+    if (name.endsWith(dotExtension)) {
+      return create("%s/%s".formatted(directoryPath, name));
+    }
+    return create("%s/%s".formatted(directoryPath, name + dotExtension));
+  }
+
+  private static class UnsupportedFileResourceType extends RuntimeException {
+    public UnsupportedFileResourceType(String message) {
+      super(message);
+    }
   }
 }
