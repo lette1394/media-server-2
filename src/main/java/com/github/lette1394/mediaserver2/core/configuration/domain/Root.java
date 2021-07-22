@@ -3,9 +3,11 @@ package com.github.lette1394.mediaserver2.core.configuration.domain;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.MultiFileResource;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import lombok.Data;
 import lombok.Value;
 
-@Value
+@Data
 class Actor {
   public int id;
   public String login;
@@ -15,7 +17,7 @@ class Actor {
   public String avatar_url;
 }
 
-@Value
+@Data
 class Repo {
   public int id;
   public String name;
@@ -91,13 +93,13 @@ class Repo {
   public String default_branch;
 }
 
-@Value
+@Data
 class Author {
   public String email;
   public String name;
 }
 
-@Value
+@Data
 class Commit {
   public String sha;
   public Author author;
@@ -107,7 +109,7 @@ class Commit {
   public String href;
 }
 
-@Value
+@Data
 class User {
   public String login;
   public int id;
@@ -129,7 +131,7 @@ class User {
   public boolean site_admin;
 }
 
-@Value
+@Data
 class RequestedReviewer {
   public String login;
   public int id;
@@ -151,7 +153,7 @@ class RequestedReviewer {
   public boolean site_admin;
 }
 
-@Value
+@Data
 class Label {
   public int id;
   public String node_id;
@@ -161,7 +163,7 @@ class Label {
   public String description;
 }
 
-@Value
+@Data
 class Creator {
   public String login;
   public int id;
@@ -183,7 +185,7 @@ class Creator {
   public boolean site_admin;
 }
 
-@Value
+@Data
 class Milestone {
   public String url;
   public String html_url;
@@ -203,7 +205,7 @@ class Milestone {
   public Object closed_at;
 }
 
-@Value
+@Data
 class Owner {
   public String login;
   public int id;
@@ -225,7 +227,7 @@ class Owner {
   public boolean site_admin;
 }
 
-@Value
+@Data
 class License {
   public String key;
   public String name;
@@ -234,7 +236,7 @@ class License {
   public String node_id;
 }
 
-@Value
+@Data
 class Head {
   public String label;
   public String ref;
@@ -243,7 +245,7 @@ class Head {
   public Repo repo;
 }
 
-@Value
+@Data
 class Base {
   public String label;
   public String ref;
@@ -252,17 +254,17 @@ class Base {
   public Repo repo;
 }
 
-@Value
+@Data
 class Self {
   public String href;
 }
 
-@Value
+@Data
 class Html {
   public String href;
 }
 
-@Value
+@Data
 class Issue {
   public String href;
   public String url;
@@ -292,27 +294,27 @@ class Issue {
   public Object performed_via_github_app;
 }
 
-@Value
+@Data
 class Comments {
   public String href;
 }
 
-@Value
+@Data
 class ReviewComments {
   public String href;
 }
 
-@Value
+@Data
 class ReviewComment {
   public String href;
 }
 
-@Value
+@Data
 class Statuses {
   public String href;
 }
 
-@Value
+@Data
 class Links {
   public Self self;
   public Html html;
@@ -324,7 +326,7 @@ class Links {
   public PullRequest pull_request;
 }
 
-@Value
+@Data
 class MergedBy {
   public String login;
   public int id;
@@ -346,7 +348,7 @@ class MergedBy {
   public boolean site_admin;
 }
 
-@Value
+@Data
 class PullRequest {
   public String url;
   public int id;
@@ -399,7 +401,7 @@ class PullRequest {
   public String href;
 }
 
-@Value
+@Data
 class Review {
   public int id;
   public String node_id;
@@ -414,7 +416,7 @@ class Review {
   public Links _links;
 }
 
-@Value
+@Data
 class Comment {
   public String url;
   public int pull_request_review_id;
@@ -442,7 +444,7 @@ class Comment {
   public String side;
 }
 
-@Value
+@Data
 class Payload {
   public Object push_id;
   public int size;
@@ -463,7 +465,7 @@ class Payload {
   public Comment comment;
 }
 
-@Value
+@Data
 class Org {
   public int id;
   public String login;
@@ -472,15 +474,14 @@ class Org {
   public String avatar_url;
 }
 
-@Value
-@SerializedType(List.class)
+@Data
 @MultiFileResource(directoryPath = "/heavy")
 public class Root {
   public String id;
   public String type;
-  public Actor actor;
-  public Repo repo;
-  public Payload payload;
+  public Map<Object, Object> actor;
+  public Map repo;
+  public Map payload;
   public Date created_at;
   public Org org;
 }

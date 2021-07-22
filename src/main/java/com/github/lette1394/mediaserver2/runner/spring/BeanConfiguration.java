@@ -107,6 +107,8 @@ public class BeanConfiguration {
 
   private ObjectMapper configurationObjectMapper() {
     return new ObjectMapper(new YAMLFactory())
+      .enable(DeserializationFeature.WRAP_EXCEPTIONS)
+      .enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES)
       .enable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
       .enable(DeserializationFeature.FAIL_ON_INVALID_SUBTYPE)
       .enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
