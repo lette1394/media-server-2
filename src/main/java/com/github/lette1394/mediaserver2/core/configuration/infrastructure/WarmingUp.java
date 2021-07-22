@@ -2,6 +2,8 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import io.vavr.control.Try;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import lombok.SneakyThrows;
 
 class WarmingUp implements FileResourceLoader {
   private final FileResourceLoader loader;
@@ -12,25 +14,33 @@ class WarmingUp implements FileResourceLoader {
 
   static Try<FileResourceLoader> create(
     FileResourceLoader loader,
-    ResourceScanner resourceScanner) {
+    ResourceScanner resourceScanner,
+    Warmer warmer) {
 
     return resourceScanner
       .scan()
-      .flatMap(fileResources -> warmUp(loader, fileResources))
+      .flatMap(fileResources -> warmUp(loader, fileResources, warmer))
       .map(__ -> new WarmingUp(loader));
   }
 
+  @SneakyThrows
   private static Try<Void> warmUp(
     FileResourceLoader loader,
-    Set<? extends FileResource<?>> resourceSet) {
+    Set<? extends FileResource<?>> resourceSet,
+    Warmer warmer) {
 
-    return resourceSet
-      .stream()
-      .parallel()
+    final Try<Void> initial = Try.success(null);
+    final Callable<Try<Void>> task = () -> Try.of(() -> resourceSet
+      .parallelStream()
       .map(loader::load)
-      .reduce(Try.success(null),
-        (t1, t2) -> t2.flatMap(__ -> t1),
-        (t1, t2) -> t1.flatMap(__ -> t2));
+      .reduce(initial,
+        (acc, t) -> t.flatMap(__ -> acc),
+        (t1, t2) -> t1.flatMap(__ -> t2)))
+      .flatMap(__ -> __);
+
+    return warmer
+      .submit(task)
+      .flatMap(__ -> __);
   }
 
   @Override

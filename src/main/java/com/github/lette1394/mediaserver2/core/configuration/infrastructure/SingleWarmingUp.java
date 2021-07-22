@@ -3,6 +3,7 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import io.vavr.control.Try;
 import java.util.Set;
+import lombok.SneakyThrows;
 
 class SingleWarmingUp implements AllSingleResources {
   private final AllSingleResources allSingleResources;
@@ -11,17 +12,25 @@ class SingleWarmingUp implements AllSingleResources {
     this.allSingleResources = allSingleResources;
   }
 
-  static Try<AllSingleResources> create(AllSingleResources resources, ResourceScanner scanner) {
+  static Try<AllSingleResources> create(
+    AllSingleResources resources,
+    ResourceScanner scanner,
+    Warmer warmer) {
+
     return scanner.scan()
-      .andThen(fileResources -> warmUp(resources, fileResources))
+      .flatMap(fileResources -> warmUp(resources, fileResources, warmer))
       .map(__ -> new SingleWarmingUp(resources));
   }
 
-  private static void warmUp(
+  @SneakyThrows
+  private static Try<Void> warmUp(
     AllSingleResources resources,
-    Set<? extends FileResource<?>> fileResources) {
+    Set<? extends FileResource<?>> fileResources,
+    Warmer warmer) {
 
-    fileResources.forEach(fileResource -> resources.find(fileResource.type()));
+    return warmer.submit(() -> fileResources
+      .parallelStream()
+      .forEach(fileResource -> resources.find(fileResource.type())));
   }
 
   @Override

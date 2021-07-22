@@ -16,3 +16,4 @@ public class SpringRunner {
 //  2. try scanner
 //  3. multi thread loader (성능)
 //  4. multi thread caching (버그)
+//  5. json schema 도입 (새로운 annotation?)
