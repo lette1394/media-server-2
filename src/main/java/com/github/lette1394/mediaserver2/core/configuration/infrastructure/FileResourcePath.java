@@ -41,8 +41,14 @@ class FileResourcePath {
     return path;
   }
 
-  String name() {
+  String filename() {
     return path.toFile().getName();
+  }
+
+  Option<String> fileExtension() {
+    return Option.of(stringPath)
+      .filter(path -> path.contains("."))
+      .map(path -> path.substring(stringPath.lastIndexOf(".") + 1));
   }
 
   @Override

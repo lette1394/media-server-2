@@ -9,4 +9,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MultiFileResource {
   String directoryPath();
+
+  ResourceType resourceType() default ResourceType.YAML;
 }

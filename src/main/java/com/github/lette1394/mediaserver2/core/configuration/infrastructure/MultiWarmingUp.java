@@ -3,7 +3,6 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
 import io.vavr.control.Try;
 import java.util.Set;
-import lombok.SneakyThrows;
 
 class MultiWarmingUp implements AllMultipleResources {
   private final AllMultipleResources resources;
@@ -22,7 +21,6 @@ class MultiWarmingUp implements AllMultipleResources {
       .map(__ -> new MultiWarmingUp(resources));
   }
 
-  @SneakyThrows
   private static Try<Void> warmUp(
     AllMultipleResources resources,
     Set<? extends FileResource<?>> fileResources,
@@ -30,7 +28,7 @@ class MultiWarmingUp implements AllMultipleResources {
 
     return warmer.submit(() -> fileResources
       .parallelStream()
-      .forEach(fileResource -> resources.find(fileResource.type(), fileResource.name())));
+      .forEach(fileResource -> resources.find(fileResource.type(), fileResource.filename())));
   }
 
   @Override

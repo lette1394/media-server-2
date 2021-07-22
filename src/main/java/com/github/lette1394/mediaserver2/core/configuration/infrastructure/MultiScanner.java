@@ -15,27 +15,15 @@ import org.reflections.Reflections;
 @RequiredArgsConstructor
 class MultiScanner implements ResourceScanner {
   private static final Class<MultiFileResource> SCANNING_TYPE = MultiFileResource.class;
-
   private final FileResourcePathFactory fileResourcePathFactory;
   private final Reflections reflections;
 
   @Override
   public Try<Set<? extends FileResource<?>>> scan() {
-    return scanMulti().map(this::toFileResources);
+    return scanMulti();
   }
 
-  private Set<? extends FileResource<?>> toFileResources(Set<? extends MultiKey<?>> multiKeys) {
-    return multiKeys.stream()
-      .map(key -> {
-        final var type = key.type();
-        final var name = key.name();
-        final var annotation = type.getAnnotation(SCANNING_TYPE);
-        return new FileResource<>(type, fileResourcePathFactory.create(annotation, name));
-      })
-      .collect(toUnmodifiableSet());
-  }
-
-  private Try<Set<? extends MultiKey<?>>> scanMulti() {
+  private Try<Set<? extends FileResource<?>>> scanMulti() {
     return Try.of(() -> reflections
       .getTypesAnnotatedWith(SCANNING_TYPE)
       .stream()
@@ -44,15 +32,20 @@ class MultiScanner implements ResourceScanner {
   }
 
   @SneakyThrows
-  private Stream<? extends MultiKey<?>> multiFile(Class<?> type) {
-    final var path = type.getAnnotation(SCANNING_TYPE).directoryPath();
-    final var directory = fileResourcePathFactory.create(path);
+  private Stream<? extends FileResource<?>> multiFile(Class<?> type) {
+    final var directoryPath = type.getAnnotation(SCANNING_TYPE).directoryPath();
+    final var directory = fileResourcePathFactory.create(directoryPath);
+
     return Files
       .walk(directory.toPath())
       .map(Path::toFile)
       .filter(File::isFile)
       .filter(File::exists)
       .map(File::getName)
-      .map(name -> new MultiKey<>(type, name));
+      .map(name -> {
+        final var annotation = type.getAnnotation(SCANNING_TYPE);
+        final var filePath = fileResourcePathFactory.create(annotation, name);
+        return new FileResource<>(type, filePath);
+      });
   }
 }

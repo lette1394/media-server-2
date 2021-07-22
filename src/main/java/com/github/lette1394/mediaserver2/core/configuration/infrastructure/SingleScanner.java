@@ -10,7 +10,6 @@ import org.reflections.Reflections;
 @RequiredArgsConstructor
 class SingleScanner implements ResourceScanner {
   private static final Class<SingleFileResource> SCANNING_TYPE = SingleFileResource.class;
-
   private final FileResourcePathFactory fileResourcePathFactory;
   private final Reflections reflections;
 
@@ -29,7 +28,6 @@ class SingleScanner implements ResourceScanner {
   private FileResource<?> singleFileResources(Class<?> type) {
     final var annotation = type.getAnnotation(SCANNING_TYPE);
     final var classPath = fileResourcePathFactory.create(annotation);
-
     return new FileResource<>(type, classPath);
   }
 }

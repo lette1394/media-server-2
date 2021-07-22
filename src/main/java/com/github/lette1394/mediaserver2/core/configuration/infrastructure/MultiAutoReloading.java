@@ -18,12 +18,13 @@ class MultiAutoReloading implements AllMultipleResources {
   public <T> T find(Class<T> type, String name) {
     return Option
       .of(type.getAnnotation(AutoReloaded.class))
-      .map(__ -> autoReloaded(type, resources.find(type, name), name))
+      .map(__ -> autoReloaded(type, name))
       .getOrElse(() -> resources.find(type, name));
   }
 
   @SuppressWarnings("unchecked")
-  private <T> T autoReloaded(Class<T> type, T loadedResource, String name) {
+  private <T> T autoReloaded(Class<T> type, String name) {
+    final var loadedResource = (T) resources.find(type, name);
     return (T) Proxy.newProxyInstance(
       type.getClassLoader(),
       new Class[]{type},

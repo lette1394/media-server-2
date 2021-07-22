@@ -3,7 +3,6 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import io.vavr.control.Try;
 import java.util.Set;
-import lombok.SneakyThrows;
 
 class SingleWarmingUp implements AllSingleResources {
   private final AllSingleResources allSingleResources;
@@ -22,7 +21,6 @@ class SingleWarmingUp implements AllSingleResources {
       .map(__ -> new SingleWarmingUp(resources));
   }
 
-  @SneakyThrows
   private static Try<Void> warmUp(
     AllSingleResources resources,
     Set<? extends FileResource<?>> fileResources,

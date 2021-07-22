@@ -3,7 +3,6 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import io.vavr.control.Try;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import lombok.SneakyThrows;
 
 class WarmingUp implements FileResourceLoader {
   private final FileResourceLoader loader;
@@ -23,7 +22,6 @@ class WarmingUp implements FileResourceLoader {
       .map(__ -> new WarmingUp(loader));
   }
 
-  @SneakyThrows
   private static Try<Void> warmUp(
     FileResourceLoader loader,
     Set<? extends FileResource<?>> resourceSet,
