@@ -4,6 +4,7 @@ import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 import static org.apache.commons.lang3.StringUtils.isNoneBlank;
 
 import io.vavr.control.Option;
+import io.vavr.control.Try;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -15,7 +16,7 @@ class FileResourcePath {
   private final String stringPath;
   private final Path path;
 
-  FileResourcePath(String path) {
+  private FileResourcePath(String path) {
     requires(isNoneBlank(path), "isNoneBlank(path)");
     requires(path.startsWith("/"), "path.startsWith(\"/\")");
     requires(!path.endsWith("/"), "!path.endsWith(\"/\")");
@@ -29,12 +30,12 @@ class FileResourcePath {
       .get();
   }
 
-  FileResourcePath concat(String path) {
-    return new FileResourcePath(this.stringPath + path);
+  Try<FileResourcePath> concat(String path) {
+    return Try.of(() -> new FileResourcePath(this.stringPath + path));
   }
 
-  FileResourcePath concat(FileResourcePath other) {
-    return new FileResourcePath(this.stringPath + other.stringPath);
+  static Try<FileResourcePath> create(String path) {
+    return Try.of(() -> new FileResourcePath(path));
   }
 
   Path toPath() {

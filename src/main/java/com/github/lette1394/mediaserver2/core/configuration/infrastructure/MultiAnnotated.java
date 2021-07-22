@@ -12,7 +12,7 @@ class MultiAnnotated implements AllMultipleResources {
   @Override
   public <T> T find(Class<T> type, String name) {
     return Option.of(type.getAnnotation(MultiFileResource.class)).toTry()
-      .map(annotation -> fileResourcePathFactory.create(annotation, name))
+      .flatMap(annotation -> fileResourcePathFactory.create(annotation, name))
       .map(path -> new FileResource<>(type, path))
       .flatMap(loader::load)
       .get();

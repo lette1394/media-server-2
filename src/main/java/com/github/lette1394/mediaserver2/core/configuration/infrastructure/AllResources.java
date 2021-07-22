@@ -23,7 +23,7 @@ public final class AllResources implements Reloader {
   private final Warmer warmer;
 
   public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
-    this.fileResourcePathFactory = new FileResourcePathFactory(baseClassPath);
+    this.fileResourcePathFactory = new FileResourcePathFactory(FileResourcePath.create(baseClassPath).get());
     this.reflections = new Reflections(basePackage);
     this.warmer = new Warmer(new ForkJoinPool(4), ofSeconds(60));
     this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer);

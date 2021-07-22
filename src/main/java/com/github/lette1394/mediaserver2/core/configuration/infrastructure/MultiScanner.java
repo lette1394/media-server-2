@@ -34,7 +34,7 @@ class MultiScanner implements ResourceScanner {
   @SneakyThrows
   private Stream<? extends FileResource<?>> multiFile(Class<?> type) {
     final var directoryPath = type.getAnnotation(SCANNING_TYPE).directoryPath();
-    final var directory = fileResourcePathFactory.create(directoryPath);
+    final var directory = fileResourcePathFactory.create(directoryPath).get();
 
     return Files
       .walk(directory.toPath())
@@ -44,7 +44,7 @@ class MultiScanner implements ResourceScanner {
       .map(File::getName)
       .map(name -> {
         final var annotation = type.getAnnotation(SCANNING_TYPE);
-        final var filePath = fileResourcePathFactory.create(annotation, name);
+        final var filePath = fileResourcePathFactory.create(annotation, name).get();
         return new FileResource<>(type, filePath);
       });
   }

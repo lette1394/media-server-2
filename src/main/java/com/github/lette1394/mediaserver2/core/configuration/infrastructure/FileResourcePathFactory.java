@@ -2,7 +2,7 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 
-import io.vavr.control.Option;
+import io.vavr.control.Try;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,23 +17,23 @@ class FileResourcePathFactory {
 
   private final FileResourcePath basePath;
 
-  public FileResourcePathFactory(String basePath) {
-    this.basePath = new FileResourcePath(basePath);
+  public FileResourcePathFactory(FileResourcePath basePath) {
+    this.basePath = basePath;
   }
 
-  public FileResourcePath create(String path) {
+  public Try<FileResourcePath> create(String path) {
     return basePath.concat(path);
   }
 
-  public FileResourcePath create(SingleFileResource annotation) {
+  public Try<FileResourcePath> create(SingleFileResource annotation) {
     return create(annotation.filePath());
   }
 
-  public FileResourcePath create(MultiFileResource annotation, String name) {
+  public Try<FileResourcePath> create(MultiFileResource annotation, String name) {
 //    Option.of(EXTENSION_MAP.get(annotation.resourceType()))
-//      .
-//    if (name.endsWith())
-    final var directory = create(annotation.directoryPath());
-    return directory.concat("/%s".formatted(name));
+//      .map()
+
+    return create(annotation.directoryPath())
+      .flatMap(path -> path.concat("/%s".formatted(name)));
   }
 }
