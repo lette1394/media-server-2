@@ -32,19 +32,17 @@ public class Validator implements FileResourceLoader {
       .map(String::new)
       .map(factory::getSchema);
 
-    return API.For(jsonNode, jsonSchema)
+    //noinspection Convert2MethodRef
+    return API
+      .For(jsonNode, jsonSchema)
       .yield((node, schema) -> schema.validate(node))
-      .flatMap(errors -> {
-        if (errors.size() > 0) {
-          return Try.failure(new IllegalJsonSchemaException(errors.toString()));
-        }
-        return loader.load(fileResource);
-      });
+      .filter(errors -> errors.isEmpty(), errors -> new IllegalJsonSchemaException(errors.toString(), fileResource))
+      .flatMap(errors -> loader.load(fileResource));
   }
 
   private static final class IllegalJsonSchemaException extends RuntimeException {
-    public IllegalJsonSchemaException(String message) {
-      super(message);
+    public IllegalJsonSchemaException(String message, FileResource<?> fileResource) {
+      super("validation failed: [%s], at: [%s]".formatted(message, fileResource));
     }
   }
 }
