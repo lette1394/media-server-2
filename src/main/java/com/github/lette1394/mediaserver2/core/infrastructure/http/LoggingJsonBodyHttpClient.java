@@ -5,11 +5,10 @@ import static java.lang.System.lineSeparator;
 import static java.util.stream.Collectors.joining;
 import static reactor.core.scheduler.Schedulers.immediate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.lette1394.mediaserver2.core.domain.Payload;
 import com.github.lette1394.mediaserver2.core.domain.Trace;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
 import io.vavr.control.Try;
 import java.util.Arrays;
 import java.util.concurrent.CompletionStage;
@@ -22,7 +21,8 @@ import reactor.core.publisher.Flux;
 @Slf4j
 @RequiredArgsConstructor
 public class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<P> {
-  private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+    .enable(SerializationFeature.INDENT_OUTPUT);
 
   private final HttpClient<P> httpClient;
   private final Trace trace;
@@ -64,8 +64,8 @@ public class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<
   }
 
   private String toPretty(String json) {
-    return Try.of(() -> JsonParser.parseString(json))
-      .map(GSON::toJson)
+    return Try.of(() -> OBJECT_MAPPER.readValue(json, Object.class))
+      .mapTry(OBJECT_MAPPER::writeValueAsString)
       .map(raw -> Arrays
         .stream(raw.split(lineSeparator()))
         .map(line -> format("%s> %s", trace, line))

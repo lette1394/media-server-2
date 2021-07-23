@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import lombok.EqualsAndHashCode;
 
+
 @EqualsAndHashCode
 class FileResourcePath {
   private final String stringPath;

@@ -6,6 +6,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.Animal;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Person;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Root;
+import com.github.lette1394.mediaserver2.core.configuration.domain.Store;
 import com.github.lette1394.mediaserver2.core.domain.TraceFactory;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -55,6 +56,10 @@ public class ConfigurationApi {
       try {
         final Root root = multi.find(Root.class, "0");
         System.out.println(root);
+
+
+        final var store = resources.find(Store.class);
+        System.out.println(store);
       } catch (Exception e) {
         System.out.println(e);
       }

@@ -1,11 +1,14 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import com.github.lette1394.mediaserver2.core.domain.Contracts;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 class FileResourcePathFactory {
   private static final Map<ResourceType, String> EXTENSION_MAP = new HashMap<>();
@@ -23,6 +26,7 @@ class FileResourcePathFactory {
   }
 
   public Try<FileResourcePath> create(String path) {
+    requires(isNotBlank(path), "path must exist");
     return basePath.concat(path);
   }
 

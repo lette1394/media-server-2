@@ -4,9 +4,13 @@ import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
+@EqualsAndHashCode
 class FileResource<T> {
   private static final Map<String, ResourceType> EXTENSION_MAP = new HashMap<>();
 

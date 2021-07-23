@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion.VersionFlag;
 import io.vavr.control.Try;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
@@ -23,10 +25,12 @@ public final class AllResources implements Reloader {
   private final Warmer warmer;
 
   public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
+    final var jsonSchemaFactory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+
     this.fileResourcePathFactory = new FileResourcePathFactory(FileResourcePath.create(baseClassPath).get());
     this.reflections = new Reflections(basePackage);
     this.warmer = new Warmer(new ForkJoinPool(4), ofSeconds(60));
-    this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer);
+    this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer, jsonSchemaFactory, fileResourcePathFactory);
 
     this.singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
     this.multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
