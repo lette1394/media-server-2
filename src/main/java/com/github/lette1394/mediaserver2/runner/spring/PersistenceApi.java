@@ -5,7 +5,7 @@ import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 import com.github.lette1394.mediaserver2.core.domain.TraceFactory;
 import com.github.lette1394.mediaserver2.core.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.storage.identification.domain.Id;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublishers;
+import com.github.lette1394.mediaserver2.core.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploaders;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.UploadingCommand;
 import lombok.RequiredArgsConstructor;

@@ -2,8 +2,8 @@ package com.github.lette1394.mediaserver2.storage.persistence.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
 import com.github.lette1394.mediaserver2.core.domain.Trace;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.Attributes;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublisher;
+import com.github.lette1394.mediaserver2.core.domain.Attributes;
+import com.github.lette1394.mediaserver2.core.domain.BinaryPublisher;
 import lombok.RequiredArgsConstructor;
 import org.reactivestreams.Subscriber;
 

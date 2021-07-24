@@ -3,8 +3,8 @@ package com.github.lette1394.mediaserver2.storage.infrastructure;
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.Attributes;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublisher;
+import com.github.lette1394.mediaserver2.core.domain.Attributes;
+import com.github.lette1394.mediaserver2.core.domain.BinaryPublisher;
 import org.reactivestreams.Subscriber;
 
 public class BrokenBinaryPublisher<P extends Payload> implements BinaryPublisher<P> {

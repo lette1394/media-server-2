@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.storage.persistence.domain;
+package com.github.lette1394.mediaserver2.core.domain;
 
 import io.vavr.control.Option;
 import java.util.HashMap;

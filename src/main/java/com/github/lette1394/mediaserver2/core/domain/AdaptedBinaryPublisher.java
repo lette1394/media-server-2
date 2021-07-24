@@ -1,6 +1,5 @@
-package com.github.lette1394.mediaserver2.storage.persistence.domain;
+package com.github.lette1394.mediaserver2.core.domain;
 
-import com.github.lette1394.mediaserver2.core.domain.Payload;
 import lombok.RequiredArgsConstructor;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;

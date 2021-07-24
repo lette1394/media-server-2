@@ -4,7 +4,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_LENGTH;
 
 import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.core.infrastructure.DataBufferPayload;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.BinaryPublishers;
+import com.github.lette1394.mediaserver2.core.domain.BinaryPublishers;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.internal.ThreadExecutorMap;
 import io.vavr.control.Option;
