@@ -9,11 +9,3 @@ public class SpringRunner {
     SpringApplication.run(SpringRunner.class, args);
   }
 }
-
-
-// TODO:
-//  1. try UnsafeFileResources
-//  2. try scanner
-//  3. multi thread loader (성능)
-//  4. multi thread caching (버그)
-//  5. json schema 도입 (새로운 annotation?)
