@@ -51,6 +51,10 @@ public class StructureTest {
 
   @ArchTest
   private static final ArchRule NO_CYCLE =
+    slices().matching("..mediaserver2.(**)..").should().beFreeOfCycles();
+
+  @ArchTest
+  private static final ArchRule NO_CYCLE2 =
     slices().matching("..mediaserver2.(*)..").should().beFreeOfCycles();
 
   @ArchTest
