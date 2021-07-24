@@ -8,5 +8,3 @@ public record Animal(Type type, String name) {
     DOG, CAT
   }
 }
-
-

@@ -1,7 +1,8 @@
 package com.github.lette1394.mediaserver2;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import static com.tngtech.archunit.library.DependencyRules.NO_CLASSES_SHOULD_DEPEND_UPPER_PACKAGES;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JODATIME;
@@ -9,6 +10,7 @@ import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 
 @AnalyzeClasses(packages = "com.github.lette1394.mediaserver2")
@@ -28,7 +30,7 @@ public class StructureTest {
   private static final ArchRule DOMAIN =
     classes().that()
       .resideInAPackage("..domain..")
-      .should().onlyDependOnClassesThat()
+      .should()
       .resideInAnyPackage(commonAnd("..domain.."));
 
   @ArchTest
@@ -48,16 +50,27 @@ public class StructureTest {
   private static final ArchRule no_generic_exceptions = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 
   @ArchTest
-  private static final ArchRule layer_dependencies_are_respected = layeredArchitecture()
-    .layer("core").definedBy("com.github.lette1394.mediaserver2.core..")
-    .layer("storage").definedBy("com.github.lette1394.mediaserver2.storage..")
-    .layer("media").definedBy("com.github.lette1394.mediaserver2.media..")
-    .layer("runner").definedBy("com.github.lette1394.mediaserver2.runner..")
+  private static final ArchRule no_depend_upper = NO_CLASSES_SHOULD_DEPEND_UPPER_PACKAGES;
 
-    .whereLayer("runner").mayNotBeAccessedByAnyLayer();
-
+  @ArchTest
+  private static final ArchRule CORE_CONTEXT =
+    noClasses().that()
+      .resideInAPackage(context("core"))
+      .should()
+      .dependOnClassesThat()
+      .resideInAnyPackage(contexts("runner", "storage", "media"));
 
   private static String[] commonAnd(String... packages) {
     return ArrayUtils.addAll(packages, COMMON_PACKAGES);
+  }
+
+  private static String[] contexts(String... names) {
+    return Arrays.stream(names)
+      .map(StructureTest::context)
+      .toArray(String[]::new);
+  }
+
+  private static String context(String name) {
+    return "..mediaserver2.%s..".formatted(name);
   }
 }
