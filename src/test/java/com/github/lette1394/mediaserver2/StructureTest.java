@@ -50,9 +50,6 @@ public class StructureTest {
   private static final ArchRule no_generic_exceptions = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 
   @ArchTest
-  private static final ArchRule no_depend_upper = NO_CLASSES_SHOULD_DEPEND_UPPER_PACKAGES;
-
-  @ArchTest
   private static final ArchRule CORE_CONTEXT =
     noClasses().that()
       .resideInAPackage(context("core"))
