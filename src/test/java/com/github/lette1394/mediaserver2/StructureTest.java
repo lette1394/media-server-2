@@ -6,6 +6,7 @@ import static com.tngtech.archunit.library.DependencyRules.NO_CLASSES_SHOULD_DEP
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JODATIME;
+import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
@@ -41,6 +42,18 @@ public class StructureTest {
       .resideInAnyPackage(commonAnd("..domain..", "..usecase.."));
 
   @ArchTest
+  private static final ArchRule CORE_CONTEXT =
+    noClasses().that()
+      .resideInAPackage(context("core"))
+      .should()
+      .dependOnClassesThat()
+      .resideInAnyPackage(contexts("runner", "storage", "media"));
+
+  @ArchTest
+  private static final ArchRule NO_CYCLE =
+    slices().matching("..mediaserver2.(*)..").should().beFreeOfCycles();
+
+  @ArchTest
   private static final ArchRule no_jodatime = NO_CLASSES_SHOULD_USE_JODATIME;
 
   @ArchTest
@@ -49,13 +62,6 @@ public class StructureTest {
   @ArchTest
   private static final ArchRule no_generic_exceptions = NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 
-  @ArchTest
-  private static final ArchRule CORE_CONTEXT =
-    noClasses().that()
-      .resideInAPackage(context("core"))
-      .should()
-      .dependOnClassesThat()
-      .resideInAnyPackage(contexts("runner", "storage", "media"));
 
   private static String[] commonAnd(String... packages) {
     return ArrayUtils.addAll(packages, COMMON_PACKAGES);
