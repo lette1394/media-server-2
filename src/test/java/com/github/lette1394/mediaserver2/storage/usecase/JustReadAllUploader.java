@@ -2,14 +2,12 @@ package com.github.lette1394.mediaserver2.storage.usecase;
 
 import com.github.lette1394.mediaserver2.core.domain.Payload;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
-import com.github.lette1394.mediaserver2.storage.persistence.usecase.UploadingCommand;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.UploadingCommand;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
-import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
-@Slf4j
 public class JustReadAllUploader<P extends Payload> implements Uploader<P> {
   @Override
   public CompletionStage<Void> upload(UploadingCommand<P> command) {

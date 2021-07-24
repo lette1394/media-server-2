@@ -6,6 +6,7 @@ import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStag
 import com.github.lette1394.mediaserver2.core.domain.Payload;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.UploadingCommand;
 import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 

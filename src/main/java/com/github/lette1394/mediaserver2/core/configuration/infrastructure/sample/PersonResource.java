@@ -1,5 +1,6 @@
-package com.github.lette1394.mediaserver2.core.configuration.domain;
+package com.github.lette1394.mediaserver2.core.configuration.infrastructure.sample;
 
+import com.github.lette1394.mediaserver2.core.configuration.domain.Person;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.MappedResource;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.SingleFileResource;
 

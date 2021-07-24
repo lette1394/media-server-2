@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.core.configuration.domain;
+package com.github.lette1394.mediaserver2.core.configuration.infrastructure.sample;
 
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.JsonSchema;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.SingleFileResource;

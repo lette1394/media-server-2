@@ -13,6 +13,7 @@ import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Timestamp;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.UploadingCommand;
 import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 

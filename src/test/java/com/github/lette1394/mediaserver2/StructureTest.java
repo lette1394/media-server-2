@@ -20,6 +20,8 @@ public class StructureTest {
     "java.util..",
     "java.text..",
     "java.time..",
+    "io.vavr..",
+    "org.reactivestreams.."
   };
 
   @ArchTest
@@ -52,8 +54,7 @@ public class StructureTest {
     .layer("media").definedBy("com.github.lette1394.mediaserver2.media..")
     .layer("runner").definedBy("com.github.lette1394.mediaserver2.runner..")
 
-    .whereLayer("runner").mayNotBeAccessedByAnyLayer()
-    .whereLayer("media").mayNotBeAccessedByAnyLayer();
+    .whereLayer("runner").mayNotBeAccessedByAnyLayer();
 
 
   private static String[] commonAnd(String... packages) {

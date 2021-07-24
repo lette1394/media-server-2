@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.storage.domain;
+package com.github.lette1394.mediaserver2.storage.infrastructure;
 
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 
