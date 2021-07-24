@@ -31,7 +31,7 @@ public class StructureTest {
   private static final ArchRule DOMAIN =
     classes().that()
       .resideInAPackage("..domain..")
-      .should()
+      .should().onlyDependOnClassesThat()
       .resideInAnyPackage(commonAnd("..domain.."));
 
   @ArchTest
@@ -45,8 +45,7 @@ public class StructureTest {
   private static final ArchRule CORE_CONTEXT =
     noClasses().that()
       .resideInAPackage(context("core"))
-      .should()
-      .dependOnClassesThat()
+      .should().dependOnClassesThat()
       .resideInAnyPackage(contexts("runner", "storage", "media"));
 
   @ArchTest
