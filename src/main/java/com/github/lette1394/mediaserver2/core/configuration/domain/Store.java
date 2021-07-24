@@ -4,8 +4,6 @@ import com.github.lette1394.mediaserver2.core.configuration.infrastructure.JsonS
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.SingleFileResource;
 import java.util.List;
 import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
