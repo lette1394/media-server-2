@@ -20,31 +20,35 @@ public final class AllResources implements Reloader {
   private final Reflections reflections;
   private final FileResourceLoaders fileResourceLoaders;
 
-  private final SingleReloading singleReloading;
-  private final MultiReloading multiReloading;
+  private final AllSingleResources single;
+  private final AllMultipleResources multi;
   private final Reloader reloader;
   private final Warmer warmer;
 
   @Builder
   public AllResources(String rootResourceDirectory, String rootScanningPackage, ObjectMapper objectMapper) {
     final var jsonSchemaFactory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+    final var fileResourcePath = FileResourcePath.create(rootResourceDirectory).get();
 
-    this.fileResourcePathFactory = new FileResourcePathFactory(FileResourcePath.create(rootResourceDirectory).get());
+    this.fileResourcePathFactory = new FileResourcePathFactory(fileResourcePath);
     this.reflections = new Reflections(rootScanningPackage);
     this.warmer = new Warmer(new ForkJoinPool(4), ofSeconds(60));
     this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer, jsonSchemaFactory, fileResourcePathFactory);
 
-    this.singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
-    this.multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
+    var singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
+    var multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
+
     this.reloader = new Sequence(List.of(singleReloading, multiReloading));
+    this.single = new SingleAutoReloading(singleReloading);
+    this.multi = new MultiAutoReloading(multiReloading);
   }
 
   public AllSingleResources single() {
-    return new SingleAutoReloading(singleReloading);
+    return single;
   }
 
   public AllMultipleResources multi() {
-    return new MultiAutoReloading(multiReloading);
+    return multi;
   }
 
   @Override

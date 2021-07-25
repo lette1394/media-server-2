@@ -7,10 +7,12 @@ import com.github.lette1394.mediaserver2.core.configuration.infrastructure.Singl
 import groovy.transform.Canonical
 import spock.lang.Specification
 
+import static com.github.lette1394.mediaserver2.core.configuration.domain.TestFixtures.CURRENT_PACKAGE
+
 class AllSingleResourcesTest extends Specification {
   private final AllResources allResources = AllResources.builder()
     .rootResourceDirectory("/core/configuration")
-    .rootScanningPackage("com.github.lette1394.mediaserver2.core.configuration.domain")
+    .rootScanningPackage(CURRENT_PACKAGE)
     .objectMapper(new ObjectMapper(new YAMLFactory()))
     .build()
 
@@ -27,8 +29,18 @@ class AllSingleResourcesTest extends Specification {
 
   @Canonical
   @SingleFileResource(filePath = "/single/person.yaml")
-  class Person {
+  static class Person {
     String name
     int age
+  }
+
+  class AAAService {
+    private final Person person
+
+    public void doSomething() {
+      // business logics;;
+      println(person.age)
+
+    }
   }
 }

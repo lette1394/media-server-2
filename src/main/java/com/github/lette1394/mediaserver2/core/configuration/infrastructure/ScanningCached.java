@@ -19,6 +19,7 @@ class ScanningCached implements AllMappedResourceTypes {
     this.cached = scan(reflections);
   }
 
+  @Override
   @SuppressWarnings("unchecked")
   public <T, R extends MappedResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType) {
     if (cached.containsKey(mappedType)) {
@@ -33,19 +34,19 @@ class ScanningCached implements AllMappedResourceTypes {
       .stream()
       .map(entityClassType -> {
         final Type[] genericInterfaces = entityClassType.getGenericInterfaces();
-        requires(genericInterfaces.length == 1, "entityClass.genericInterfaces.length == 1");
+        requires(genericInterfaces.length > 0, "entityClass.genericInterfaces.length == 1");  // FIXME (jaeeun) 2021/07/25: description
 
         final Type genericInterface = genericInterfaces[0];
         requires(genericInterface instanceof ParameterizedType,
-          "entityClass.genericInterface instanceof ParameterizedType");
+          "entityClass.genericInterface instanceof ParameterizedType"); // FIXME (jaeeun) 2021/07/25: description
 
         final ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
         final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
         requires(actualTypeArguments.length == 1,
-          "parameterizedType.actualTypeArguments.length == 1");
+          "parameterizedType.actualTypeArguments.length == 1"); // FIXME (jaeeun) 2021/07/25: description
 
         final Type mappedType = actualTypeArguments[0];
-        requires(mappedType instanceof Class, "mappedType instanceof Class");
+        requires(mappedType instanceof Class, "mappedType instanceof Class"); // FIXME (jaeeun) 2021/07/25: description
 
         final Class<?> mappedClassType = (Class<?>)mappedType;
         return Pair.of(entityClassType, mappedClassType);
