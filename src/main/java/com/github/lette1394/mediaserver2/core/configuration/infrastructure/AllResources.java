@@ -26,11 +26,11 @@ public final class AllResources implements Reloader {
   private final Warmer warmer;
 
   @Builder
-  public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
+  public AllResources(String rootResourceDirectory, String scanningPackagePrefix, ObjectMapper objectMapper) {
     final var jsonSchemaFactory = JsonSchemaFactory.getInstance(VersionFlag.V7);
 
-    this.fileResourcePathFactory = new FileResourcePathFactory(FileResourcePath.create(baseClassPath).get());
-    this.reflections = new Reflections(basePackage);
+    this.fileResourcePathFactory = new FileResourcePathFactory(FileResourcePath.create(rootResourceDirectory).get());
+    this.reflections = new Reflections(scanningPackagePrefix);
     this.warmer = new Warmer(new ForkJoinPool(4), ofSeconds(60));
     this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer, jsonSchemaFactory, fileResourcePathFactory);
 
