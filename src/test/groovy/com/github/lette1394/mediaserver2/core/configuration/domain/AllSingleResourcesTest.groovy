@@ -11,7 +11,7 @@ import spock.lang.Specification
 class AllSingleResourcesTest extends Specification {
   private final AllResources allResources = AllResources.builder()
     .rootResourceDirectory("/core/configuration/single")
-    .scanningPackagePrefix("com.github.lette1394.mediaserver2.core.configuration.domain")
+    .rootScanningPackage("com.github.lette1394.mediaserver2.core.configuration.domain")
     .objectMapper(new ObjectMapper(new YAMLFactory()))
     .build()
 
