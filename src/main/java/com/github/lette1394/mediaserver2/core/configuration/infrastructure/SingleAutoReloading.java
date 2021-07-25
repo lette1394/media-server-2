@@ -27,23 +27,23 @@ class SingleAutoReloading implements AllSingleResources {
     return (T) Proxy.newProxyInstance(
       type.getClassLoader(),
       new Class[]{type},
-      new AutoReloadHandler<>(resources, type, new AtomicReference<>(loadedResource)));
+      new UseLastSucceedResourceIfReloadingFailedInvocationHandler<>(resources, type, new AtomicReference<>(loadedResource)));
   }
 
   @RequiredArgsConstructor
-  private static class AutoReloadHandler<T> implements InvocationHandler {
+  private static class UseLastSucceedResourceIfReloadingFailedInvocationHandler<T> implements InvocationHandler {
     private final AllSingleResources resources;
     private final Class<T> type;
-    private final AtomicReference<T> fallbackResourceRef;
+    private final AtomicReference<T> lastSucceedResourceReference;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
       return Try
         .of(() -> resources.find(type))
-        .peek(fallbackResourceRef::set)
+        .peek(lastSucceedResourceReference::set)
         .toTry()
         .mapTry(resource -> method.invoke(resource, args))
-        .getOrElseTry(() -> method.invoke(fallbackResourceRef.get(), args));
+        .getOrElseTry(() -> method.invoke(lastSucceedResourceReference.get(), args));
     }
   }
 }

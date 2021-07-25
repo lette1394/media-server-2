@@ -22,7 +22,8 @@ public class Validator implements FileResourceLoader {
     }
 
     final var jsonPath = fileResource.fileResourcePath().toPath();
-    final var jsonNode = Try.of(() -> Files.readAllBytes(jsonPath))
+    final var jsonNode = Try
+      .of(() -> Files.readAllBytes(jsonPath))
       .mapTry(objectMapper::readTree);
 
     final var jsonSchema = fileResourcePathFactory

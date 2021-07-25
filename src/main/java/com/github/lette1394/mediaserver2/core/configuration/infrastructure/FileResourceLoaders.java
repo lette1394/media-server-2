@@ -6,7 +6,7 @@ import io.vavr.control.Try;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class FileResourceLoaders {
+class FileResourceLoaders {
   private final ObjectMapper objectMapper;
   private final Warmer warmer;
   private final JsonSchemaFactory jsonSchemaFactory;

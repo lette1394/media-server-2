@@ -28,24 +28,24 @@ class MultiAutoReloading implements AllMultipleResources {
     return (T) Proxy.newProxyInstance(
       type.getClassLoader(),
       new Class[]{type},
-      new AutoReloadHandler<>(resources, type, name, new AtomicReference<>(loadedResource)));
+      new UseLastSucceedResourceIfReloadingFailedInvocationHandler<>(resources, type, name, new AtomicReference<>(loadedResource)));
   }
 
   @RequiredArgsConstructor
-  private static class AutoReloadHandler<T> implements InvocationHandler {
+  private static class UseLastSucceedResourceIfReloadingFailedInvocationHandler<T> implements InvocationHandler {
     private final AllMultipleResources resources;
     private final Class<T> type;
     private final String name;
-    private final AtomicReference<T> fallbackResourceRef;
+    private final AtomicReference<T> lastSucceedResourceReference;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
       return Try
         .of(() -> resources.find(type, name))
-        .peek(fallbackResourceRef::set)
+        .peek(lastSucceedResourceReference::set)
         .toTry()
         .mapTry(resource -> method.invoke(resource, args))
-        .getOrElseTry(() -> method.invoke(fallbackResourceRef.get(), args));
+        .getOrElseTry(() -> method.invoke(lastSucceedResourceReference.get(), args));
     }
   }
 }
