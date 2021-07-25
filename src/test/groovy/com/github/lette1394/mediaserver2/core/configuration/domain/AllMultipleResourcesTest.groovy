@@ -33,7 +33,7 @@ class AllMultipleResourcesTest extends Specification {
 
   @Canonical
   @MultiFileResource(directoryPath = "/multi/animal")
-  private static class Animal {
+  class Animal {
     String name
     Type type
 

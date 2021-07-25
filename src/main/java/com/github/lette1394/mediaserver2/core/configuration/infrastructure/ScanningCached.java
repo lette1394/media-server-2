@@ -3,6 +3,7 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 import static java.util.stream.Collectors.toMap;
 
+import com.github.lette1394.mediaserver2.core.configuration.domain.MappedResource;
 import io.vavr.control.Option;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

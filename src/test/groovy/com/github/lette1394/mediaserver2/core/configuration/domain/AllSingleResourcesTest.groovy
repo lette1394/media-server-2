@@ -27,7 +27,7 @@ class AllSingleResourcesTest extends Specification {
 
   @Canonical
   @SingleFileResource(filePath = "/single/person.yaml")
-  private static class Person {
+  class Person {
     String name
     int age
   }
