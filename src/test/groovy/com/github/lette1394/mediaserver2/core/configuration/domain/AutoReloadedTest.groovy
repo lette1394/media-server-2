@@ -43,8 +43,7 @@ class AutoReloadedTest extends Specification {
           Previously found Address instance should be AUTOMATICALLY reloaded to 'seoul'->'busan' 
           WITHOUT having to find them again
           """
-      def expected = createAddress("busan", 200)
-      autoReloadedAddress == expected
+      autoReloadedAddress == createAddress("busan", 200)
   }
 
   private static AddressYamlResource createAddress(String cityName, int zipCode) {
