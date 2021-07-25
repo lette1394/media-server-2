@@ -3,12 +3,10 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
-import com.github.lette1394.mediaserver2.core.domain.Contracts;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang3.StringUtils;
 
 class FileResourcePathFactory {
   private static final Map<ResourceType, String> EXTENSION_MAP = new HashMap<>();
@@ -36,7 +34,8 @@ class FileResourcePathFactory {
 
   public Try<FileResourcePath> create(MultiFileResource annotation, String name) {
     final var directoryPath = annotation.directoryPath();
-    final var extension = Option.of(EXTENSION_MAP.get(annotation.resourceType()))
+    final var extension = Option
+      .of(EXTENSION_MAP.get(annotation.resourceType()))
       .getOrElseThrow(() -> new UnsupportedFileResourceType(
         "unsupported file resource type. filename: [%s]".formatted(name)));
     final var dotExtension = ".%s".formatted(extension);
