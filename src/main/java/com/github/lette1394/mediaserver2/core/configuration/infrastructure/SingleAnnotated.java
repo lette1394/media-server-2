@@ -1,6 +1,7 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.configuration.domain.CannotFindResourceException;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,13 @@ class SingleAnnotated implements AllSingleResources {
       .flatMap(fileResourcePathFactory::create)
       .map(path -> new FileResource<>(type, path))
       .flatMap(loader::load)
-      .get();
+      .getOrElseThrow(throwable -> new CannotFindResourceException("""
+        다음 클래스와 관련된 리소스를 찾을 수 없습니다. 다음 사항을 확인 해 주십시오.
+        ===
+        type: [%s]
+        ===
+        1. type이 SingleFileResource annotation을 가지고 있습니까?
+        2. SingleFileResource annotation filePath이 유효한 값입니까?
+        """.formatted(type), throwable));
   }
 }

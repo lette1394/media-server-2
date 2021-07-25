@@ -2,19 +2,21 @@ package com.github.lette1394.mediaserver2;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
-import static com.tngtech.archunit.library.DependencyRules.NO_CLASSES_SHOULD_DEPEND_UPPER_PACKAGES;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_THROW_GENERIC_EXCEPTIONS;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION;
 import static com.tngtech.archunit.library.GeneralCodingRules.NO_CLASSES_SHOULD_USE_JODATIME;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
+import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import java.util.Arrays;
 import org.apache.commons.lang3.ArrayUtils;
 
-@AnalyzeClasses(packages = "com.github.lette1394.mediaserver2")
+@AnalyzeClasses(
+  packages = "com.github.lette1394.mediaserver2",
+  importOptions = DoNotIncludeTests.class)
 public class StructureTest {
   private static final String PRIMITIVES = "";
   private static final String[] COMMON_PACKAGES = {

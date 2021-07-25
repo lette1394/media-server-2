@@ -11,6 +11,7 @@ import com.networknt.schema.SpecVersion.VersionFlag;
 import io.vavr.control.Try;
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
+import lombok.Builder;
 import org.reflections.Reflections;
 
 @SuppressWarnings({"UnnecessaryLocalVariable", "Convert2MethodRef"})
@@ -24,6 +25,7 @@ public final class AllResources implements Reloader {
   private final Reloader reloader;
   private final Warmer warmer;
 
+  @Builder
   public AllResources(String baseClassPath, String basePackage, ObjectMapper objectMapper) {
     final var jsonSchemaFactory = JsonSchemaFactory.getInstance(VersionFlag.V7);
 

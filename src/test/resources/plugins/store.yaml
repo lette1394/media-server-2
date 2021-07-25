@@ -1,0 +1,9 @@
+fruits:
+  - apple
+  - orange
+  - pear
+vegetables:
+  - veggie-name: potato
+    veggie-like: true
+  - veggie-name: broccoli
+    veggie-like: false
