@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.runner.spring;
+package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -10,8 +10,8 @@ import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.core.domain.TraceFactory;
 import com.github.lette1394.mediaserver2.core.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.core.infrastructure.UuidTraceFactory;
-import com.github.lette1394.mediaserver2.storage.container.domain.ExhaustiveMeta;
-import com.github.lette1394.mediaserver2.storage.container.domain.ExhaustiveMetaFlusher;
+import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMeta;
+import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMetaFlusher;
 import com.github.lette1394.mediaserver2.storage.hash.domain.Hasher;
 import com.github.lette1394.mediaserver2.storage.hash.infrastructure.GuavaHasher;
 import com.github.lette1394.mediaserver2.storage.hash.usecase.HashingBinaryPublisher;

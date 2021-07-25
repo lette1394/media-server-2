@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.runner.spring;
+package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
 import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
 

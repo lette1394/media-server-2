@@ -1,7 +1,7 @@
-package com.github.lette1394.mediaserver2.storage.container.infrastructure;
+package com.github.lette1394.mediaserver2.runner.infrastructure;
 
 
-import com.github.lette1394.mediaserver2.storage.container.domain.ExhaustiveMeta;
+import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMeta;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

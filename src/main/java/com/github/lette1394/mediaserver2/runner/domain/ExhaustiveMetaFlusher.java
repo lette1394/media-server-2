@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.storage.container.domain;
+package com.github.lette1394.mediaserver2.runner.domain;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;

@@ -1,4 +1,4 @@
-package com.github.lette1394.mediaserver2.runner.spring;
+package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
