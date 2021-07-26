@@ -30,16 +30,19 @@ public final class AllResources implements Reloader {
   public AllResources(String rootResourceDirectory, String rootScanningPackage, ObjectMapper objectMapper) {
     final var jsonSchemaFactory = JsonSchemaFactory.getInstance(VersionFlag.V7);
     final var fileResourcePath = FileResourcePath.create(rootResourceDirectory).get();
+    final var executorService = new ForkJoinPool(4);
 
     this.fileResourcePathFactory = new FileResourcePathFactory(fileResourcePath);
     this.reflections = new Reflections(rootScanningPackage);
-    this.warmer = new Warmer(new ForkJoinPool(4), ofSeconds(60));
+    this.warmer = new Warmer(executorService, ofSeconds(60));
     this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer, jsonSchemaFactory, fileResourcePathFactory);
 
     var singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
     var multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
 
-    this.reloader = new Sequence(List.of(singleReloading, multiReloading));
+    final var sequence = new Sequence(List.of(singleReloading, multiReloading));
+    final var async = new Async(sequence, executorService);
+    this.reloader = async;
     this.single = new SingleAutoReloading(singleReloading);
     this.multi = new MultiAutoReloading(multiReloading);
   }
