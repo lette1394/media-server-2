@@ -5,6 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
 import io.vavr.control.Try;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.Builder;
 import org.reflections.Reflections;
@@ -34,7 +35,7 @@ public class AutoReloadingResources implements Reloader {
   }
 
   @Override
-  public Try<Void> reload() {
+  public CompletionStage<Void> reload() {
     textReference.set(text);
     return Try.success(null);
   }

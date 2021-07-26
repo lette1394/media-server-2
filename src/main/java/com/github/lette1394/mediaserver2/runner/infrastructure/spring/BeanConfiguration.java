@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AllResources;
+import com.github.lette1394.mediaserver2.core.domain.AdaptedBinaryPublisher;
+import com.github.lette1394.mediaserver2.core.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.core.domain.Trace;
 import com.github.lette1394.mediaserver2.core.domain.TraceFactory;
 import com.github.lette1394.mediaserver2.core.infrastructure.DataBufferPayload;
@@ -19,8 +21,6 @@ import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Lockers;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.LoggedLocker;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.NoOpLocker;
-import com.github.lette1394.mediaserver2.core.domain.AdaptedBinaryPublisher;
-import com.github.lette1394.mediaserver2.core.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploaders;
@@ -49,7 +49,7 @@ public class BeanConfiguration {
 
   @Bean
   public ConfigurationApi configurationApi() {
-    return new ConfigurationApi(allResources, traceFactory, allResources.single(), allResources.multi());
+    return new ConfigurationApi(allResources);
   }
 
   @Bean

@@ -3,6 +3,7 @@ package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
 import io.vavr.control.Try;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
@@ -19,7 +20,7 @@ class MultiReloading implements Reloader, AllMultipleResources {
   }
 
   @Override
-  public Try<Void> reload() {
+  public CompletionStage<Void> reload() {
     return supplier
       .get()
       .peek(ref::set)

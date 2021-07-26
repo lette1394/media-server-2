@@ -10,6 +10,7 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion.VersionFlag;
 import io.vavr.control.Try;
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ForkJoinPool;
 import lombok.Builder;
 import org.reflections.Reflections;
@@ -52,7 +53,7 @@ public final class AllResources implements Reloader {
   }
 
   @Override
-  public Try<Void> reload() {
+  public CompletionStage<Void> reload() {
     return reloader.reload();
   }
 
