@@ -2,9 +2,9 @@ package com.github.lette1394.mediaserver2.storage.infrastructure;
 
 import static java.lang.String.format;
 
-import com.github.lette1394.mediaserver2.core.domain.DelegatingSubscriber;
-import com.github.lette1394.mediaserver2.core.domain.Payload;
-import com.github.lette1394.mediaserver2.core.domain.BinaryPublisher;
+import com.github.lette1394.mediaserver2.core.stream.domain.DelegatingSubscriber;
+import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
+import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublisher;
 import org.reactivestreams.Subscriber;
 
 public class BrokenSubscriber<P extends Payload> extends DelegatingSubscriber<P> {

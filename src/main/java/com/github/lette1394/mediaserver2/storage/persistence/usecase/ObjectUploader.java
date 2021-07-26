@@ -1,14 +1,14 @@
 package com.github.lette1394.mediaserver2.storage.persistence.usecase;
 
-import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStage.start;
+import static com.github.lette1394.mediaserver2.core.stream.domain.FluentCompletionStage.start;
 import static com.github.lette1394.mediaserver2.storage.hash.usecase.HashingBinaryPublisher.HASHER_ATTRIBUTE;
 
-import com.github.lette1394.mediaserver2.core.domain.Payload;
+import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
 import com.github.lette1394.mediaserver2.storage.hash.domain.Hash;
 import com.github.lette1394.mediaserver2.storage.hash.domain.Hasher;
 import com.github.lette1394.mediaserver2.storage.identification.domain.Id;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.AllBinaries;
-import com.github.lette1394.mediaserver2.core.domain.BinaryPublisher;
+import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublisher;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Timestamp;

@@ -1,9 +1,9 @@
 package com.github.lette1394.mediaserver2.storage.persistence.usecase;
 
-import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStage.consumeFinally;
-import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStage.start;
+import static com.github.lette1394.mediaserver2.core.stream.domain.FluentCompletionStage.consumeFinally;
+import static com.github.lette1394.mediaserver2.core.stream.domain.FluentCompletionStage.start;
 
-import com.github.lette1394.mediaserver2.core.domain.Payload;
+import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.UploadingCommand;

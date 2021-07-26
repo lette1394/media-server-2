@@ -1,9 +1,9 @@
 package com.github.lette1394.mediaserver2.storage.persistence.infrastructure;
 
-import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStage.peek;
-import static com.github.lette1394.mediaserver2.core.domain.FluentCompletionStage.start;
+import static com.github.lette1394.mediaserver2.core.stream.domain.FluentCompletionStage.peek;
+import static com.github.lette1394.mediaserver2.core.stream.domain.FluentCompletionStage.start;
 
-import com.github.lette1394.mediaserver2.core.domain.Trace;
+import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Entity;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
 import java.util.concurrent.CompletionStage;

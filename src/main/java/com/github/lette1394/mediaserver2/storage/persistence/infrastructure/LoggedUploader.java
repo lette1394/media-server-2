@@ -1,7 +1,7 @@
 package com.github.lette1394.mediaserver2.storage.persistence.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.domain.Payload;
-import com.github.lette1394.mediaserver2.core.domain.Trace;
+import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
+import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploader;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.UploadingCommand;
 import java.util.concurrent.CompletionStage;

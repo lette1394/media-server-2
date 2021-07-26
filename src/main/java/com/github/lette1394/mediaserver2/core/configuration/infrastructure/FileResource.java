@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.core.configuration.infrastructure;
 
-import static com.github.lette1394.mediaserver2.core.domain.Contracts.requires;
+import static com.github.lette1394.mediaserver2.core.stream.domain.Contracts.requires;
 
 import java.util.HashMap;
 import java.util.Map;

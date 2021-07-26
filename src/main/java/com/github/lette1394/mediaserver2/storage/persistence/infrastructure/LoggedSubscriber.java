@@ -1,8 +1,8 @@
 package com.github.lette1394.mediaserver2.storage.persistence.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.domain.DelegatingSubscriber;
-import com.github.lette1394.mediaserver2.core.domain.Payload;
-import com.github.lette1394.mediaserver2.core.domain.Trace;
+import com.github.lette1394.mediaserver2.core.stream.domain.DelegatingSubscriber;
+import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
+import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Subscriber;
 
