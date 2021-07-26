@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.storage.persistence.usecase;
 
-import static com.github.lette1394.mediaserver2.core.stream.domain.FluentCompletionStage.start;
+import static com.github.lette1394.mediaserver2.core.fluency.domain.FluentCompletionStage.start;
 import static com.github.lette1394.mediaserver2.storage.hash.usecase.HashingBinaryPublisher.HASHER_ATTRIBUTE;
 
 import com.github.lette1394.mediaserver2.core.stream.domain.Payload;

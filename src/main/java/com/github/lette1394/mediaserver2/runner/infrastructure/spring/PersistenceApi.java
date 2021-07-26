@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
-import static com.github.lette1394.mediaserver2.core.stream.domain.Contracts.requires;
+import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
 
 import com.github.lette1394.mediaserver2.core.trace.domain.TraceFactory;
 import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;

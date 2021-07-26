@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
-import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
+import com.github.lette1394.mediaserver2.core.config.domain.Reloader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

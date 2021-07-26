@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AllResources;
+import com.github.lette1394.mediaserver2.core.config.infrastructure.AllResources;
 import com.github.lette1394.mediaserver2.core.stream.domain.AdaptedBinaryPublisher;
 import com.github.lette1394.mediaserver2.core.stream.domain.Attributes;
 import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;

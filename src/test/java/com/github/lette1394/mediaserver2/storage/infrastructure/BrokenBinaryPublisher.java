@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.storage.infrastructure;
 
-import static com.github.lette1394.mediaserver2.core.stream.domain.Contracts.requires;
+import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
 
 import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
 import com.github.lette1394.mediaserver2.core.stream.domain.Attributes;
