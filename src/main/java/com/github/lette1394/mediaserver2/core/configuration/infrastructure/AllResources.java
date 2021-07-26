@@ -37,11 +37,11 @@ public final class AllResources implements Reloader {
     this.warmer = new Warmer(executorService, ofSeconds(60));
     this.fileResourceLoaders = new FileResourceLoaders(objectMapper, warmer, jsonSchemaFactory, fileResourcePathFactory);
 
-    var singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
-    var multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
-
+    final var singleReloading = new SingleReloading(() -> createSingle(), createSingle().get());
+    final var multiReloading = new MultiReloading(() -> createMulti(), createMulti().get());
     final var sequence = new Sequence(List.of(singleReloading, multiReloading));
     final var async = new Async(sequence, executorService);
+
     this.reloader = async;
     this.single = new SingleAutoReloading(singleReloading);
     this.multi = new MultiAutoReloading(multiReloading);
