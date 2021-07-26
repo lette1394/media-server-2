@@ -4,7 +4,7 @@ import io.vavr.control.Try;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
-class EagerCachingScanner implements ResourceScanner {
+final class EagerCachingScanner implements ResourceScanner {
   private final AtomicReference<Set<? extends FileResource<?>>> cacheRef;
 
   private EagerCachingScanner(AtomicReference<Set<? extends FileResource<?>>> cacheRef) {

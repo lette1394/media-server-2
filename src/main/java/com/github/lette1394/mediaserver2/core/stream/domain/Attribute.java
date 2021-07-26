@@ -7,6 +7,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @RequiredArgsConstructor
-public class Attribute<T> {
+public final class Attribute<T> {
   private final String name;
 }

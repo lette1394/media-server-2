@@ -28,7 +28,7 @@ class LoggingJsonBodyHttpClientTest {
     };
     final var httpClient = new HttpClient<>() {
       @Override
-      public CompletionStage<GetResponse<Payload>> get(GetRequest getRequest) {
+      public CompletionStage<HttpResponse<Payload>> get(GetRequest getRequest) {
         final var map = new HashMap<String, String>();
         map.put("Content-Type", "application/json");
         map.put("response-4", "4");
@@ -37,7 +37,7 @@ class LoggingJsonBodyHttpClientTest {
         map.put("response-1", "1");
         final var headers = new Headers(map);
         final var publisher = binaryPublishers.adapt(trace, Mono.empty(), 0L);
-        final var response = new GetResponse<>(headers, publisher);
+        final var response = new HttpResponse<>(headers, publisher);
 
         return CompletableFuture.completedFuture(response);
       }
@@ -72,7 +72,7 @@ class LoggingJsonBodyHttpClientTest {
     };
     final var httpClient = new HttpClient<StringPayload>() {
       @Override
-      public CompletionStage<GetResponse<StringPayload>> get(GetRequest getRequest) {
+      public CompletionStage<HttpResponse<StringPayload>> get(GetRequest getRequest) {
         final var map = new HashMap<String, String>();
         map.put("Content-Type", "application/json");
         map.put("header-4", "4");
@@ -105,7 +105,7 @@ class LoggingJsonBodyHttpClientTest {
           }
                     
           """)), 0L);
-        final var response = new GetResponse<>(headers, publisher);
+        final var response = new HttpResponse<>(headers, publisher);
 
         return CompletableFuture.completedFuture(response);
       }

@@ -6,7 +6,7 @@ import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class SingleAnnotated implements AllSingleResources {
+final class SingleAnnotated implements AllSingleResources {
   private final FileResourceLoader loader;
   private final FileResourcePathFactory fileResourcePathFactory;
 

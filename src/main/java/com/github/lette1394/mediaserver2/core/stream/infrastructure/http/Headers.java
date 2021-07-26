@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class Headers {
+public final class Headers {
   private final Map<String, String> holder;
 
   public Headers(Map<String, String> holder) {

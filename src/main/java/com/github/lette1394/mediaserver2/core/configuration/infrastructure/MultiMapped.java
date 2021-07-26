@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleRe
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class MultiMapped implements AllMultipleResources {
+final class MultiMapped implements AllMultipleResources {
   private final AllMultipleResources resources;
   private final AllMappedResourceTypes allMappedResourceTypes;
 

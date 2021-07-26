@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleRe
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class MultiCache implements AllMultipleResources {
+final class MultiCache implements AllMultipleResources {
   private final AllMultipleResources resources;
   private final Map<Key, Object> holder = new ConcurrentHashMap<>(4096);
 

@@ -4,7 +4,7 @@ import io.vavr.control.Try;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-class WarmingUp implements FileResourceLoader {
+final class WarmingUp implements FileResourceLoader {
   private final FileResourceLoader loader;
 
   private WarmingUp(FileResourceLoader loader) {

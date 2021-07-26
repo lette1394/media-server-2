@@ -4,7 +4,7 @@ import java.net.URL;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class GetRequest {
+public final class GetRequest {
   private final URL url;
   private final Headers headers;
 

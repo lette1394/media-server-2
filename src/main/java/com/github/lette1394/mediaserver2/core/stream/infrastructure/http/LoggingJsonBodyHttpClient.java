@@ -20,7 +20,7 @@ import reactor.core.publisher.Flux;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<P> {
+public final class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<P> {
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
     .enable(SerializationFeature.INDENT_OUTPUT);
 
@@ -28,7 +28,7 @@ public class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<
   private final Trace trace;
 
   @Override
-  public CompletionStage<GetResponse<P>> get(GetRequest getRequest) {
+  public CompletionStage<HttpResponse<P>> get(GetRequest getRequest) {
     return httpClient
       .get(getRequest)
       .thenApply(response -> {
@@ -39,7 +39,7 @@ public class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<
       });
   }
 
-  private Boolean hasJsonBody(GetResponse<P> response) {
+  private Boolean hasJsonBody(HttpResponse<P> response) {
     return response.headers()
       .value(HttpHeaders.CONTENT_TYPE)
       .map(MediaType::parseMediaType)
@@ -47,7 +47,7 @@ public class LoggingJsonBodyHttpClient<P extends Payload> implements HttpClient<
       .orElse(false);
   }
 
-  private void log(GetResponse<P> response) {
+  private void log(HttpResponse<P> response) {
     final var builder = new StringBuilder();
     final var publisher = response.binaryPublisher();
 

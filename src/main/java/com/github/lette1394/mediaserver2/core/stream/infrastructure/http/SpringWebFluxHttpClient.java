@@ -22,12 +22,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-public class SpringWebFluxHttpClient implements HttpClient<DataBufferPayload> {
+public final class SpringWebFluxHttpClient implements HttpClient<DataBufferPayload> {
   private final BinaryPublishers<DataBufferPayload> binaryPublishers;
   private final Trace trace;
 
   @Override
-  public CompletionStage<GetResponse<DataBufferPayload>> get(GetRequest getRequest) {
+  public CompletionStage<HttpResponse<DataBufferPayload>> get(GetRequest getRequest) {
     final var channels = new DefaultChannelGroup("", ThreadExecutorMap.currentExecutor());
     final var client = reactor.netty.http.client.HttpClient.create()
       .channelGroup(channels)
@@ -50,7 +50,7 @@ public class SpringWebFluxHttpClient implements HttpClient<DataBufferPayload> {
           .map(length -> binaryPublishers.adapt(trace, entity.getBody(), length))
           .getOrElse(() -> binaryPublishers.adapt(trace, Mono.empty(), 0L));
 
-        return new GetResponse<>(new Headers(headers), publisher);
+        return new HttpResponse<>(new Headers(headers), publisher);
       })
       .toFuture();
   }

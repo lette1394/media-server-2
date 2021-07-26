@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-class Caching implements FileResourceLoader {
+final class Caching implements FileResourceLoader {
   private final FileResourceLoader loader;
   private final Map<FileResource<?>, Try<?>> holder = new ConcurrentHashMap<>(4096);
 

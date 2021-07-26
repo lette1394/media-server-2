@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class Validator implements FileResourceLoader {
+class Validator implements FileResourceLoader {
   private final FileResourceLoader loader;
   private final JsonSchemaFactory factory;
   private final ObjectMapper objectMapper;

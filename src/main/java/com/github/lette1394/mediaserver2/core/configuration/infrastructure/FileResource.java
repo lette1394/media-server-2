@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @EqualsAndHashCode
-class FileResource<T> {
+final class FileResource<T> {
   private static final Map<String, ResourceType> EXTENSION_MAP = new HashMap<>();
 
   static {

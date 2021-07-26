@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutorService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class Async implements Reloader {
+final class Async implements Reloader {
   private final Reloader reloader;
   private final ExecutorService executorService;
 

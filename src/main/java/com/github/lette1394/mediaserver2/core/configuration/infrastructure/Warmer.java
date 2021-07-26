@@ -9,7 +9,7 @@ import java.util.concurrent.ForkJoinPool;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class Warmer {
+final class Warmer {
   private final ForkJoinPool forkJoinPool;
   private final Duration timeout;
 

@@ -7,7 +7,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-class SingleReloading implements Reloader, AllSingleResources {
+final class SingleReloading implements Reloader, AllSingleResources {
   private final AtomicReference<AllSingleResources> ref;
   private final Supplier<Try<AllSingleResources>> supplier;
 

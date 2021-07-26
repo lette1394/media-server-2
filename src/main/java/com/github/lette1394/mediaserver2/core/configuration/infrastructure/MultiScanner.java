@@ -13,7 +13,7 @@ import lombok.SneakyThrows;
 import org.reflections.Reflections;
 
 @RequiredArgsConstructor
-class MultiScanner implements ResourceScanner {
+final class MultiScanner implements ResourceScanner {
   private static final Class<MultiFileResource> SCANNING_TYPE = MultiFileResource.class;
   private final FileResourcePathFactory fileResourcePathFactory;
   private final Reflections reflections;

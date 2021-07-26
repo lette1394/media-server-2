@@ -5,7 +5,7 @@ import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class MultiAnnotated implements AllMultipleResources {
+final class MultiAnnotated implements AllMultipleResources {
   private final FileResourceLoader loader;
   private final FileResourcePathFactory fileResourcePathFactory;
 

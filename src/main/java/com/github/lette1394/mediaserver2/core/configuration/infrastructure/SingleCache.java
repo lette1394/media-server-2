@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleReso
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class SingleCache implements AllSingleResources {
+final class SingleCache implements AllSingleResources {
   private final AllSingleResources resources;
   private final Map<Class<?>, Object> holder = new ConcurrentHashMap<>(4096);
 

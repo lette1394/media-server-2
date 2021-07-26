@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-class Logging implements FileResourceLoader {
+final class Logging implements FileResourceLoader {
   private final FileResourceLoader loader;
 
   @Override

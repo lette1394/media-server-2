@@ -12,7 +12,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.reflections.Reflections;
 
 @SuppressWarnings("rawtypes")
-class ScanningCached implements AllMappedResourceTypes {
+final class ScanningCached implements AllMappedResourceTypes {
   private final Map<Class<?>, ? extends Class<? extends MappedResource>> cached;
 
   public ScanningCached(Reflections reflections) {

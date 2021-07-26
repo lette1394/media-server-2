@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 
 
 @EqualsAndHashCode
-class FileResourcePath {
+final class FileResourcePath {
   private final String stringPath;
   private final Path path;
 

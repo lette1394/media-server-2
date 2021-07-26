@@ -10,7 +10,7 @@ import lombok.ToString;
 
 @ToString
 @RequiredArgsConstructor
-public class Attributes {
+public final class Attributes {
   private final Map<Attribute<?>, Object> holder;
 
   public static Attributes createEmpty() {

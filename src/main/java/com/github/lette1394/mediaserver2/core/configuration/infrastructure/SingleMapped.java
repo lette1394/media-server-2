@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleReso
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class SingleMapped implements AllSingleResources {
+final class SingleMapped implements AllSingleResources {
   private final AllSingleResources resources;
   private final AllMappedResourceTypes allMappedResourceTypes;
 

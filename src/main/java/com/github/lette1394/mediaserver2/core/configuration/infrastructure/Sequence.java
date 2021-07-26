@@ -9,7 +9,7 @@ import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class Sequence implements Reloader {
+final class Sequence implements Reloader {
   private final List<Reloader> reloaders;
 
   @Override

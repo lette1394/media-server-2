@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllMultipleRe
 import io.vavr.control.Try;
 import java.util.Set;
 
-class MultiWarmingUp implements AllMultipleResources {
+final class MultiWarmingUp implements AllMultipleResources {
   private final AllMultipleResources resources;
 
   private MultiWarmingUp(AllMultipleResources resources) {

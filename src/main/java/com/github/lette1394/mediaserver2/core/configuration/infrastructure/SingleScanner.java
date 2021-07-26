@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.reflections.Reflections;
 
 @RequiredArgsConstructor
-class SingleScanner implements ResourceScanner {
+final class SingleScanner implements ResourceScanner {
   private static final Class<SingleFileResource> SCANNING_TYPE = SingleFileResource.class;
 
   private final FileResourcePathFactory fileResourcePathFactory;

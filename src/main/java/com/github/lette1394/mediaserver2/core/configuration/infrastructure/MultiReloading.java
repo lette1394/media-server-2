@@ -7,7 +7,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-class MultiReloading implements Reloader, AllMultipleResources {
+final class MultiReloading implements Reloader, AllMultipleResources {
   private final AtomicReference<AllMultipleResources> ref;
   private final Supplier<Try<AllMultipleResources>> supplier;
 

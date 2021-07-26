@@ -14,12 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class LoggingHeaderHttpClient<P extends Payload> implements HttpClient<P> {
+public final class LoggingHeaderHttpClient<P extends Payload> implements HttpClient<P> {
   private final HttpClient<P> httpClient;
   private final Trace trace;
 
   @Override
-  public CompletionStage<GetResponse<P>> get(GetRequest getRequest) {
+  public CompletionStage<HttpResponse<P>> get(GetRequest getRequest) {
     log.info("{}> ########## request headers ##########", trace);
     log.info("{}> ########## local >> remote ##########", trace);
     log.info(toMultiLine(getRequest.headers().toMap()));

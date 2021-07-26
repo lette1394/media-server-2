@@ -5,7 +5,7 @@ import static com.github.lette1394.mediaserver2.core.stream.domain.Contracts.req
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
-public class AdaptedBinaryPublisher<P extends Payload> implements BinaryPublisher<P> {
+public final class AdaptedBinaryPublisher<P extends Payload> implements BinaryPublisher<P> {
   private final Publisher<P> publisher;
   private final Attributes attributes;
   private final long length;

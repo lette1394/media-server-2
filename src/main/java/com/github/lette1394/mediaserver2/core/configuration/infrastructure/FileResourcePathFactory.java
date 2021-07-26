@@ -8,7 +8,7 @@ import io.vavr.control.Try;
 import java.util.HashMap;
 import java.util.Map;
 
-class FileResourcePathFactory {
+final class FileResourcePathFactory {
   private static final Map<ResourceType, String> EXTENSION_MAP = new HashMap<>();
 
   static {

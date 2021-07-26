@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleReso
 import io.vavr.control.Try;
 import java.util.Set;
 
-class SingleWarmingUp implements AllSingleResources {
+final class SingleWarmingUp implements AllSingleResources {
   private final AllSingleResources allSingleResources;
 
   private SingleWarmingUp(AllSingleResources allSingleResources) {
