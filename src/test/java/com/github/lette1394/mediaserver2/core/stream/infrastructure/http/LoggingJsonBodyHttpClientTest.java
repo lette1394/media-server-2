@@ -1,12 +1,13 @@
 package com.github.lette1394.mediaserver2.core.stream.infrastructure.http;
 
+import com.github.lette1394.mediaserver2.core.stream.domain.AdaptedBinaryPublisher;
+import com.github.lette1394.mediaserver2.core.stream.domain.Attributes;
+import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublisher;
+import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
 import com.github.lette1394.mediaserver2.core.stream.domain.StringPayload;
 import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import com.github.lette1394.mediaserver2.core.trace.infrastructure.UuidTraceFactory;
-import com.github.lette1394.mediaserver2.core.stream.domain.AdaptedBinaryPublisher;
-import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublisher;
-import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -22,7 +23,7 @@ class LoggingJsonBodyHttpClientTest {
     final var binaryPublishers = new BinaryPublishers<>() {
       @Override
       public BinaryPublisher<Payload> adapt(Trace trace, Publisher<Payload> publisher, long length) {
-        return new AdaptedBinaryPublisher<>(publisher, length);
+        return new AdaptedBinaryPublisher<>(publisher, Attributes.createEmpty(), length);
       }
     };
     final var httpClient = new HttpClient<>() {
@@ -63,8 +64,10 @@ class LoggingJsonBodyHttpClientTest {
     final var trace = new UuidTraceFactory().create();
     final var binaryPublishers = new BinaryPublishers<StringPayload>() {
       @Override
-      public BinaryPublisher<StringPayload> adapt(Trace trace, Publisher<StringPayload> publisher, long length) {
-        return new AdaptedBinaryPublisher<>(publisher, length);
+      public BinaryPublisher<StringPayload> adapt(Trace trace,
+        Publisher<StringPayload> publisher,
+        long length) {
+        return new AdaptedBinaryPublisher<>(publisher, Attributes.createEmpty(), length);
       }
     };
     final var httpClient = new HttpClient<StringPayload>() {

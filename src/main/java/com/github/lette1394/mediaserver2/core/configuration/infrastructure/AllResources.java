@@ -53,7 +53,7 @@ public final class AllResources implements Reloader {
   }
 
   @Override
-  public CompletionStage<Void> reload() {
+  public CompletionStage<? super Void> reload() {
     return reloader.reload();
   }
 

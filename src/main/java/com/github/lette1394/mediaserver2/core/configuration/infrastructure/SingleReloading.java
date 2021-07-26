@@ -20,11 +20,12 @@ class SingleReloading implements Reloader, AllSingleResources {
   }
 
   @Override
-  public CompletionStage<Void> reload() {
+  public CompletionStage<? super Void> reload() {
     return supplier
       .get()
       .peek(ref::set)
-      .map(__ -> null);
+      .map(__ -> null)
+      .toCompletableFuture();
   }
 
   @Override

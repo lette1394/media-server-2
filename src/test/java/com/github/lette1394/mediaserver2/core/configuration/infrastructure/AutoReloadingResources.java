@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.lette1394.mediaserver2.core.configuration.domain.AllSingleResources;
 import com.github.lette1394.mediaserver2.core.configuration.domain.Reloader;
-import io.vavr.control.Try;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicReference;
 import lombok.Builder;
@@ -20,7 +20,8 @@ public class AutoReloadingResources implements Reloader {
     this.text = initialText;
     this.textReference = new AtomicReference<>(initialText);
 
-    final var string = new StringReferenceResources(new ObjectMapper(new YAMLFactory()), textReference);
+    final var objectMapper = new ObjectMapper(new YAMLFactory());
+    final var string = new StringReferenceResources(objectMapper, textReference);
     final var mapped = new SingleMapped(string, new ScanningCached(new Reflections(rootScanningPackage)));
     final var autoReloading = new SingleAutoReloading(mapped);
     this.single = autoReloading;
@@ -35,8 +36,8 @@ public class AutoReloadingResources implements Reloader {
   }
 
   @Override
-  public CompletionStage<Void> reload() {
+  public CompletionStage<? super Void> reload() {
     textReference.set(text);
-    return Try.success(null);
+    return CompletableFuture.completedStage(null);
   }
 }

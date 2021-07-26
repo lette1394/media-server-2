@@ -43,7 +43,7 @@ public class ObjectUploader<P extends Payload> implements Uploader<P> {
   private Hash hashCode(BinaryPublisher<P> publisher) {
     return publisher
       .attributes()
-      .getAttribute(HASHER_ATTRIBUTE)
+      .get(HASHER_ATTRIBUTE)
       .map(Hasher::hash)
       .getOrNull();
   }

@@ -4,5 +4,5 @@ import java.util.concurrent.CompletionStage;
 
 @FunctionalInterface
 public interface Reloader {
-  CompletionStage<Void> reload();
+  CompletionStage<? super Void> reload();
 }

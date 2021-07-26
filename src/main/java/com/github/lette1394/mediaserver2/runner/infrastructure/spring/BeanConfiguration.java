@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AllResources;
 import com.github.lette1394.mediaserver2.core.stream.domain.AdaptedBinaryPublisher;
+import com.github.lette1394.mediaserver2.core.stream.domain.Attributes;
 import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import com.github.lette1394.mediaserver2.core.trace.domain.TraceFactory;
@@ -94,7 +95,7 @@ public class BeanConfiguration {
   @Bean
   public BinaryPublishers<DataBufferPayload> binaryPublishers() {
     return (trace, publisher, length) -> {
-      final var adapted = new AdaptedBinaryPublisher<>(publisher, length);
+      final var adapted = new AdaptedBinaryPublisher<>(publisher, Attributes.createEmpty(), length);
       final var hashing = new HashingBinaryPublisher<>(adapted, hasher());
       final var logged = new LoggedBinaryPublisher<>(hashing, trace);
       return logged;

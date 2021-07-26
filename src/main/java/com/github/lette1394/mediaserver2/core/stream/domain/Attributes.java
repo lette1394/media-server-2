@@ -1,27 +1,31 @@
 package com.github.lette1394.mediaserver2.core.stream.domain;
 
-import io.vavr.control.Option;
-import java.util.HashMap;
-import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import static com.github.lette1394.mediaserver2.core.stream.domain.Contracts.requires;
 
+import io.vavr.control.Option;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
+
+@ToString
 @RequiredArgsConstructor
 public class Attributes {
   private final Map<Attribute<?>, Object> holder;
 
-  public static Attributes empty() {
-    return new Attributes(new HashMap<>());
+  public static Attributes createEmpty() {
+    return new Attributes(new ConcurrentHashMap<>());
   }
 
   @SuppressWarnings("unchecked")
-  public <T> Option<T> getAttribute(Attribute<T> attribute) {
-    if (holder.containsKey(attribute)) {
-      return Option.of((T) holder.get(attribute));
-    }
-    return Option.none();
+  public <T> Option<T> get(Attribute<T> attribute) {
+    return Option.of((T) holder.get(attribute));
   }
 
-  public <T> void putAttribute(Attribute<T> attribute, T value) {
+  public <T> void put(Attribute<T> attribute, T value) {
+    requires(!holder.containsKey(attribute),
+      "Attribute must be unique, duplicate: [%s, %s]".formatted(attribute, value));
+
     holder.put(attribute, value);
   }
 }

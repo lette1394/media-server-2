@@ -29,7 +29,7 @@ public class HashingBinaryPublisher<P extends Payload> implements BinaryPublishe
 
   @Override
   public void subscribe(Subscriber<? super P> subscriber) {
-    binaryPublisher.attributes().putAttribute(HASHER_ATTRIBUTE, hasher);
+    binaryPublisher.attributes().put(HASHER_ATTRIBUTE, hasher);
     binaryPublisher.subscribe(new HashingSubscriber<>(subscriber, hasher));
   }
 
