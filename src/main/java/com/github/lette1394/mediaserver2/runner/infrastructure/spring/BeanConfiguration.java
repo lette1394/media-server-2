@@ -22,18 +22,18 @@ import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Lockers;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.LoggedLocker;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.NoOpLocker;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.ObjectMeta;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChanges;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploaders;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.DrainingAllBinaries;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedBinaryPublisher;
-import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedMetaChange;
+import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedMetaChanges;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedUploader;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.StandardOutputFlusher;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.FlushingUploader;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.LockedUploader;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.ObjectUploader;
-import com.github.lette1394.mediaserver2.storage.persistence.usecase.SequentialMetaChange;
+import com.github.lette1394.mediaserver2.storage.persistence.usecase.SequentialMetaChanges;
 import com.google.common.hash.Hashing;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -83,12 +83,12 @@ public class BeanConfiguration {
     };
   }
 
-  private MetaChange<Meta> metaChange(Trace trace) {
+  private MetaChanges<ObjectMeta> metaChange(Trace trace) {
     final var flusher = new StandardOutputFlusher<ExhaustiveMeta>();
-    final var exhaustiveFlusher = new ExhaustiveMetaFlusher<Meta>(flusher);
+    final var exhaustiveFlusher = new ExhaustiveMetaFlusher<ObjectMeta>(flusher);
 
-    final var metaChange = new SequentialMetaChange<>(exhaustiveFlusher);
-    final var metaLogged = new LoggedMetaChange<>(metaChange, trace);
+    final var metaChange = new SequentialMetaChanges<>(exhaustiveFlusher);
+    final var metaLogged = new LoggedMetaChanges<>(metaChange, trace);
     return metaLogged;
   }
 

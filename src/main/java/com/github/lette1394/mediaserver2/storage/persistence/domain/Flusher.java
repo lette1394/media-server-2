@@ -4,6 +4,6 @@ import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 @FunctionalInterface
-public interface Flusher<T extends Entity> {
+public interface Flusher<T extends Meta> {
   CompletionStage<Void> flush(List<T> entities);
 }

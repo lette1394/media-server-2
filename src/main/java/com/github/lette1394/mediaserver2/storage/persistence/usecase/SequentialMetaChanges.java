@@ -1,8 +1,8 @@
 package com.github.lette1394.mediaserver2.storage.persistence.usecase;
 
-import com.github.lette1394.mediaserver2.storage.persistence.domain.Entity;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.Meta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Flusher;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChange;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChanges;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -10,7 +10,7 @@ import java.util.concurrent.CompletionStage;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class SequentialMetaChange<T extends Entity> implements MetaChange<T> {
+public class SequentialMetaChanges<T extends Meta> implements MetaChanges<T> {
   private final Flusher<T> flusher;
 
   // 순서에 의존하지 않게 만들어야 함
