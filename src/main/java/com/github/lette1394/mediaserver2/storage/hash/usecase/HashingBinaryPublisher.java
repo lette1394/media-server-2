@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.reactivestreams.Subscriber;
 
 @RequiredArgsConstructor
-public class HashingBinaryPublisher<P extends Payload> implements BinaryPublisher<P> {
+public final class HashingBinaryPublisher<P extends Payload> implements BinaryPublisher<P> {
   public static final Attribute<Hasher> HASHER_ATTRIBUTE = new Attribute<>(
     "com.github.lette1394.mediaserver2.storage.hash.usecase.HashingBinaryPublisher.HASHER_ATTRIBUTE");
 

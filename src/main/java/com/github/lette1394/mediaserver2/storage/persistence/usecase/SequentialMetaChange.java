@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class SequentialMetaChange<T extends Entity> implements MetaChange<T> {
   private final Flusher<T> flusher;
 
+  // 순서에 의존하지 않게 만들어야 함
   private final List<T> forAdd = new ArrayList<>();
   private final List<T> forUpdate = new ArrayList<>();
   private final List<T> forRemove = new ArrayList<>();

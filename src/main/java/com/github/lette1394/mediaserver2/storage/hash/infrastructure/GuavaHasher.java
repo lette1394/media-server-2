@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @SuppressWarnings("UnstableApiUsage")
-public class GuavaHasher implements Hasher {
+public final class GuavaHasher implements Hasher {
   private final com.google.common.hash.Hasher hasher;
 
   @Override

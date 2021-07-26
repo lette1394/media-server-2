@@ -5,6 +5,9 @@ import com.google.common.hash.Hashing;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class GuavaHashers {
+  private GuavaHashers() {
+  }
+
   public Hasher md5() {
     return new GuavaHasher(Hashing.md5().newHasher());
   }

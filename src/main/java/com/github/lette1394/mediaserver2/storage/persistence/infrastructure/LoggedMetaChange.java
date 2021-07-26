@@ -40,6 +40,6 @@ public class LoggedMetaChange<T extends Entity> implements MetaChange<T> {
     return start()
       .thenCompose(__ -> metaChange.flush())
       .thenRun(() -> log.info("{}> flushed successfully", trace))
-      .exceptionally(peek(() -> log.info("{}> flushed successfully", trace)));
+      .exceptionally(peek(e -> log.info("{}> exception occurred: [%s]".formatted(e), trace)));
   }
 }

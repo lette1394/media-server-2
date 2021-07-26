@@ -15,10 +15,15 @@ public final class FluentCompletionStage {
     return CompletableFuture.completedFuture(null);
   }
 
-  public static <T> Function<Throwable, ? extends T> peek(Runnable runnable) {
-    runnable.run();
-
+  public static <T> Function<Throwable, ? extends T> peek(Consumer<Throwable> consumer) {
     return throwable -> {
+      try {
+        consumer.accept(throwable);
+      } catch (Throwable inner) {
+        throwable.addSuppressed(inner);
+        throw new CompletionException(throwable);
+      }
+
       if (throwable instanceof CompletionException e) {
         throw e;
       }
