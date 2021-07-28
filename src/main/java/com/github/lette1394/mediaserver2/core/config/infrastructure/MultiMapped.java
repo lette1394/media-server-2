@@ -12,7 +12,7 @@ final class MultiMapped implements AllMultipleConfigs {
   public <T> T find(Class<T> type, String name) {
     return allMappedResourceTypes
       .findMappedResource(type)
-      .map(entity -> resources.find(entity, name).toMapped())
+      .map(entity -> resources.find(entity, name).toConfig())
       .getOrElse(() -> resources.find(type, name));
   }
 }

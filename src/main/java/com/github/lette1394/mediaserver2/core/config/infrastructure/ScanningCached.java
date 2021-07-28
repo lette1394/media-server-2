@@ -3,7 +3,7 @@ package com.github.lette1394.mediaserver2.core.config.infrastructure;
 import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
 import static java.util.stream.Collectors.toMap;
 
-import com.github.lette1394.mediaserver2.core.config.domain.MappedResource;
+import com.github.lette1394.mediaserver2.core.config.domain.RawConfig;
 import io.vavr.control.Option;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -13,7 +13,7 @@ import org.reflections.Reflections;
 
 @SuppressWarnings("rawtypes")
 final class ScanningCached implements AllMappedResourceTypes {
-  private final Map<Class<?>, ? extends Class<? extends MappedResource>> cached;
+  private final Map<Class<?>, ? extends Class<? extends RawConfig>> cached;
 
   public ScanningCached(Reflections reflections) {
     this.cached = scan(reflections);
@@ -21,16 +21,16 @@ final class ScanningCached implements AllMappedResourceTypes {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T, R extends MappedResource<T>> Option<Class<R>> findMappedResource(Class<T> mappedType) {
+  public <T, R extends RawConfig<T>> Option<Class<R>> findMappedResource(Class<T> mappedType) {
     if (cached.containsKey(mappedType)) {
       return Option.of((Class<R>) cached.get(mappedType));
     }
     return Option.none();
   }
 
-  private static Map<Class<?>, ? extends Class<? extends MappedResource>> scan(Reflections reflections) {
+  private static Map<Class<?>, ? extends Class<? extends RawConfig>> scan(Reflections reflections) {
     return reflections
-      .getSubTypesOf(MappedResource.class)
+      .getSubTypesOf(RawConfig.class)
       .stream()
       .map(entityClassType -> {
         final Type[] genericInterfaces = entityClassType.getGenericInterfaces();

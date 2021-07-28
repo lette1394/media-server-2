@@ -12,7 +12,7 @@ final class SingleMapped implements AllSingleConfigs {
   public <T> T find(Class<T> type) {
     return allMappedResourceTypes
       .findMappedResource(type)
-      .map(entity -> resources.find(entity).toMapped())
+      .map(entity -> resources.find(entity).toConfig())
       .getOrElse(() -> resources.find(type));
   }
 }
