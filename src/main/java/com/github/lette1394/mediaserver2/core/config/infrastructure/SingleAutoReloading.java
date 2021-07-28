@@ -1,7 +1,7 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
-import com.github.lette1394.mediaserver2.core.config.domain.AutoReloaded;
+import com.github.lette1394.mediaserver2.core.config.domain.AutoReload;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.lang.reflect.InvocationHandler;
@@ -17,7 +17,7 @@ final class SingleAutoReloading implements AllSingleConfigs {
   @Override
   public <T> T find(Class<T> type) {
     return Option
-      .of(type.getAnnotation(AutoReloaded.class))
+      .of(type.getAnnotation(AutoReload.class))
       .map(__ -> autoReloaded(type, resources.find(type)))
       .getOrElse(() -> resources.find(type));
   }

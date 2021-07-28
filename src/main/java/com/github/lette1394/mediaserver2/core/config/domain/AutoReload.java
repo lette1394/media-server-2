@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 // 요약: 1. interface, 2. ....
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AutoReloaded {
+public @interface AutoReload {
 }

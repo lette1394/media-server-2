@@ -1,7 +1,7 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigs;
-import com.github.lette1394.mediaserver2.core.config.domain.AutoReloaded;
+import com.github.lette1394.mediaserver2.core.config.domain.AutoReload;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
 import java.lang.reflect.InvocationHandler;
@@ -17,7 +17,7 @@ final class MultiAutoReloading implements AllMultipleConfigs {
   @Override
   public <T> T find(Class<T> type, String name) {
     return Option
-      .of(type.getAnnotation(AutoReloaded.class))
+      .of(type.getAnnotation(AutoReload.class))
       .map(__ -> autoReloaded(type, name))
       .getOrElse(() -> resources.find(type, name));
   }

@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 import static com.github.lette1394.mediaserver2.core.config.domain.TestFixtures.CURRENT_PACKAGE
 
-class AutoReloadedTest extends Specification {
+class AutoReloadTest extends Specification {
 
   def "find resource"() {
     given: "two Address resources, one is 'seoul', the other is 'busan'"
@@ -50,7 +50,7 @@ class AutoReloadedTest extends Specification {
     return new AddressYamlResource(cityName, zipCode)
   }
 
-  @AutoReloaded
+  @AutoReload
   interface Address {
   }
 
