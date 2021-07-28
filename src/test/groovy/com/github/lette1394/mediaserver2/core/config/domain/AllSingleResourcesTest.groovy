@@ -11,7 +11,7 @@ import static com.github.lette1394.mediaserver2.core.config.domain.TestFixtures.
 
 class AllSingleResourcesTest extends Specification {
   private final AllResources allResources = AllResources.builder()
-    .rootResourceDirectory("/core/configuration")
+    .rootResourceDirectory("/core/config")
     .rootScanningPackage(CURRENT_PACKAGE)
     .objectMapper(new ObjectMapper(new YAMLFactory()))
     .build()

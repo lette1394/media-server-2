@@ -12,7 +12,7 @@ import static com.github.lette1394.mediaserver2.core.config.domain.AllMultipleRe
 
 class AllMultipleResourcesTest extends Specification {
   private final AllResources allResources = AllResources.builder()
-    .rootResourceDirectory("/core/configuration")
+    .rootResourceDirectory("/core/config")
     .rootScanningPackage(TestFixtures.CURRENT_PACKAGE)
     .objectMapper(new ObjectMapper(new YAMLFactory()))
     .build()
