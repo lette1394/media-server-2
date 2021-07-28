@@ -5,7 +5,7 @@ import spock.lang.Specification
 abstract class ResourceTest extends Specification {
   abstract Resource subject()
 
-  def "contents() should be non-null"() {
+  def "resource contents should be non-null"() {
     expect:
       subject().contents() != null
   }

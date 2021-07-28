@@ -21,12 +21,7 @@ public class ByteArrayResource implements Resource {
   public byte[] contents() {
     return contents;
   }
-
-  @Override
-  public Type type() {
-    return null;
-  }
-
+  
   @Override
   public String toString() {
     return new String(contents);
