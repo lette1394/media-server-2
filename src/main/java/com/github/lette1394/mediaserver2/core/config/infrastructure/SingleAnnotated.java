@@ -1,7 +1,7 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
-import com.github.lette1394.mediaserver2.core.config.domain.CannotFindResourceException;
+import com.github.lette1394.mediaserver2.core.config.domain.CannotFindConfigException;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ final class SingleAnnotated implements AllSingleConfigs {
       .flatMap(fileResourcePathFactory::create)
       .map(path -> new FileResource<>(type, path))
       .flatMap(loader::load)
-      .getOrElseThrow(throwable -> new CannotFindResourceException("""
+      .getOrElseThrow(throwable -> new CannotFindConfigException("""
         다음 클래스와 관련된 리소스를 찾을 수 없습니다. 다음 사항을 확인 해 주십시오.
         ===
         type: [%s]
