@@ -1,18 +1,18 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import io.vavr.control.Try;
 import java.util.Set;
 
-final class SingleWarmingUp implements AllSingleResources {
-  private final AllSingleResources allSingleResources;
+final class SingleWarmingUp implements AllSingleConfigs {
+  private final AllSingleConfigs allSingleConfigs;
 
-  private SingleWarmingUp(AllSingleResources allSingleResources) {
-    this.allSingleResources = allSingleResources;
+  private SingleWarmingUp(AllSingleConfigs allSingleConfigs) {
+    this.allSingleConfigs = allSingleConfigs;
   }
 
-  static Try<AllSingleResources> create(
-    AllSingleResources resources,
+  static Try<AllSingleConfigs> create(
+    AllSingleConfigs resources,
     ResourceScanner scanner,
     Warmer warmer) {
 
@@ -22,7 +22,7 @@ final class SingleWarmingUp implements AllSingleResources {
   }
 
   private static Try<Void> warmUp(
-    AllSingleResources resources,
+    AllSingleConfigs resources,
     Set<? extends FileResource<?>> fileResources,
     Warmer warmer) {
 
@@ -33,7 +33,7 @@ final class SingleWarmingUp implements AllSingleResources {
 
   @Override
   public <T> T find(Class<T> type) {
-    return allSingleResources.find(type);
+    return allSingleConfigs.find(type);
   }
 }
 

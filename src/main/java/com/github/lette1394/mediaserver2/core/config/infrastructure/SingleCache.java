@@ -1,14 +1,14 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-final class SingleCache implements AllSingleResources {
-  private final AllSingleResources resources;
+final class SingleCache implements AllSingleConfigs {
+  private final AllSingleConfigs resources;
   private final Map<Class<?>, Object> holder = new ConcurrentHashMap<>(4096);
 
-  public SingleCache(AllSingleResources resources) {
+  public SingleCache(AllSingleConfigs resources) {
     this.resources = resources;
   }
 

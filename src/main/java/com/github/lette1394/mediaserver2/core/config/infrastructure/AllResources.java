@@ -4,7 +4,7 @@ import static java.time.Duration.ofSeconds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleResources;
-import com.github.lette1394.mediaserver2.core.config.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import com.github.lette1394.mediaserver2.core.config.domain.Reloader;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion.VersionFlag;
@@ -21,7 +21,7 @@ public final class AllResources implements Reloader {
   private final Reflections reflections;
   private final FileResourceLoaders fileResourceLoaders;
 
-  private final AllSingleResources single;
+  private final AllSingleConfigs single;
   private final AllMultipleResources multi;
   private final Reloader reloader;
   private final Warmer warmer;
@@ -47,7 +47,7 @@ public final class AllResources implements Reloader {
     this.multi = new MultiAutoReloading(multiReloading);
   }
 
-  public AllSingleResources single() {
+  public AllSingleConfigs single() {
     return single;
   }
 
@@ -60,7 +60,7 @@ public final class AllResources implements Reloader {
     return reloader.reload();
   }
 
-  private Try<AllSingleResources> createSingle() {
+  private Try<AllSingleConfigs> createSingle() {
     return singleScanner().flatMap(
       scanner -> fileResourceLoaders.create(scanner).flatMap(
         loader -> {

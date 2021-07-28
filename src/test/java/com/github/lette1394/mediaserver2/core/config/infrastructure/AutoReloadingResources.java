@@ -2,7 +2,7 @@ package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.github.lette1394.mediaserver2.core.config.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import com.github.lette1394.mediaserver2.core.config.domain.Reloader;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -11,7 +11,7 @@ import lombok.Builder;
 import org.reflections.Reflections;
 
 public class AutoReloadingResources implements Reloader {
-  private final AllSingleResources single;
+  private final AllSingleConfigs single;
   private final AtomicReference<String> textReference;
   private String text;
 
@@ -21,13 +21,13 @@ public class AutoReloadingResources implements Reloader {
     this.textReference = new AtomicReference<>(initialText);
 
     final var objectMapper = new ObjectMapper(new YAMLFactory());
-    final var string = new StringReferenceResources(objectMapper, textReference);
+    final var string = new StringReferenceConfigs(objectMapper, textReference);
     final var mapped = new SingleMapped(string, new ScanningCached(new Reflections(rootScanningPackage)));
     final var autoReloading = new SingleAutoReloading(mapped);
     this.single = autoReloading;
   }
 
-  public AllSingleResources single() {
+  public AllSingleConfigs single() {
     return single;
   }
 

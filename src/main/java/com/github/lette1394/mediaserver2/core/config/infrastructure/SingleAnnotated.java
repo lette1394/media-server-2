@@ -1,12 +1,12 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import com.github.lette1394.mediaserver2.core.config.domain.CannotFindResourceException;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class SingleAnnotated implements AllSingleResources {
+final class SingleAnnotated implements AllSingleConfigs {
   private final FileResourceLoader loader;
   private final FileResourcePathFactory fileResourcePathFactory;
 

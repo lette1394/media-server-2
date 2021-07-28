@@ -9,7 +9,7 @@ import spock.lang.Specification
 
 import static com.github.lette1394.mediaserver2.core.config.domain.TestFixtures.CURRENT_PACKAGE
 
-class AllSingleResourcesTest extends Specification {
+class AllSingleConfigsTest extends Specification {
   private final AllResources allResources = AllResources.builder()
     .rootResourceDirectory("/core/config")
     .rootScanningPackage(CURRENT_PACKAGE)

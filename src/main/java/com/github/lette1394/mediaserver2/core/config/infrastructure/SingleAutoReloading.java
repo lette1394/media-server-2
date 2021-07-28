@@ -1,6 +1,6 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllSingleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import com.github.lette1394.mediaserver2.core.config.domain.AutoReloaded;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class SingleAutoReloading implements AllSingleResources {
-  private final AllSingleResources resources;
+final class SingleAutoReloading implements AllSingleConfigs {
+  private final AllSingleConfigs resources;
 
   @Override
   public <T> T find(Class<T> type) {
@@ -32,7 +32,7 @@ final class SingleAutoReloading implements AllSingleResources {
 
   @RequiredArgsConstructor
   private static class UseLastSucceedResourceIfReloadingFailedInvocationHandler<T> implements InvocationHandler {
-    private final AllSingleResources resources;
+    private final AllSingleConfigs resources;
     private final Class<T> type;
     private final AtomicReference<T> lastSucceedResourceReference;
 
