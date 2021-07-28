@@ -13,13 +13,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Publisher;
+import org.springframework.http.HttpStatus;
 import reactor.core.publisher.Mono;
 
 class LoggingJsonBodyHttpClientTest {
 
   @Test
   void test() {
-    final var trace = new UuidTraceFactory().create();
+    final var trace = new UuidTraceFactory().newTrace();
     final var binaryPublishers = new BinaryPublishers<>() {
       @Override
       public BinaryPublisher<Payload> adapt(Trace trace, Publisher<Payload> publisher, long length) {
@@ -35,9 +36,9 @@ class LoggingJsonBodyHttpClientTest {
         map.put("response-2", "2");
         map.put("response-3", "3");
         map.put("response-1", "1");
-        final var headers = new Headers(map);
+        final var headers = new HashMapHeaders(map);
         final var publisher = binaryPublishers.adapt(trace, Mono.empty(), 0L);
-        final var response = new HttpResponse<>(headers, publisher);
+        final var response = new HttpResponse<>(HttpStatus.OK, headers, publisher);
 
         return CompletableFuture.completedFuture(response);
       }
@@ -53,7 +54,7 @@ class LoggingJsonBodyHttpClientTest {
     map.put("request-3", "3");
     map.put("request-1", "1");
 
-    loggedJson.get(new GetRequest(null, new Headers(map)))
+    loggedJson.get(new GetRequest(null, new HashMapHeaders(map)))
       .thenAccept(response -> {
         System.out.println("done");
       });
@@ -61,7 +62,7 @@ class LoggingJsonBodyHttpClientTest {
 
   @Test
   void test1() {
-    final var trace = new UuidTraceFactory().create();
+    final var trace = new UuidTraceFactory().newTrace();
     final var binaryPublishers = new BinaryPublishers<StringPayload>() {
       @Override
       public BinaryPublisher<StringPayload> adapt(Trace trace,
@@ -79,7 +80,7 @@ class LoggingJsonBodyHttpClientTest {
         map.put("header-2", "2");
         map.put("header-3", "3");
         map.put("header-1", "1");
-        final var headers = new Headers(map);
+        final var headers = new HashMapHeaders(map);
         final var publisher = binaryPublishers.adapt(trace, Mono.just(new StringPayload("""
           {
               "glossary": {
@@ -105,7 +106,7 @@ class LoggingJsonBodyHttpClientTest {
           }
                     
           """)), 0L);
-        final var response = new HttpResponse<>(headers, publisher);
+        final var response = new HttpResponse<>(HttpStatus.OK, headers, publisher);
 
         return CompletableFuture.completedFuture(response);
       }
@@ -121,7 +122,7 @@ class LoggingJsonBodyHttpClientTest {
     map.put("request-3", "c");
     map.put("request-1", "d");
 
-    loggedJson.get(new GetRequest(null, new Headers(map)))
+    loggedJson.get(new GetRequest(null, new HashMapHeaders(map)))
       .thenAccept(response -> {
         System.out.println("done");
       });

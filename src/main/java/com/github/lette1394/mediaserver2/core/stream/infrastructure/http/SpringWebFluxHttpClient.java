@@ -1,14 +1,14 @@
 package com.github.lette1394.mediaserver2.core.stream.infrastructure.http;
 
+import static java.time.Duration.ofSeconds;
 import static org.springframework.http.HttpHeaders.CONTENT_LENGTH;
 
-import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
-import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
+import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;
+import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.internal.ThreadExecutorMap;
 import io.vavr.control.Option;
-import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Consumer;
@@ -32,7 +32,7 @@ public final class SpringWebFluxHttpClient implements HttpClient<DataBufferPaylo
     final var client = reactor.netty.http.client.HttpClient.create()
       .channelGroup(channels)
       .secure()
-      .responseTimeout(Duration.ofSeconds(10));
+      .responseTimeout(ofSeconds(10));
     final var webClient = WebClient.builder()
       .clientConnector(new ReactorClientHttpConnector(client))
       .build();
@@ -50,7 +50,7 @@ public final class SpringWebFluxHttpClient implements HttpClient<DataBufferPaylo
           .map(length -> binaryPublishers.adapt(trace, entity.getBody(), length))
           .getOrElse(() -> binaryPublishers.adapt(trace, Mono.empty(), 0L));
 
-        return new HttpResponse<>(new Headers(headers), publisher);
+        return new HttpResponse<>(entity.getStatusCode(), new HashMapHeaders(headers), publisher);
       })
       .toFuture();
   }

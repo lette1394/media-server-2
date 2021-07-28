@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public final class UuidTraceFactory implements TraceFactory {
   @Override
-  public Trace create() {
-    return new Trace(UUID.randomUUID().toString());
+  public Trace newTrace() {
+    return null;
   }
 }

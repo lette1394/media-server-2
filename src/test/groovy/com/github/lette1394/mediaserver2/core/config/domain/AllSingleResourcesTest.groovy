@@ -2,12 +2,12 @@ package com.github.lette1394.mediaserver2.core.config.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AllResources
-import com.github.lette1394.mediaserver2.core.configuration.infrastructure.SingleFileResource
+import com.github.lette1394.mediaserver2.core.config.infrastructure.AllResources
+import com.github.lette1394.mediaserver2.core.config.infrastructure.SingleFileResource
 import groovy.transform.Canonical
 import spock.lang.Specification
 
-import static com.github.lette1394.mediaserver2.core.configuration.domain.TestFixtures.CURRENT_PACKAGE
+import static com.github.lette1394.mediaserver2.core.config.domain.TestFixtures.CURRENT_PACKAGE
 
 class AllSingleResourcesTest extends Specification {
   private final AllResources allResources = AllResources.builder()

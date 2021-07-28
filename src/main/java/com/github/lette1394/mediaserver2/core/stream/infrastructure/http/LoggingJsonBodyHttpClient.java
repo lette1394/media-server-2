@@ -44,7 +44,7 @@ public final class LoggingJsonBodyHttpClient<P extends Payload> implements HttpC
       .value(HttpHeaders.CONTENT_TYPE)
       .map(MediaType::parseMediaType)
       .map(contentType -> contentType.equalsTypeAndSubtype(MediaType.APPLICATION_JSON))
-      .orElse(false);
+      .getOrElse(false);
   }
 
   private void log(HttpResponse<P> response) {

@@ -1,10 +1,10 @@
 package com.github.lette1394.mediaserver2.core.config.domain
 
-import com.github.lette1394.mediaserver2.core.configuration.infrastructure.AutoReloadingResources
+import com.github.lette1394.mediaserver2.core.config.infrastructure.AutoReloadingResources
 import groovy.transform.Canonical
 import spock.lang.Specification
 
-import static com.github.lette1394.mediaserver2.core.configuration.domain.TestFixtures.CURRENT_PACKAGE
+import static com.github.lette1394.mediaserver2.core.config.domain.TestFixtures.CURRENT_PACKAGE
 
 class AutoReloadedTest extends Specification {
 

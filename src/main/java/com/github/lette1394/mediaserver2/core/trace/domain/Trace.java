@@ -6,8 +6,13 @@ import lombok.EqualsAndHashCode;
 public final class Trace {
   private final String id;
 
-  public Trace(String id) {
+  Trace(String id) {
     this.id = id;
+  }
+
+  // public modifier 가 아니면서, spring controller aop 에 일괄 적용할 수 있을까?
+  void finish() {
+
   }
 
   @Override

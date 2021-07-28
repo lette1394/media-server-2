@@ -30,7 +30,7 @@ public class PersistenceApi {
     final var contentLength = request.getHeaders().getContentLength();
     requires(contentLength > 0, "content length > 0, but %s".formatted(contentLength));
 
-    final var trace = traceFactory.create();
+    final var trace = traceFactory.newTrace();
     final var id = new Id(key);
     final var publisher = binaryPublishers.adapt(trace, request.getBody().map(DataBufferPayload::new), contentLength);
     final var command = new UploadingCommand<>(id, publisher);
