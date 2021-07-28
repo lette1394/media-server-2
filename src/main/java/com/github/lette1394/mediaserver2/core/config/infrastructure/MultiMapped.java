@@ -1,11 +1,11 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigs;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class MultiMapped implements AllMultipleResources {
-  private final AllMultipleResources resources;
+final class MultiMapped implements AllMultipleConfigs {
+  private final AllMultipleConfigs resources;
   private final AllMappedResourceTypes allMappedResourceTypes;
 
   @Override

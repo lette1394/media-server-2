@@ -7,10 +7,10 @@ import com.github.lette1394.mediaserver2.core.config.infrastructure.MultiFileRes
 import groovy.transform.Canonical
 import spock.lang.Specification
 
-import static com.github.lette1394.mediaserver2.core.config.domain.AllMultipleResourcesTest.Animal.Type.CAT
-import static com.github.lette1394.mediaserver2.core.config.domain.AllMultipleResourcesTest.Animal.Type.DOG
+import static com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigsTest.Animal.Type.CAT
+import static com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigsTest.Animal.Type.DOG
 
-class AllMultipleResourcesTest extends Specification {
+class AllMultipleConfigsTest extends Specification {
   private final AllResources allResources = AllResources.builder()
     .rootResourceDirectory("/core/config")
     .rootScanningPackage(TestFixtures.CURRENT_PACKAGE)

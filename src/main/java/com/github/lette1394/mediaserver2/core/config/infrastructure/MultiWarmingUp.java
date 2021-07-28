@@ -1,18 +1,18 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigs;
 import io.vavr.control.Try;
 import java.util.Set;
 
-final class MultiWarmingUp implements AllMultipleResources {
-  private final AllMultipleResources resources;
+final class MultiWarmingUp implements AllMultipleConfigs {
+  private final AllMultipleConfigs resources;
 
-  private MultiWarmingUp(AllMultipleResources resources) {
+  private MultiWarmingUp(AllMultipleConfigs resources) {
     this.resources = resources;
   }
 
-  public static Try<AllMultipleResources> create(
-    AllMultipleResources resources,
+  public static Try<AllMultipleConfigs> create(
+    AllMultipleConfigs resources,
     ResourceScanner scanner,
     Warmer warmer) {
 
@@ -22,7 +22,7 @@ final class MultiWarmingUp implements AllMultipleResources {
   }
 
   private static Try<Void> warmUp(
-    AllMultipleResources resources,
+    AllMultipleConfigs resources,
     Set<? extends FileResource<?>> fileResources,
     Warmer warmer) {
 

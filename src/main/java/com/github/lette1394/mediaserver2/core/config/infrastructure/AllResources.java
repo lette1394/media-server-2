@@ -3,7 +3,7 @@ package com.github.lette1394.mediaserver2.core.config.infrastructure;
 import static java.time.Duration.ofSeconds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleResources;
+import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigs;
 import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import com.github.lette1394.mediaserver2.core.config.domain.Reloader;
 import com.networknt.schema.JsonSchemaFactory;
@@ -22,7 +22,7 @@ public final class AllResources implements Reloader {
   private final FileResourceLoaders fileResourceLoaders;
 
   private final AllSingleConfigs single;
-  private final AllMultipleResources multi;
+  private final AllMultipleConfigs multi;
   private final Reloader reloader;
   private final Warmer warmer;
 
@@ -51,7 +51,7 @@ public final class AllResources implements Reloader {
     return single;
   }
 
-  public AllMultipleResources multi() {
+  public AllMultipleConfigs multi() {
     return multi;
   }
 
@@ -73,7 +73,7 @@ public final class AllResources implements Reloader {
         }));
   }
 
-  private Try<AllMultipleResources> createMulti() {
+  private Try<AllMultipleConfigs> createMulti() {
     return multiScanner().flatMap(
       scanner -> fileResourceLoaders.create(scanner).flatMap(
         loader -> {
