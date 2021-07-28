@@ -1,7 +1,6 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
 import com.github.lette1394.mediaserver2.core.config.domain.Resource;
-import com.github.lette1394.mediaserver2.core.config.domain.Type;
 import java.nio.charset.StandardCharsets;
 import lombok.EqualsAndHashCode;
 
@@ -21,7 +20,7 @@ public class ByteArrayResource implements Resource {
   public byte[] contents() {
     return contents;
   }
-  
+
   @Override
   public String toString() {
     return new String(contents);

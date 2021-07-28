@@ -18,32 +18,32 @@ final class SingleAutoReloading implements AllSingleConfigs {
   public <T> T find(Class<T> type) {
     return Option
       .of(type.getAnnotation(AutoReload.class))
-      .map(__ -> autoReloaded(type, resources.find(type)))
+      .map(__ -> createAutoReload(type, resources.find(type)))
       .getOrElse(() -> resources.find(type));
   }
 
   @SuppressWarnings("unchecked")
-  private <T> T autoReloaded(Class<T> type, T loadedResource) {
+  private <T> T createAutoReload(Class<T> type, T loadedResource) {
     return (T) Proxy.newProxyInstance(
       type.getClassLoader(),
       new Class[]{type},
-      new UseLastSucceedResourceIfReloadingFailedInvocationHandler<>(resources, type, new AtomicReference<>(loadedResource)));
+      new UseLastValidConfigIfReloadingFailed<>(resources, type, new AtomicReference<>(loadedResource)));
   }
 
   @RequiredArgsConstructor
-  private static class UseLastSucceedResourceIfReloadingFailedInvocationHandler<T> implements InvocationHandler {
+  private static class UseLastValidConfigIfReloadingFailed<T> implements InvocationHandler {
     private final AllSingleConfigs resources;
     private final Class<T> type;
-    private final AtomicReference<T> lastSucceedResourceReference;
+    private final AtomicReference<T> lastValidConfigs;
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
       return Try
         .of(() -> resources.find(type))
-        .peek(lastSucceedResourceReference::set)
+        .peek(lastValidConfigs::set)
         .toTry()
         .mapTry(resource -> method.invoke(resource, args))
-        .getOrElseTry(() -> method.invoke(lastSucceedResourceReference.get(), args));
+        .getOrElseTry(() -> method.invoke(lastValidConfigs.get(), args));
     }
   }
 }
