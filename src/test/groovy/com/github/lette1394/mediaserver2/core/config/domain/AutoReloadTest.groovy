@@ -55,13 +55,9 @@ class AutoReloadTest extends Specification {
   }
 
   @Canonical
-  private static class AddressYamlResource implements RawConfig<Address>, Address {
+  @TypeAlias(Address.class)
+  private static class AddressYamlResource implements Address {
     String cityName
     int zipCode
-
-    @Override
-    Address toConfig() {
-      return this
-    }
   }
 }

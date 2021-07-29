@@ -6,13 +6,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 final class SingleMapped implements AllSingleConfigs {
   private final AllSingleConfigs resources;
-  private final AllMappedResourceTypes allMappedResourceTypes;
+  private final AllRawConfigTypes allRawConfigTypes;
 
   @Override
   public <T> T find(Class<T> type) {
-    return allMappedResourceTypes
-      .findMappedResource(type)
-      .map(entity -> resources.find(entity).toConfig())
+    return allRawConfigTypes.findRawConfig(type)
+      .map(resources::find)
       .getOrElse(() -> resources.find(type));
   }
 }

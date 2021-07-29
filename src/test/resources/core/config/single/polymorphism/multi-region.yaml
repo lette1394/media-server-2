@@ -1,0 +1,6 @@
+type: multi
+endpoints:
+  KR: https://kr-endpoint:8080/encoding
+  JP: https://jp-endpoint:10000/encoding
+  SG: https://sg-endpoint:20000/encoding
+fallback: KR

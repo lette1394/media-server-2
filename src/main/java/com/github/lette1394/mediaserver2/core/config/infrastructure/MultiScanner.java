@@ -25,7 +25,7 @@ final class MultiScanner implements ResourceScanner {
 
   private Try<Set<? extends FileResource<?>>> scanMulti() {
     return Try.of(() -> reflections
-      .getTypesAnnotatedWith(SCANNING_TYPE)
+      .getTypesAnnotatedWith(SCANNING_TYPE, true)
       .stream()
       .flatMap(this::multiFile)
       .collect(toUnmodifiableSet()));

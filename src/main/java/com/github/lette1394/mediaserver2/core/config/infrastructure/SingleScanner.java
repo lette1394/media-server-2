@@ -23,7 +23,7 @@ final class SingleScanner implements ResourceScanner {
   }
 
   public Set<Class<?>> scanSingle() {
-    return reflections.getTypesAnnotatedWith(SCANNING_TYPE);
+    return reflections.getTypesAnnotatedWith(SCANNING_TYPE, true);
   }
 
   private FileResource<?> singleFileResources(Class<?> type) {
