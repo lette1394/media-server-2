@@ -6,14 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-final class Logging implements FileResourceLoader {
-  private final FileResourceLoader loader;
+final class Logging implements Deserializer {
+  private final Deserializer deserializer;
 
   @Override
-  public <T> Try<T> load(FileResource<T> fileResource) {
-    return loader.load(fileResource)
-      .onSuccess(__ -> log.info("loaded: [{}]", fileResource))
+  public <T> Try<T> deserialize(FileConfig<T> fileConfig) {
+    return deserializer.deserialize(fileConfig)
+      .onSuccess(__ -> log.info("loaded: [{}]", fileConfig))
       .onFailure(throwable -> log.error("got exception during loading: [{}], cause: [{}]",
-        fileResource, throwable));
+        fileConfig, throwable));
   }
 }

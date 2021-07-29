@@ -2,20 +2,16 @@ package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.vavr.control.Try;
-import java.nio.file.Files;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class Jackson implements FileResourceLoader {
+final class Jackson implements Deserializer {
   private final ObjectMapper objectMapper;
 
   @Override
-  @SuppressWarnings("unchecked")
-  public <T> Try<T> load(FileResource<T> fileResource) {
-    return Try.of(() -> {
-      final var path = fileResource.fileResourcePath().toPath();
-      final var bytes = Files.readAllBytes(path);
-      return objectMapper.readValue(bytes, fileResource.type());
-    });
+  public <T> Try<T> deserialize(FileConfig<T> fileConfig) {
+    return Try.of(() -> objectMapper.readValue(
+      fileConfig.contents(),
+      fileConfig.deserializedType()));
   }
 }

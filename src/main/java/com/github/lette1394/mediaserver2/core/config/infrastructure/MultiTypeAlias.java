@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.config.domain.AllMultiConfigs;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class MultiMapped implements AllMultiConfigs {
+final class MultiTypeAlias implements AllMultiConfigs {
   private final AllMultiConfigs resources;
   private final AllTypeAliases allTypeAliases;
 

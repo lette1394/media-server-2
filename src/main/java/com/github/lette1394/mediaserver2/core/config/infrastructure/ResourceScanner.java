@@ -5,5 +5,5 @@ import java.util.Set;
 
 @FunctionalInterface
 interface ResourceScanner {
-  Try<Set<? extends FileResource<?>>> scan();
+  Try<Set<? extends FileConfig<?>>> scan();
 }

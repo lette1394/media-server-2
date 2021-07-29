@@ -7,15 +7,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 final class SingleAnnotated implements AllSingleConfigs {
-  private final FileResourceLoader loader;
-  private final FileResourcePathFactory fileResourcePathFactory;
+  private final Deserializer loader;
+  private final ClassPathFileFactory classPathFileFactory;
 
   @Override
   public <T> T find(Class<T> type) {
     return Option.of(type.getAnnotation(SingleFileResource.class)).toTry()
-      .flatMap(fileResourcePathFactory::create)
-      .map(path -> new FileResource<>(type, path))
-      .flatMap(loader::load)
+      .flatMap(classPathFileFactory::create)
+      .map(path -> new FileConfig<>(type, path))
+      .flatMap(loader::deserialize)
       .getOrElseThrow(throwable -> new CannotFindConfigException("""
         다음 클래스와 관련된 리소스를 찾을 수 없습니다. 다음 사항을 확인 해 주십시오.
         ===

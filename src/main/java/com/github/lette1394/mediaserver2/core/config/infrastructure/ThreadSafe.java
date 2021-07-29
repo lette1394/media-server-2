@@ -6,14 +6,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class ThreadSafe implements FileResourceLoader {
-  private final FileResourceLoader loader;
-  private final Map<FileResource<?>, Object> locks = new ConcurrentHashMap<>(4096);
+final class ThreadSafe implements Deserializer {
+  private final Deserializer loader;
+  private final Map<FileConfig<?>, Object> locks = new ConcurrentHashMap<>(4096);
 
   @Override
-  public <T> Try<T> load(FileResource<T> fileResource) {
-    synchronized (locks.computeIfAbsent(fileResource, __ -> new Object())) {
-      return loader.load(fileResource);
+  public <T> Try<T> deserialize(FileConfig<T> fileConfig) {
+    synchronized (locks.computeIfAbsent(fileConfig, __ -> new Object())) {
+      return loader.deserialize(fileConfig);
     }
   }
 }

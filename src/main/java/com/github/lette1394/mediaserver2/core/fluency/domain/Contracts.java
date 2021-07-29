@@ -21,12 +21,4 @@ public final class Contracts {
     }
     throw new ContractViolationException(String.format("required: %s", message));
   }
-
-  public static <T extends Throwable> void checkedRequires(boolean condition,
-    Supplier<T> throwableSupplier) throws T {
-    if (condition) {
-      return;
-    }
-    throw throwableSupplier.get();
-  }
 }

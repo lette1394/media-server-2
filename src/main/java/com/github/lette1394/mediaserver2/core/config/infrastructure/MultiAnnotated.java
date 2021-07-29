@@ -6,15 +6,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 final class MultiAnnotated implements AllMultiConfigs {
-  private final FileResourceLoader loader;
-  private final FileResourcePathFactory fileResourcePathFactory;
+  private final Deserializer loader;
+  private final ClassPathFileFactory classPathFileFactory;
 
   @Override
   public <T> T find(Class<T> type, String name) {
     return Option.of(type.getAnnotation(MultiFileResource.class)).toTry()
-      .flatMap(annotation -> fileResourcePathFactory.create(annotation, name))
-      .map(path -> new FileResource<>(type, path))
-      .flatMap(loader::load)
+      .flatMap(annotation -> classPathFileFactory.create(annotation, name))
+      .map(path -> new FileConfig<>(type, path))
+      .flatMap(loader::deserialize)
       .get();
   }
 }

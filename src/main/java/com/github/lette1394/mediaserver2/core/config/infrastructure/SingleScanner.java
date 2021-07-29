@@ -11,11 +11,11 @@ import org.reflections.Reflections;
 final class SingleScanner implements ResourceScanner {
   private static final Class<SingleFileResource> SCANNING_TYPE = SingleFileResource.class;
 
-  private final FileResourcePathFactory fileResourcePathFactory;
+  private final ClassPathFileFactory classPathFileFactory;
   private final Reflections reflections;
 
   @Override
-  public Try<Set<? extends FileResource<?>>> scan() {
+  public Try<Set<? extends FileConfig<?>>> scan() {
     return Try.of(() -> scanSingle()
       .stream()
       .map(this::singleFileResources)
@@ -26,9 +26,9 @@ final class SingleScanner implements ResourceScanner {
     return reflections.getTypesAnnotatedWith(SCANNING_TYPE, true);
   }
 
-  private FileResource<?> singleFileResources(Class<?> type) {
+  private FileConfig<?> singleFileResources(Class<?> type) {
     final var annotation = type.getAnnotation(SCANNING_TYPE);
-    final var classPath = fileResourcePathFactory.create(annotation).get();
-    return new FileResource<>(type, classPath);
+    final var classPath = classPathFileFactory.create(annotation).get();
+    return new FileConfig<>(type, classPath);
   }
 }

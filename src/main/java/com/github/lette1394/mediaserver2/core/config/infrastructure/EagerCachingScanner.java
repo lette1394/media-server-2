@@ -5,19 +5,19 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 final class EagerCachingScanner implements ResourceScanner {
-  private final AtomicReference<Set<? extends FileResource<?>>> cacheRef;
+  private final AtomicReference<Set<? extends FileConfig<?>>> cacheRef;
 
-  private EagerCachingScanner(AtomicReference<Set<? extends FileResource<?>>> cacheRef) {
+  private EagerCachingScanner(AtomicReference<Set<? extends FileConfig<?>>> cacheRef) {
     this.cacheRef = cacheRef;
   }
 
-  static Try<ResourceScanner> create(ResourceScanner resourceScanner) {
+  static Try<ResourceScanner> createEagerCachingScanner(ResourceScanner resourceScanner) {
     return resourceScanner.scan()
       .map(fileResources -> new EagerCachingScanner(new AtomicReference<>(fileResources)));
   }
 
   @Override
-  public Try<Set<? extends FileResource<?>>> scan() {
+  public Try<Set<? extends FileConfig<?>>> scan() {
     return Try.success(cacheRef.get());
   }
 }

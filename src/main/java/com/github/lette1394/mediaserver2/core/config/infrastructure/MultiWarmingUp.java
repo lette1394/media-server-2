@@ -11,7 +11,7 @@ final class MultiWarmingUp implements AllMultiConfigs {
     this.resources = resources;
   }
 
-  public static Try<AllMultiConfigs> create(
+  public static Try<AllMultiConfigs> createMultiWarmingUp(
     AllMultiConfigs resources,
     ResourceScanner scanner,
     Warmer warmer) {
@@ -23,12 +23,12 @@ final class MultiWarmingUp implements AllMultiConfigs {
 
   private static Try<Void> warmUp(
     AllMultiConfigs resources,
-    Set<? extends FileResource<?>> fileResources,
+    Set<? extends FileConfig<?>> fileResources,
     Warmer warmer) {
 
     return warmer.submit(() -> fileResources
       .parallelStream()
-      .forEach(fileResource -> resources.find(fileResource.type(), fileResource.filename())));
+      .forEach(fileResource -> resources.find(fileResource.deserializedType(), fileResource.filename())));
   }
 
   @Override

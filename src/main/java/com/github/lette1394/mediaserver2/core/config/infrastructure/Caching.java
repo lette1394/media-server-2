@@ -5,17 +5,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-final class Caching implements FileResourceLoader {
-  private final FileResourceLoader loader;
-  private final Map<FileResource<?>, Try<?>> holder = new ConcurrentHashMap<>(4096);
+final class Caching implements Deserializer {
+  private final Deserializer deserializer;
+  private final Map<FileConfig<?>, Try<?>> holder = new ConcurrentHashMap<>(4096);
 
-  public Caching(FileResourceLoader fileResourceLoader) {
-    this.loader = fileResourceLoader;
+  public Caching(Deserializer deSerializer) {
+    this.deserializer = deSerializer;
   }
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T> Try<T> load(FileResource<T> fileResource) {
-    return (Try<T>) holder.computeIfAbsent(fileResource, loader::load);
+  public <T> Try<T> deserialize(FileConfig<T> fileConfig) {
+    return (Try<T>) holder.computeIfAbsent(fileConfig, deserializer::deserialize);
   }
 }

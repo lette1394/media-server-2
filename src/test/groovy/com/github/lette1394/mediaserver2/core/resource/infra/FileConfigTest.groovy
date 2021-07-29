@@ -2,7 +2,7 @@ package com.github.lette1394.mediaserver2.core.resource.infra
 
 import spock.lang.Specification
 
-class FileResourceTest extends Specification {
+class FileConfigTest extends Specification {
   def "The path should be start with /"() {
     when: "I create file resource"
       def resource = new FileResource("hello.txt")

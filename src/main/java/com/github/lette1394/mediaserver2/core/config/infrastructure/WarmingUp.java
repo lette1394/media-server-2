@@ -4,36 +4,36 @@ import io.vavr.control.Try;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-final class WarmingUp implements FileResourceLoader {
-  private final FileResourceLoader loader;
+final class WarmingUp implements Deserializer {
+  private final Deserializer deserializer;
 
-  private WarmingUp(FileResourceLoader loader) {
-    this.loader = loader;
+  private WarmingUp(Deserializer deserializer) {
+    this.deserializer = deserializer;
   }
 
-  static Try<FileResourceLoader> create(
-    FileResourceLoader loader,
+  static Try<Deserializer> createWarmingUp(
+    Deserializer deserializer,
     ResourceScanner resourceScanner,
     Warmer warmer) {
 
     return resourceScanner
       .scan()
-      .flatMap(fileResources -> warmUp(loader, fileResources, warmer))
-      .map(__ -> new WarmingUp(loader));
+      .flatMap(fileResources -> warmUp(deserializer, fileResources, warmer))
+      .map(__ -> new WarmingUp(deserializer));
   }
 
   private static Try<Void> warmUp(
-    FileResourceLoader loader,
-    Set<? extends FileResource<?>> resourceSet,
+    Deserializer deserializer,
+    Set<? extends FileConfig<?>> resourceSet,
     Warmer warmer) {
 
     final Try<Void> initial = Try.success(null);
     final Callable<Try<Void>> task = () -> Try.of(() -> resourceSet
       .parallelStream()
-      .map(loader::load)
+      .map(deserializer::deserialize)
       .reduce(initial,
         (acc, t) -> t.flatMap(__ -> acc),
-        (t1, t2) -> t1.flatMap(__ -> t2)))
+        (try1, try2) -> try1.flatMap(__ -> try2)))
       .flatMap(__ -> __);
 
     return warmer
@@ -42,8 +42,8 @@ final class WarmingUp implements FileResourceLoader {
   }
 
   @Override
-  public <T> Try<T> load(FileResource<T> fileResource) {
-    return loader.load(fileResource);
+  public <T> Try<T> deserialize(FileConfig<T> fileConfig) {
+    return deserializer.deserialize(fileConfig);
   }
 }
 

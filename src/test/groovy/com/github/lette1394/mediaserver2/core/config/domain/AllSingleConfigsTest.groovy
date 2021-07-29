@@ -33,14 +33,4 @@ class AllSingleConfigsTest extends Specification {
     String name
     int age
   }
-
-  class AAAService {
-    private final Person person
-
-    public void doSomething() {
-      // business logics;;
-      println(person.age)
-
-    }
-  }
 }

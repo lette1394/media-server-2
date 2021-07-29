@@ -15,15 +15,15 @@ import org.reflections.Reflections;
 @RequiredArgsConstructor
 final class MultiScanner implements ResourceScanner {
   private static final Class<MultiFileResource> SCANNING_TYPE = MultiFileResource.class;
-  private final FileResourcePathFactory fileResourcePathFactory;
+  private final ClassPathFileFactory classPathFileFactory;
   private final Reflections reflections;
 
   @Override
-  public Try<Set<? extends FileResource<?>>> scan() {
+  public Try<Set<? extends FileConfig<?>>> scan() {
     return scanMulti();
   }
 
-  private Try<Set<? extends FileResource<?>>> scanMulti() {
+  private Try<Set<? extends FileConfig<?>>> scanMulti() {
     return Try.of(() -> reflections
       .getTypesAnnotatedWith(SCANNING_TYPE, true)
       .stream()
@@ -32,20 +32,20 @@ final class MultiScanner implements ResourceScanner {
   }
 
   @SneakyThrows
-  private Stream<? extends FileResource<?>> multiFile(Class<?> type) {
+  private Stream<? extends FileConfig<?>> multiFile(Class<?> type) {
     final var directoryPath = type.getAnnotation(SCANNING_TYPE).directoryPath();
-    final var directory = fileResourcePathFactory.create(directoryPath).get();
+    final var directory = classPathFileFactory.create(directoryPath).get();
 
     return Files
-      .walk(directory.toPath())
+      .walk(directory.toJavaPath())
       .map(Path::toFile)
       .filter(File::isFile)
       .filter(File::exists)
       .map(File::getName)
       .map(name -> {
         final var annotation = type.getAnnotation(SCANNING_TYPE);
-        final var filePath = fileResourcePathFactory.create(annotation, name).get();
-        return new FileResource<>(type, filePath);
+        final var filePath = classPathFileFactory.create(annotation, name).get();
+        return new FileConfig<>(type, filePath);
       });
   }
 }

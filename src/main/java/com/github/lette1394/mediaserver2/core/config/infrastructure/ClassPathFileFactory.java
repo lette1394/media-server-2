@@ -8,31 +8,31 @@ import io.vavr.control.Try;
 import java.util.HashMap;
 import java.util.Map;
 
-final class FileResourcePathFactory {
-  private static final Map<ResourceType, String> EXTENSION_MAP = new HashMap<>();
+final class ClassPathFileFactory {
+  private static final Map<ConfigType, String> EXTENSION_MAP = new HashMap<>();
 
   static {
-    EXTENSION_MAP.put(ResourceType.TEXT, "txt");
-    EXTENSION_MAP.put(ResourceType.YAML, "yaml");
-    requires(EXTENSION_MAP.size() == ResourceType.values().length, "missing extension map");
+    EXTENSION_MAP.put(ConfigType.JSON, "json");
+    EXTENSION_MAP.put(ConfigType.YAML, "yaml");
+    requires(EXTENSION_MAP.size() == ConfigType.values().length, "missing extension map");
   }
 
-  private final FileResourcePath basePath;
+  private final ClassPathFile basePath;
 
-  public FileResourcePathFactory(FileResourcePath basePath) {
+  public ClassPathFileFactory(ClassPathFile basePath) {
     this.basePath = basePath;
   }
 
-  public Try<FileResourcePath> create(String path) {
+  public Try<ClassPathFile> create(String path) {
     requires(isNotBlank(path), "path must exist");
     return basePath.concat(path);
   }
 
-  public Try<FileResourcePath> create(SingleFileResource annotation) {
+  public Try<ClassPathFile> create(SingleFileResource annotation) {
     return create(annotation.filePath());
   }
 
-  public Try<FileResourcePath> create(MultiFileResource annotation, String name) {
+  public Try<ClassPathFile> create(MultiFileResource annotation, String name) {
     final var directoryPath = annotation.directoryPath();
     final var extension = Option
       .of(EXTENSION_MAP.get(annotation.resourceType()))

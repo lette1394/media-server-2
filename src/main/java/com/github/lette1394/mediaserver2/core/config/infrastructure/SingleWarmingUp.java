@@ -11,7 +11,7 @@ final class SingleWarmingUp implements AllSingleConfigs {
     this.allSingleConfigs = allSingleConfigs;
   }
 
-  static Try<AllSingleConfigs> create(
+  static Try<AllSingleConfigs> createSingleWarmingUp(
     AllSingleConfigs resources,
     ResourceScanner scanner,
     Warmer warmer) {
@@ -23,12 +23,12 @@ final class SingleWarmingUp implements AllSingleConfigs {
 
   private static Try<Void> warmUp(
     AllSingleConfigs resources,
-    Set<? extends FileResource<?>> fileResources,
+    Set<? extends FileConfig<?>> fileResources,
     Warmer warmer) {
 
     return warmer.submit(() -> fileResources
       .parallelStream()
-      .forEach(fileResource -> resources.find(fileResource.type())));
+      .forEach(fileResource -> resources.find(fileResource.deserializedType())));
   }
 
   @Override

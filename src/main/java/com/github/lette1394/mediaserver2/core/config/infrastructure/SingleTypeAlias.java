@@ -4,7 +4,7 @@ import com.github.lette1394.mediaserver2.core.config.domain.AllSingleConfigs;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class SingleMapped implements AllSingleConfigs {
+final class SingleTypeAlias implements AllSingleConfigs {
   private final AllSingleConfigs resources;
   private final AllTypeAliases allTypeAliases;
 

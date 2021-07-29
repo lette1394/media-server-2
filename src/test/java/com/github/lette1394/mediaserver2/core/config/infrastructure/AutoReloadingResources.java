@@ -22,7 +22,7 @@ public class AutoReloadingResources implements Reloader {
 
     final var objectMapper = new ObjectMapper(new YAMLFactory());
     final var string = new StringReferenceConfigs(objectMapper, textReference);
-    final var mapped = new SingleMapped(string, new ScanningCached(new Reflections(rootScanningPackage)));
+    final var mapped = new SingleTypeAlias(string, new ScanningCached(new Reflections(rootScanningPackage)));
     final var autoReloading = new SingleAutoReloading(mapped);
     this.single = autoReloading;
   }

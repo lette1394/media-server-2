@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface MultiFileResource {
   String directoryPath();
 
-  ResourceType resourceType() default ResourceType.YAML;
+  ConfigType resourceType() default ConfigType.YAML;
 }
