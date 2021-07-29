@@ -1,5 +1,6 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
+import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
 import static java.util.stream.Collectors.toMap;
 
 import com.github.lette1394.mediaserver2.core.config.domain.TypeAlias;
@@ -27,6 +28,7 @@ final class ScanningCached implements AllTypeAliases {
       .stream()
       .map(sourceType -> {
         final var targetType = sourceType.getAnnotation(TypeAlias.class).value();
+        requires(targetType.isAssignableFrom(sourceType), "[%s] should be subclass of [%s]".formatted(sourceType, targetType));
         return Pair.of(targetType, sourceType);
       })
       .collect(toMap(Pair::getLeft, Pair::getRight));
