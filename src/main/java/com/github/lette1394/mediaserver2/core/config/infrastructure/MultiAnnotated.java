@@ -1,11 +1,11 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigs;
+import com.github.lette1394.mediaserver2.core.config.domain.AllMultiConfigs;
 import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-final class MultiAnnotated implements AllMultipleConfigs {
+final class MultiAnnotated implements AllMultiConfigs {
   private final FileResourceLoader loader;
   private final FileResourcePathFactory fileResourcePathFactory;
 

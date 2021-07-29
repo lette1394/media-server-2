@@ -1,14 +1,14 @@
 package com.github.lette1394.mediaserver2.core.config.infrastructure;
 
-import com.github.lette1394.mediaserver2.core.config.domain.AllMultipleConfigs;
+import com.github.lette1394.mediaserver2.core.config.domain.AllMultiConfigs;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-final class MultiCache implements AllMultipleConfigs {
-  private final AllMultipleConfigs resources;
+final class MultiCache implements AllMultiConfigs {
+  private final AllMultiConfigs resources;
   private final Map<Key, Object> holder = new ConcurrentHashMap<>(4096);
 
-  public MultiCache(AllMultipleConfigs resources) {
+  public MultiCache(AllMultiConfigs resources) {
     this.resources = resources;
   }
 
