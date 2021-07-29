@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 final class MultiMapped implements AllMultiConfigs {
   private final AllMultiConfigs resources;
-  private final AllRawConfigTypes allRawConfigTypes;
+  private final AllTypeAliases allTypeAliases;
 
   @Override
   public <T> T find(Class<T> type, String name) {
-    return allRawConfigTypes.findRawConfig(type)
-      .map(entity -> resources.find(entity, name))
+    return allTypeAliases.findTypeAlias(type)
+      .map(alias -> resources.find(alias, name))
       .getOrElse(() -> resources.find(type, name));
   }
 }

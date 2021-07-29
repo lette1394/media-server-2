@@ -98,7 +98,7 @@ public final class AllResources implements Reloader {
     return cached;
   }
 
-  private AllRawConfigTypes allMappedResourceTypes() {
+  private AllTypeAliases allMappedResourceTypes() {
     return new ScanningCached(reflections);
   }
 }

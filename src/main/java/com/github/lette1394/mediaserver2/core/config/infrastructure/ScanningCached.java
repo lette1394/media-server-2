@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 import org.reflections.Reflections;
 
-final class ScanningCached implements AllRawConfigTypes {
+final class ScanningCached implements AllTypeAliases {
   private final Map<Class<?>, Class<?>> cached;
 
   public ScanningCached(Reflections reflections) {
@@ -17,8 +17,8 @@ final class ScanningCached implements AllRawConfigTypes {
 
   @Override
   @SuppressWarnings("unchecked")
-  public <T, R extends T> Option<Class<R>> findRawConfig(Class<T> mappedType) {
-    return Option.of((Class<R>) cached.get(mappedType));
+  public <T, R extends T> Option<Class<R>> findTypeAlias(Class<T> sourceType) {
+    return Option.of((Class<R>) cached.get(sourceType));
   }
 
   private static Map<Class<?>, Class<?>> scan(Reflections reflections) {
