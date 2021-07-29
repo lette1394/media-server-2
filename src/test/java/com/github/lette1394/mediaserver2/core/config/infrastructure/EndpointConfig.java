@@ -16,7 +16,7 @@ import lombok.extern.jackson.Jacksonized;
   @Type(value = MultiRegion.class, name = "multi")
 })
 @TypeAlias(Endpoint.class)
-@MultiFileResource(directoryPath = "/polymorphism")
+@MultiFileResource(directoryPath = "/single/polymorphism")
 public abstract class EndpointConfig implements Endpoint {
 
 }

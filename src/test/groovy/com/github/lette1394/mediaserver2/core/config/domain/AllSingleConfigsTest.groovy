@@ -7,18 +7,12 @@ import com.github.lette1394.mediaserver2.core.config.infrastructure.SingleFileRe
 import groovy.transform.Canonical
 import spock.lang.Specification
 
-import static com.github.lette1394.mediaserver2.core.config.domain.TestFixtures.CURRENT_PACKAGE
+import static com.github.lette1394.mediaserver2.core.config.TestFixtures.ALL_RESOURCES
 
 class AllSingleConfigsTest extends Specification {
-  private final AllResources allResources = AllResources.builder()
-    .rootResourceDirectory("/core/config")
-    .rootScanningPackage(CURRENT_PACKAGE)
-    .objectMapper(new ObjectMapper(new YAMLFactory()))
-    .build()
-
   def "find single resource"() {
     given: "I got all single resources"
-      def resources = allResources.single()
+      def resources = ALL_RESOURCES.single()
 
     when: "I find Person resource"
       def person = resources.find(Person.class)
