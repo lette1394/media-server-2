@@ -27,12 +27,4 @@ final class DirectoryKey<T> implements Key<T> {
       .mapTry(Files::readAllBytes)
       .getOrElseThrow(throwable -> new ConfigException(throwable));
   }
-
-  Class<T> deserializedType() {
-    return deserializedType;
-  }
-
-  byte[] contents() {
-    return contents;
-  }
 }
