@@ -11,17 +11,17 @@ import lombok.ToString;
 
 @ToString(of = {"deserializedType", "path"})
 @EqualsAndHashCode(of = {"deserializedType", "path"})
-final class FileKey<T> implements Key<T> {
+final class DirectoryKey<T> implements Key<T> {
   private final Class<T> deserializedType;
   private final String path;
   private final byte[] contents;
 
   @SuppressWarnings("Convert2MethodRef")
-  public FileKey(Class<T> deserializedType, String path) {
+  public DirectoryKey(Class<T> deserializedType, String path) {
     this.deserializedType = deserializedType;
     this.path = path;
     this.contents = Option.of(getClass().getResource(path))
-      .toTry(() -> new ConfigException("file:[%s] not found".formatted(path)))
+      .toTry()
       .mapTry(URL::toURI)
       .map(Path::of)
       .mapTry(Files::readAllBytes)

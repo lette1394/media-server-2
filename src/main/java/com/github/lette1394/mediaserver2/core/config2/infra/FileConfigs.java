@@ -6,13 +6,14 @@ import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigs;
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException;
 import com.github.lette1394.mediaserver2.core.config2.domain.Key;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class FileConfigs implements AllConfigs {
-
+  private final ObjectMapper objectMapper;
 
   @Override
   public <T> T find(Key<T> key) {
-    final var objectMapper = new ObjectMapper(new YAMLFactory());
     if (key instanceof FileKey<T> fileKey) {
       try {
         return objectMapper.readValue(fileKey.contents(), fileKey.deserializedType());
