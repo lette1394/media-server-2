@@ -7,7 +7,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public final class ClassPathFileUtils {
+final class ClassPathFileUtils {
   private ClassPathFileUtils() {
   }
 
