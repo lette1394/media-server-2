@@ -4,7 +4,6 @@ import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFile
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException;
-import com.github.lette1394.mediaserver2.core.config2.domain.Key;
 import io.vavr.control.Try;
 import java.nio.file.Files;
 import java.util.Set;

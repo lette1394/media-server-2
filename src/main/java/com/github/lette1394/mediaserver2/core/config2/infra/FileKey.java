@@ -3,7 +3,6 @@ package com.github.lette1394.mediaserver2.core.config2.infra;
 import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.readAllBytes;
 import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.toClassPath;
 
-import com.github.lette1394.mediaserver2.core.config2.domain.Key;
 import java.nio.file.Path;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
