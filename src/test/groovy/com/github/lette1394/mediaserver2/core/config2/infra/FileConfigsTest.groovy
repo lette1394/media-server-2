@@ -6,7 +6,7 @@ import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigs
 import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigsTest
 import com.github.lette1394.mediaserver2.core.config2.domain.Key
 
-import static com.github.lette1394.mediaserver2.core.config2.infra.TestFixtures.PERSON_PATH
+import static com.github.lette1394.mediaserver2.core.config2.infra.TestFixtures.PERSON_FILE_PATH
 
 class FileConfigsTest extends AllConfigsTest {
   @Override
@@ -16,7 +16,7 @@ class FileConfigsTest extends AllConfigsTest {
 
   @Override
   Key<Person> existingKey() {
-    return new FileKey<>(Person.class, PERSON_PATH)
+    return new FileKey<>(Person.class, PERSON_FILE_PATH)
   }
 
   @Override

@@ -1,30 +1,35 @@
 package com.github.lette1394.mediaserver2.core.config2.infra;
 
+import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.toClassPath;
+import static java.util.stream.Collectors.toUnmodifiableSet;
+
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException;
 import com.github.lette1394.mediaserver2.core.config2.domain.Key;
-import io.vavr.control.Option;
-import java.net.URL;
+import io.vavr.control.Try;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@ToString(of = {"deserializedType", "path"})
-@EqualsAndHashCode(of = {"deserializedType", "path"})
+@ToString(of = {"deserializedType", "classPath"})
+@EqualsAndHashCode(of = {"deserializedType", "classPath"})
 final class DirectoryKey<T> implements Key<T> {
   private final Class<T> deserializedType;
-  private final String path;
-  private final byte[] contents;
+  private final String classPath;
+  private final Set<FileKey<T>> fileKeySet;
 
   @SuppressWarnings("Convert2MethodRef")
-  public DirectoryKey(Class<T> deserializedType, String path) {
+  DirectoryKey(Class<T> deserializedType, String classPath) {
     this.deserializedType = deserializedType;
-    this.path = path;
-    this.contents = Option.of(getClass().getResource(path))
-      .toTry()
-      .mapTry(URL::toURI)
-      .map(Path::of)
-      .mapTry(Files::readAllBytes)
-      .getOrElseThrow(throwable -> new ConfigException(throwable));
+    this.classPath = classPath;
+    this.fileKeySet = Try.of(() -> Files.walk(toClassPath(classPath)))
+      .getOrElseThrow(throwable -> new ConfigException(throwable))
+      .filter(path -> path.toFile().isFile())
+      .map(path -> new FileKey<>(deserializedType, path))
+      .collect(toUnmodifiableSet());
+  }
+
+  Set<FileKey<T>> fileKeySet() {
+    return fileKeySet;
   }
 }
