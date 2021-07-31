@@ -16,7 +16,7 @@ final class FileConfig<T> {
   static {
     CONFIG_TYPE_MAP.put("json", ConfigType.JSON);
     CONFIG_TYPE_MAP.put("yaml", ConfigType.YAML);
-    requires(CONFIG_TYPE_MAP.size() == ConfigType.values().length, "missing config type map");
+    requires(CONFIG_TYPE_MAP.size() == ConfigType.values().length, "missing config deserializedType map");
   }
 
   private final Class<T> deserializedType;

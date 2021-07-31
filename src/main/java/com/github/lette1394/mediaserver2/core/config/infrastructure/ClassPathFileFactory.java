@@ -37,7 +37,7 @@ final class ClassPathFileFactory {
     final var extension = Option
       .of(EXTENSION_MAP.get(annotation.resourceType()))
       .getOrElseThrow(() -> new UnsupportedFileResourceType(
-        "unsupported file resource type. filename: [%s]".formatted(name)));
+        "unsupported file resource deserializedType. filename: [%s]".formatted(name)));
     final var dotExtension = ".%s".formatted(extension);
 
     if (name.endsWith(dotExtension)) {
