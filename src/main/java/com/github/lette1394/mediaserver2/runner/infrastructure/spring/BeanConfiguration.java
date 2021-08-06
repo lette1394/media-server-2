@@ -159,7 +159,7 @@ public class BeanConfiguration {
 
     @Override
     public HttpServer apply(HttpServer httpServer) {
-      return httpServer
+      final var httpServer1 = httpServer
         .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
           final var channelId = channel.id().asShortText();
           final var factory = new Prefix(traceFactory, channelId);
@@ -179,6 +179,8 @@ public class BeanConfiguration {
             connection.channel().attr(TRACE_ATTRIBUTE_KEY).compareAndSet(oldTrace, factory.newTrace());
           }
         });
+      httpServer1.warmup().block();
+      return httpServer1;
     }
   }
 
@@ -201,17 +203,19 @@ public class BeanConfiguration {
   static class CustomLoggingHandler extends ChannelDuplexHandler {
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+      log.info("{} > channelRegistered", trace(ctx));
       ctx.fireChannelRegistered();
     }
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+      log.info("{} > channelUnregistered", trace(ctx));
       ctx.fireChannelUnregistered();
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-      log.info("{} > channelActive", trace(ctx));
+      log.info("{} > client >>> server channelActive", trace(ctx));
       ctx.fireChannelActive();
     }
 
@@ -234,8 +238,8 @@ public class BeanConfiguration {
     }
 
     @Override
-    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise)
-      throws Exception {
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise) throws Exception {
+      log.info("{}> bind {}", trace(ctx), localAddress);
       ctx.bind(localAddress, promise);
     }
 
@@ -250,11 +254,13 @@ public class BeanConfiguration {
 
     @Override
     public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+      log.info("{} > disconnect", trace(ctx));
       ctx.disconnect(promise);
     }
 
     @Override
     public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+      log.info("{} > close", trace(ctx));
       ctx.close(promise);
     }
 
@@ -264,18 +270,32 @@ public class BeanConfiguration {
     }
 
     @Override
+    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+      log.info("{} > client <<< server write", trace(ctx));
+      super.write(ctx, msg, promise);
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+      log.info("{} > client >>> server channelRead", trace(ctx));
+      super.channelRead(ctx, msg);
+    }
+
+    @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-      ctx.fireChannelReadComplete();
+      log.info("{} > client >>> server channelReadComplete", trace(ctx));
+      super.channelReadComplete(ctx);
     }
 
     @Override
     public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-      log.info("{}> channelWritabilityChanged", trace(ctx));
-      ctx.fireChannelWritabilityChanged();
+      log.info("{} > channelWritabilityChanged", trace(ctx));
+      super.channelWritabilityChanged(ctx);
     }
 
     @Override
     public void flush(ChannelHandlerContext ctx) throws Exception {
+      log.info("{}> client <<< server flush", trace(ctx));
       ctx.flush();
     }
 
