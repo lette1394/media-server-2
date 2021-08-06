@@ -28,8 +28,10 @@ public final class SpringWebFluxHttpClient implements HttpClient<DataBufferPaylo
 
   @Override
   public CompletionStage<HttpResponse<DataBufferPayload>> get(GetRequest getRequest) {
-    final var channels = new DefaultChannelGroup("", ThreadExecutorMap.currentExecutor());
+    final var channels = new DefaultChannelGroup(ThreadExecutorMap.currentExecutor());
     final var client = reactor.netty.http.client.HttpClient.create()
+      .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+      })
       .channelGroup(channels)
       .secure()
       .responseTimeout(ofSeconds(10));

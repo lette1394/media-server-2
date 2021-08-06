@@ -2,6 +2,7 @@ package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
 import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
 
+import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import com.github.lette1394.mediaserver2.core.trace.domain.TraceFactory;
 import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.storage.identification.domain.Id;
@@ -25,12 +26,12 @@ public class PersistenceApi {
   private final BinaryPublishers<DataBufferPayload> binaryPublishers;
 
   @PostMapping("/{key}")
-  Mono<ResponseEntity<?>> uploading(@PathVariable String key, ServerWebExchange exchange) {
+  Mono<ResponseEntity<?>> uploading(Trace trace, @PathVariable String key, ServerWebExchange exchange) {
     final var request = exchange.getRequest();
     final var contentLength = request.getHeaders().getContentLength();
     requires(contentLength > 0, "content length > 0, but %s".formatted(contentLength));
 
-    final var trace = traceFactory.newTrace();
+//    final var trace = traceFactory.newTrace();
     final var id = new Id(key);
     final var publisher = binaryPublishers.adapt(trace, request.getBody().map(DataBufferPayload::new), contentLength);
     final var command = new UploadingCommand<>(id, publisher);

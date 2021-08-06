@@ -7,7 +7,7 @@ import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.core.stream.domain.Payload;
 import com.github.lette1394.mediaserver2.core.stream.domain.StringPayload;
 import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
-import com.github.lette1394.mediaserver2.core.trace.infrastructure.UuidTraceFactory;
+import com.github.lette1394.mediaserver2.core.trace.infra.UuidTraceFactory;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;

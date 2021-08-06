@@ -1,5 +1,7 @@
 package com.github.lette1394.mediaserver2.runner.infrastructure.spring;
 
+import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,10 +11,10 @@ import com.github.lette1394.mediaserver2.core.config.infrastructure.AllResources
 import com.github.lette1394.mediaserver2.core.stream.domain.AdaptedBinaryPublisher;
 import com.github.lette1394.mediaserver2.core.stream.domain.Attributes;
 import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
+import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
 import com.github.lette1394.mediaserver2.core.trace.domain.TraceFactory;
-import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;
-import com.github.lette1394.mediaserver2.core.trace.infrastructure.UuidTraceFactory;
+import com.github.lette1394.mediaserver2.core.trace.infra.UuidTraceFactory;
 import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMeta;
 import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMetaFlusher;
 import com.github.lette1394.mediaserver2.storage.hash.domain.Hasher;
@@ -22,8 +24,8 @@ import com.github.lette1394.mediaserver2.storage.lock.domain.Locker;
 import com.github.lette1394.mediaserver2.storage.lock.domain.Lockers;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.LoggedLocker;
 import com.github.lette1394.mediaserver2.storage.lock.infrastructure.NoOpLocker;
-import com.github.lette1394.mediaserver2.storage.persistence.domain.ObjectMeta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.MetaChanges;
+import com.github.lette1394.mediaserver2.storage.persistence.domain.ObjectMeta;
 import com.github.lette1394.mediaserver2.storage.persistence.domain.Uploaders;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.DrainingAllBinaries;
 import com.github.lette1394.mediaserver2.storage.persistence.infrastructure.LoggedBinaryPublisher;
@@ -35,17 +37,30 @@ import com.github.lette1394.mediaserver2.storage.persistence.usecase.LockedUploa
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.ObjectUploader;
 import com.github.lette1394.mediaserver2.storage.persistence.usecase.SequentialMetaChanges;
 import com.google.common.hash.Hashing;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelPromise;
+import io.netty.util.AttributeKey;
+import java.net.SocketAddress;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
+import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.netty.ConnectionObserver.State;
+import reactor.netty.http.server.HttpServer;
 
 @Configuration
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class BeanConfiguration {
+  private static final AttributeKey<Trace> TRACE_ATTRIBUTE_KEY = AttributeKey
+    .valueOf(Trace.class, "TRACE");
   private final AllResources allResources = new AllResources(
     "/plugins",
     "com.github.lette1394.mediaserver2",
     configurationObjectMapper());
-
   private final TraceFactory traceFactory = new UuidTraceFactory();
 
   @Bean
@@ -118,5 +133,156 @@ public class BeanConfiguration {
       .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
       .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_VALUES)
       .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+  }
+
+  @Bean
+  public NettyReactiveWebServerFactory nettyReactiveWebServerFactory() {
+    NettyReactiveWebServerFactory webServerFactory = new NettyReactiveWebServerFactory();
+    webServerFactory.addServerCustomizers(new Custom(traceFactory));
+    return webServerFactory;
+  }
+
+  @RequiredArgsConstructor
+  static class Prefix extends TraceFactory {
+    private final TraceFactory traceFactory;
+    private final String prefix;
+
+    @Override
+    public Trace newTrace() {
+      return traceConstructor("%s____%s".formatted(prefix, traceFactory.newTrace().toString()));
+    }
+  }
+
+  @RequiredArgsConstructor
+  static class Custom implements NettyServerCustomizer {
+    private final TraceFactory traceFactory;
+
+    @Override
+    public HttpServer apply(HttpServer httpServer) {
+      return httpServer
+        .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
+          final var channelId = channel.id().asShortText();
+          final var factory = new Prefix(traceFactory, channelId);
+
+          channel.pipeline()
+            .addFirst(new TraceHandler(factory.newTrace()), new CustomLoggingHandler());
+        })
+        .mapHandle((voidMono, connection) -> {
+          final var trace = connection.channel().attr(TRACE_ATTRIBUTE_KEY).get();
+          requires(trace != null, "trace != null");
+          return voidMono.contextWrite(context -> context.put("TRACE", trace));
+        })
+        .childObserve((connection, newState) -> {
+          if (newState == State.CONFIGURED) {
+            final var oldTrace = connection.channel().attr(TRACE_ATTRIBUTE_KEY).get();
+            final var factory = new Prefix(traceFactory, connection.channel().id().asShortText());
+            connection.channel().attr(TRACE_ATTRIBUTE_KEY).compareAndSet(oldTrace, factory.newTrace());
+          }
+        });
+    }
+  }
+
+  @RequiredArgsConstructor
+  static class TraceHandler extends ChannelInboundHandlerAdapter {
+    private final Trace trace;
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+      ctx.channel().attr(TRACE_ATTRIBUTE_KEY).set(trace);
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+      super.channelActive(ctx);
+    }
+  }
+
+  @Slf4j
+  static class CustomLoggingHandler extends ChannelDuplexHandler {
+    @Override
+    public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+      ctx.fireChannelRegistered();
+    }
+
+    @Override
+    public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+      ctx.fireChannelUnregistered();
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+      log.info("{} > channelActive", trace(ctx));
+      ctx.fireChannelActive();
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+      log.info("{} > channelInactive", trace(ctx));
+      ctx.fireChannelInactive();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+      log.info("{} > exceptionCaught, {}", trace(ctx), cause);
+      ctx.fireExceptionCaught(cause);
+    }
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+      log.info("{} > userEventTriggered, {}", trace(ctx), evt);
+      ctx.fireUserEventTriggered(evt);
+    }
+
+    @Override
+    public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise)
+      throws Exception {
+      ctx.bind(localAddress, promise);
+    }
+
+    @Override
+    public void connect(
+      ChannelHandlerContext ctx,
+      SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise)
+      throws Exception {
+      log.info("{} > connect, {}", trace(ctx), remoteAddress);
+      ctx.connect(remoteAddress, localAddress, promise);
+    }
+
+    @Override
+    public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+      ctx.disconnect(promise);
+    }
+
+    @Override
+    public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+      ctx.close(promise);
+    }
+
+    @Override
+    public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+      ctx.deregister(promise);
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+      ctx.fireChannelReadComplete();
+    }
+
+    @Override
+    public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+      log.info("{}> channelWritabilityChanged", trace(ctx));
+      ctx.fireChannelWritabilityChanged();
+    }
+
+    @Override
+    public void flush(ChannelHandlerContext ctx) throws Exception {
+      ctx.flush();
+    }
+
+    private Trace trace(ChannelHandlerContext ctx) {
+      final var trace = ctx.channel().attr(TRACE_ATTRIBUTE_KEY).get();
+      requires(trace != null, "trace != null");
+      return trace;
+    }
   }
 }

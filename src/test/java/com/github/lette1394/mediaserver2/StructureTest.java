@@ -26,7 +26,8 @@ public class StructureTest {
     "java.text..",
     "java.time..",
     "io.vavr..",
-    "org.reactivestreams.."
+    "org.reactivestreams..",
+    "org.apache.commons.lang3.."
   };
 
   @ArchTest
