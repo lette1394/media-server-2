@@ -1,3 +1,4 @@
+.DS_Store
 
 # Created by https://www.toptal.com/developers/gitignore/api/maven,intellij,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=maven,intellij,java
@@ -12,6 +13,8 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea
+*.iml
 
 # AWS User-specific
 .idea/**/aws.xml
