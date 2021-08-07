@@ -2,6 +2,7 @@ package com.github.lette1394.mediaserver2.core.config2.infra;
 
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigTypeAlias;
 import io.vavr.control.Option;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ class Alias implements FileKeyFactory {
   }
 
   @Override
-  public <T> FileKey<T> multiKey(Class<T> configType, String location) {
+  public <T> Map<String, FileKey<T>> multiKey(Class<T> configType) {
     return null;
   }
 }

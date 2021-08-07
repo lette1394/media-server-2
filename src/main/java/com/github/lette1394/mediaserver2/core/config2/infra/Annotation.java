@@ -27,16 +27,12 @@ class Annotation implements FileKeyFactory {
   }
 
   @Override
-  public <T> FileKey<T> multiKey(Class<T> configType, String name) {
+  public <T> Map<String, FileKey<T>> multiKey(Class<T> configType) {
     requireConfig(configType);
     requires(configLocations(configType).size() > 0, () -> new ConfigException("""
       config class should have at least one @ConfigLocation annotation"""));
 
-    final var nameFileKeyMap = toNameKeyMap(configType);
-    requires(nameFileKeyMap.containsKey(name), () -> new ConfigException("""
-      unknown config name: [%s]""".formatted(name)));
-
-    return nameFileKeyMap.get(name);
+    return toNameKeyMap(configType);
   }
 
   private static <T> void requireConfig(Class<T> configType) {
