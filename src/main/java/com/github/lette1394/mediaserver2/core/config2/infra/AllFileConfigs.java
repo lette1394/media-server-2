@@ -5,7 +5,7 @@ import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class ConfigLoaderAdapter implements AllConfigs {
+class AllFileConfigs implements AllConfigs {
   private final FileKeyFactory fileKeyFactory;
   private final FileLoader fileLoader;
 

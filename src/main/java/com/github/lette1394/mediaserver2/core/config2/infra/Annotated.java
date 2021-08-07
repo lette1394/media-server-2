@@ -12,7 +12,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class Annotation implements FileKeyFactory {
+class Annotated implements FileKeyFactory {
 
   @Override
   public <T> FileKey<T> singleKey(Class<T> configType) {

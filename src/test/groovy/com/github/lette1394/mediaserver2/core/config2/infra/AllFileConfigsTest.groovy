@@ -5,10 +5,11 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigs
 import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigsTest
 
-class ConfigLoaderAdapterTest extends AllConfigsTest {
+class AllFileConfigsTest extends AllConfigsTest {
   @Override
   AllConfigs subject() {
-    def aa = new Aliased(new Cached(new Annotation()))
-    return new ConfigLoaderAdapter(aa, new Jackson(new ObjectMapper(new YAMLFactory())))
+    def key = new Cached(new Aliased(new Annotated()))
+    def loader = new Jackson(new ObjectMapper(new YAMLFactory()))
+    return new AllFileConfigs(key, loader)
   }
 }
