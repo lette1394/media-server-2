@@ -8,8 +8,8 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @Jacksonized
 @Config
-@ConfigLocation("/core/config2/person.yaml")
-public class PersonConfig {
+@ConfigLocation("/person.yaml")
+class NoDeserializationSupport_WrongFieldName {
   String name;
-  int age;
+  int ageeeeeeeeeeeeeeee; // wrong field name
 }

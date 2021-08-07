@@ -21,9 +21,16 @@ abstract class AllConfigsTest extends Specification {
       thrown(ConfigException)
   }
 
-  def "config class should support deserialization"() {
+  def "config class should support deserialization: not pojo"() {
     when:
-      subject().find(NoDeserializationSupport)
+      subject().find(NoDeserializationSupport_NotPojo)
+    then:
+      thrown(ConfigException)
+  }
+
+  def "config class should support deserialization: wrong field name"() {
+    when:
+      subject().find(NoDeserializationSupport_WrongFieldName)
     then:
       thrown(ConfigException)
   }
@@ -31,7 +38,9 @@ abstract class AllConfigsTest extends Specification {
   def "find() should not return null"() {
     expect:
       subject().find(PersonConfig) != null
-      subject().find(PersonConfig, "1.yaml") != null
+      subject().find(AnimalConfig, "dog-1.yaml") != null
+      subject().find(AnimalConfig, "dog-2.yaml") != null
+      subject().find(AnimalConfig, "cat.yaml") != null
   }
 
   def "find() should throw exception if the name is unknown"() {

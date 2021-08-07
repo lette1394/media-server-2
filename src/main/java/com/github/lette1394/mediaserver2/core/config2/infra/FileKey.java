@@ -2,9 +2,13 @@ package com.github.lette1394.mediaserver2.core.config2.infra;
 
 import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.readAllBytes;
 import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.toClassPath;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 import lombok.EqualsAndHashCode;
+import lombok.SneakyThrows;
 import lombok.ToString;
 
 @ToString(of = {"deserializedType", "classPath"})
@@ -18,6 +22,14 @@ final class FileKey<T> implements Key<T> {
     this.deserializedType = deserializedType;
     this.classPath = classPath;
     this.contents = contents;
+  }
+
+  @SneakyThrows
+  static <T> Set<FileKey<T>> scan(Class<T> deserializedType, String classPath) {
+    return Files.walk(toClassPath(classPath))
+      .filter(path -> path.toFile().isFile())
+      .map(path -> new FileKey<>(deserializedType, path))
+      .collect(toUnmodifiableSet());
   }
 
   FileKey(Class<T> deserializedType, Path classPath) {
@@ -34,5 +46,9 @@ final class FileKey<T> implements Key<T> {
 
   byte[] contents() {
     return contents;
+  }
+
+  Path path() {
+    return classPath;
   }
 }

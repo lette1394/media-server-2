@@ -1,5 +1,7 @@
 package com.github.lette1394.mediaserver2.core.config2.infra;
 
+import static com.github.lette1394.mediaserver2.core.fluency.domain.Contracts.requires;
+
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException;
 import io.vavr.control.Option;
 import io.vavr.control.Try;
@@ -25,6 +27,7 @@ final class ClassPathFileUtils {
   }
 
   static byte[] readAllBytes(Path path) {
+    requires(path.toFile().isFile(), "given path should be a file, not directory");
     return Try.of(() -> Files.readAllBytes(path))
       .getOrElseThrow(throwable -> new ConfigException("path:[%s]".formatted(path), throwable));
   }

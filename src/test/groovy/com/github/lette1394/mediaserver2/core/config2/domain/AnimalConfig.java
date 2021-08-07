@@ -8,8 +8,13 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 @Jacksonized
 @Config
-@ConfigLocation("/core/config2/person.yaml")
-public class PersonConfig {
-  String name;
+@ConfigLocation("/core/config2/animals/dogs")
+@ConfigLocation("/core/config2/animals/cat.yaml")
+public class AnimalConfig {
+  Type type;
   int age;
+
+  enum Type {
+    DOG, CAT
+  }
 }
