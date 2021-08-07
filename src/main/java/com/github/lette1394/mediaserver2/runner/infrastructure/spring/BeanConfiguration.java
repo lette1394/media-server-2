@@ -189,18 +189,15 @@ public class BeanConfiguration {
           final var trace = connection.channel().attr(TRACE_ATTRIBUTE_KEY).get();
           log.info("{}> state changed {}", trace, newState);
 
-          final var newState1 = (HttpServerState) newState;
-          if (newState1 == HttpServerState.REQUEST_RECEIVED) {
-
-          }
-          if (newState1 == State.DISCONNECTING) {
-            log.info("{}> request end!", trace);
-            traceDisposer.dispose(trace);
-          }
-
-          if (newState1 == State.CONFIGURED) {
+          if (newState == State.CONFIGURED) {
+            // TODO: 여기에 trace 시작 콜백이 들어가야 한다
             final var factory = new Prefix(traceFactory, connection.channel().id().asShortText());
             connection.channel().attr(TRACE_ATTRIBUTE_KEY).compareAndSet(trace, factory.newTrace());
+          }
+
+          if (newState == State.DISCONNECTING) {
+            log.info("{}> request end!", trace);
+            traceDisposer.dispose(trace);
           }
         });
       httpServer1.warmup().block();
