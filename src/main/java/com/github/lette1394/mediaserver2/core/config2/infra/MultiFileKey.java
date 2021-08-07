@@ -25,4 +25,9 @@ class MultiFileKey<T> {
   private String getFileName(FileKey<T> fileKey) {
     return fileKey.path().toFile().getName();
   }
+
+  @Override
+  public String toString() {
+    return nameKeyMap.toString();
+  }
 }
