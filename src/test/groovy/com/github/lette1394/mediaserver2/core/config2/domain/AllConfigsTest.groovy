@@ -10,7 +10,8 @@ abstract class AllConfigsTest extends Specification {
     when:
       subject().find(NoConfig)
     then:
-      thrown(ConfigException)
+      def e = thrown(ConfigException)
+      println(e)
   }
 
   def "config class should have at least one @ConfigLocation annotation"() {

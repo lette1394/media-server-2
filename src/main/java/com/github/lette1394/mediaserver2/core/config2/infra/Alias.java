@@ -9,17 +9,17 @@ class Alias implements FileKeyFactory {
   private final FileKeyFactory fileKeyFactory;
 
   @Override
-  public <T> FileKey<T> create(Class<T> type) {
-    Option.of(type.getDeclaredAnnotation(ConfigTypeAlias.class))
+  public <T> FileKey<T> create(Class<T> configType) {
+    Option.of(configType.getDeclaredAnnotation(ConfigTypeAlias.class))
       .map(annotation -> (Class<T>)annotation.value())  // required
       .map(fileKeyFactory::create)
-      .getOrElse(() -> fileKeyFactory.create(type));
+      .getOrElse(() -> fileKeyFactory.create(configType));
 
     return null;
   }
 
   @Override
-  public <T> FileKey<T> create(Class<T> type, String location) {
+  public <T> FileKey<T> create(Class<T> configType, String location) {
     return null;
   }
 }

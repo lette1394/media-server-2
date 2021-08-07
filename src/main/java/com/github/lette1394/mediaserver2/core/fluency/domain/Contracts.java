@@ -8,6 +8,11 @@ public final class Contracts {
   }
 
   @SneakyThrows
+  public static void requires(boolean condition) {
+    requires(condition, ContractViolationException::new);
+  }
+
+  @SneakyThrows
   public static void requires(boolean condition, Supplier<? extends Throwable> exceptionSupplier) {
     if (condition) {
       return;

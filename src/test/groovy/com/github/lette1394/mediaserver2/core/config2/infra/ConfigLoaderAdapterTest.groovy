@@ -6,6 +6,6 @@ import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigsTest
 class ConfigLoaderAdapterTest extends AllConfigsTest {
   @Override
   AllConfigs subject() {
-    return null
+    return new ConfigLoaderAdapter(new Annotation(null), null)
   }
 }
