@@ -13,7 +13,10 @@ import com.github.lette1394.mediaserver2.core.stream.domain.Attributes;
 import com.github.lette1394.mediaserver2.core.stream.domain.BinaryPublishers;
 import com.github.lette1394.mediaserver2.core.stream.infrastructure.DataBufferPayload;
 import com.github.lette1394.mediaserver2.core.trace.domain.Trace;
+import com.github.lette1394.mediaserver2.core.trace.domain.TraceDisposer;
 import com.github.lette1394.mediaserver2.core.trace.domain.TraceFactory;
+import com.github.lette1394.mediaserver2.core.trace.infra.LifecycleFactory;
+import com.github.lette1394.mediaserver2.core.trace.infra.SampleTraceDisposer;
 import com.github.lette1394.mediaserver2.core.trace.infra.UuidTraceFactory;
 import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMeta;
 import com.github.lette1394.mediaserver2.runner.domain.ExhaustiveMetaFlusher;
@@ -49,9 +52,12 @@ import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory
 import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Mono;
 import reactor.netty.ConnectionObserver.State;
 import reactor.netty.http.server.HttpServer;
+import reactor.netty.http.server.HttpServerState;
 
+@Slf4j
 @Configuration
 @SuppressWarnings("UnnecessaryLocalVariable")
 public class BeanConfiguration {
@@ -61,7 +67,13 @@ public class BeanConfiguration {
     "/plugins",
     "com.github.lette1394.mediaserver2",
     configurationObjectMapper());
-  private final TraceFactory traceFactory = new UuidTraceFactory();
+  private static final TraceFactory traceFactory;
+  private static final TraceDisposer traceDisposer;
+
+  static {
+    traceFactory = new UuidTraceFactory();
+    traceDisposer = new SampleTraceDisposer(trace -> log.info("{}> request ended!\n\n", trace));
+  }
 
   @Bean
   public ConfigurationApi configurationApi() {
@@ -138,7 +150,7 @@ public class BeanConfiguration {
   @Bean
   public NettyReactiveWebServerFactory nettyReactiveWebServerFactory() {
     NettyReactiveWebServerFactory webServerFactory = new NettyReactiveWebServerFactory();
-    webServerFactory.addServerCustomizers(new Custom(traceFactory));
+    webServerFactory.addServerCustomizers(new Custom(traceFactory, traceDisposer));
     return webServerFactory;
   }
 
@@ -156,27 +168,39 @@ public class BeanConfiguration {
   @RequiredArgsConstructor
   static class Custom implements NettyServerCustomizer {
     private final TraceFactory traceFactory;
+    private final TraceDisposer traceDisposer;
 
     @Override
     public HttpServer apply(HttpServer httpServer) {
       final var httpServer1 = httpServer
         .doOnChannelInit((connectionObserver, channel, remoteAddress) -> {
           final var channelId = channel.id().asShortText();
-          final var factory = new Prefix(traceFactory, channelId);
+          final var factory = new LifecycleFactory(new Prefix(traceFactory, channelId), trace -> log.info("\n\n{}> request start!", trace));
 
-          channel.pipeline()
-            .addFirst(new TraceHandler(factory.newTrace()), new CustomLoggingHandler());
+          channel.pipeline().addFirst(new TraceHandler(factory.newTrace()), new CustomLoggingHandler());
         })
         .mapHandle((voidMono, connection) -> {
           final var trace = connection.channel().attr(TRACE_ATTRIBUTE_KEY).get();
           requires(trace != null, "trace != null");
-          return voidMono.contextWrite(context -> context.put("TRACE", trace));
+          return voidMono
+            .contextWrite(context -> context.put("TRACE", trace));
         })
         .childObserve((connection, newState) -> {
-          if (newState == State.CONFIGURED) {
-            final var oldTrace = connection.channel().attr(TRACE_ATTRIBUTE_KEY).get();
+          final var trace = connection.channel().attr(TRACE_ATTRIBUTE_KEY).get();
+          log.info("{}> state changed {}", trace, newState);
+
+          final var newState1 = (HttpServerState) newState;
+          if (newState1 == HttpServerState.REQUEST_RECEIVED) {
+
+          }
+          if (newState1 == State.DISCONNECTING) {
+            log.info("{}> request end!", trace);
+            traceDisposer.dispose(trace);
+          }
+
+          if (newState1 == State.CONFIGURED) {
             final var factory = new Prefix(traceFactory, connection.channel().id().asShortText());
-            connection.channel().attr(TRACE_ATTRIBUTE_KEY).compareAndSet(oldTrace, factory.newTrace());
+            connection.channel().attr(TRACE_ATTRIBUTE_KEY).compareAndSet(trace, factory.newTrace());
           }
         });
       httpServer1.warmup().block();
@@ -244,10 +268,7 @@ public class BeanConfiguration {
     }
 
     @Override
-    public void connect(
-      ChannelHandlerContext ctx,
-      SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise)
-      throws Exception {
+    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) throws Exception {
       log.info("{} > connect, {}", trace(ctx), remoteAddress);
       ctx.connect(remoteAddress, localAddress, promise);
     }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LifecycleFactory extends TraceFactory {
   private final TraceFactory traceFactory;
+  // 생성할 때 하지말고 reactor 내부에서 하자
   private final TraceLifecycle.AfterCreated afterCreated;
 
   @Override

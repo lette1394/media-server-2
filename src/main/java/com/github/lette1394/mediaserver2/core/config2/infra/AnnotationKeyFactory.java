@@ -12,9 +12,9 @@ class AnnotationKeyFactory implements KeyFactory {
   @Override
   public <T> Key<T> create(Class<T> type) {
     Option.of(type.getAnnotation(ConfigLocation.class))
-      .map(ConfigLocation::value)  // required
-      .map(keyFactory::create)
-      .getOrElse(() -> keyFactory.create(type));
+      .map(ConfigLocation::value);  // required
+//      .map(keyFactory::create)
+//      .getOrElse(() -> keyFactory.create(type));
 
     return null;
   }

@@ -5,10 +5,6 @@ public interface TraceLifecycle {
     void afterCreated(Trace trace);
   }
 
-  interface BeforeDisposing {
-    void beforeDisposing(Trace trace);
-  }
-
   interface AfterDisposed {
     void afterDisposed(Trace trace);
   }
