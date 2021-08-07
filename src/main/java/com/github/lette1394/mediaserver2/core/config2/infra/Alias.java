@@ -20,7 +20,7 @@ class Alias implements FileKeyFactory {
   }
 
   @Override
-  public <T> Map<String, FileKey<T>> multiKey(Class<T> configType) {
+  public <T> MultiFileKey<T> multiKey(Class<T> configType) {
     return null;
   }
 }

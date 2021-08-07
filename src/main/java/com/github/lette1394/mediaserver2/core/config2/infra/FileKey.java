@@ -25,7 +25,7 @@ final class FileKey<T> implements Key<T> {
   }
 
   @SneakyThrows
-  static <T> Set<FileKey<T>> scan(Class<T> deserializedType, String classPath) {
+  static <T> Set<FileKey<T>> scanFileKey(Class<T> deserializedType, String classPath) {
     return Files.walk(toClassPath(classPath))
       .filter(path -> path.toFile().isFile())
       .map(path -> new FileKey<>(deserializedType, path))
