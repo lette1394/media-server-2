@@ -3,8 +3,8 @@ package com.github.lette1394.mediaserver2.core.config2.infra
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException
 import spock.lang.Specification
 
-abstract class LoaderTest<T> extends Specification {
-  abstract Loader subject()
+abstract class FileLoaderTest<T> extends Specification {
+  abstract FileLoader subject()
 
   abstract Key<T> existingKey()
 

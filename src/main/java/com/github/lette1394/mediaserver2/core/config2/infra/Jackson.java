@@ -6,18 +6,15 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-class Jackson implements Loader {
+class Jackson implements FileLoader {
   private final ObjectMapper objectMapper;
 
   @Override
-  public <T> T load(Key<T> key) {
-    if (key instanceof FileKey<T> fileKey) {
-      try {
-        return objectMapper.readValue(fileKey.contents(), fileKey.deserializedType());
-      } catch (IOException e) {
-        throw new ConfigException(e);
-      }
+  public <T> T load(FileKey<T> fileKey) {
+    try {
+      return objectMapper.readValue(fileKey.contents(), fileKey.deserializedType());
+    } catch (IOException e) {
+      throw new ConfigException(e);
     }
-    throw new ConfigException();
   }
 }

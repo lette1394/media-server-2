@@ -5,16 +5,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class ConfigLoaderAdapter implements AllConfigs {
-  private final KeyFactory keyFactory;
-  private final Loader loader;
+  private final FileKeyFactory fileKeyFactory;
+  private final FileLoader fileLoader;
 
   @Override
   public <T> T find(Class<T> deserializedType) {
-    return loader.load(keyFactory.create(deserializedType));
+    return fileLoader.load(fileKeyFactory.create(deserializedType));
   }
 
   @Override
   public <T> T find(Class<T> deserializedType, String name) {
-    return loader.load(keyFactory.create(deserializedType, name));
+    return fileLoader.load(fileKeyFactory.create(deserializedType, name));
   }
 }

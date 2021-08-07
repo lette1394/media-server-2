@@ -3,8 +3,6 @@ package com.github.lette1394.mediaserver2.core.config2.infra
 import com.github.lette1394.mediaserver2.core.config2.domain.ConfigException
 import spock.lang.Specification
 
-import static com.github.lette1394.mediaserver2.core.config2.infra.TestFixtures.PERSON_FILE_PATH
-
 class FileKeyTest extends Specification {
   def "Equals should be true if same parameters"() {
     expect:
@@ -30,8 +28,7 @@ age: 28
       thrown ConfigException
   }
 
-
   static def subject() {
-    return new FileKey(Person, PERSON_FILE_PATH)
+    return new FileKey(Person, "/core/config2/infra/person.yaml")
   }
 }

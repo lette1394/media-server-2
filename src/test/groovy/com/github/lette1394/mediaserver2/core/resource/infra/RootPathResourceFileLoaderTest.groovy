@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 import static com.github.lette1394.mediaserver2.TestFixtures.anyObject
 
-class RootPathResourceLoaderTest extends Specification {
+class RootPathResourceFileLoaderTest extends Specification {
   def "The root path should be start with /"() {
     when:
       new RootPathResourceLoader(anyObject(), "directory/a/b")

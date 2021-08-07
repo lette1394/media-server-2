@@ -5,9 +5,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 
 import static com.github.lette1394.mediaserver2.core.config2.infra.TestFixtures.PERSON_FILE_PATH
 
-class JacksonTest extends LoaderTest {
+class JacksonTest extends FileLoaderTest {
   @Override
-  Loader subject() {
+  FileLoader subject() {
     return new Jackson(new ObjectMapper(new YAMLFactory()))
   }
 
