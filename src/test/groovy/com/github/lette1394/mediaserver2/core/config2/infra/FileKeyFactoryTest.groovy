@@ -5,9 +5,6 @@ import spock.lang.Specification
 abstract class FileKeyFactoryTest extends Specification {
   abstract FileKeyFactory subject()
 
-  def "create() should not return null"() {
-    subject().singleKey()
+  def "methods should not return null"() {
   }
-
-
 }

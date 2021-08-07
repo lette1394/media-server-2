@@ -9,13 +9,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-final class ClassPathFileUtils {
-  private ClassPathFileUtils() {
+final class ClassPaths {
+  private ClassPaths() {
   }
 
   @SuppressWarnings("Convert2MethodRef")
   static Path toClassPath(String classPath) {
-    return Option.of(ClassPathFileUtils.class.getResource(classPath))
+    return Option.of(ClassPaths.class.getResource(classPath))
       .toTry(() -> new ConfigException("classPath:[%s] not found".formatted(classPath)))
       .mapTry(URL::toURI)
       .map(Path::of)

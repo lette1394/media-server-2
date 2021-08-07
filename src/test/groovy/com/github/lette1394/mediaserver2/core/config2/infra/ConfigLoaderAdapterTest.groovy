@@ -8,7 +8,7 @@ import com.github.lette1394.mediaserver2.core.config2.domain.AllConfigsTest
 class ConfigLoaderAdapterTest extends AllConfigsTest {
   @Override
   AllConfigs subject() {
-    def aa = new Cached(new Annotation())
+    def aa = new Aliased(new Cached(new Annotation()))
     return new ConfigLoaderAdapter(aa, new Jackson(new ObjectMapper(new YAMLFactory())))
   }
 }

@@ -1,6 +1,5 @@
 package com.github.lette1394.mediaserver2.core.config2.domain
 
-
 import spock.lang.Specification
 
 abstract class AllConfigsTest extends Specification {
@@ -35,7 +34,7 @@ abstract class AllConfigsTest extends Specification {
       thrown(ConfigException)
   }
 
-  def "find() should not return null"() {
+  def "methods should not return null"() {
     expect:
       subject().find(PersonConfig) != null
       subject().find(AnimalConfig, "dog-1.yaml") != null
@@ -43,10 +42,29 @@ abstract class AllConfigsTest extends Specification {
       subject().find(AnimalConfig, "cat.yaml") != null
   }
 
-  def "find() should throw exception if the name is unknown"() {
+  def "methods should throw exception if the name is unknown"() {
     when:
       subject().find(PersonConfig, "unknown-name")
     then:
       thrown(ConfigException)
+  }
+
+  // 1. 성공적인 경우
+  // 2. alias 선언된 타입과 실제로 매핑되는 타입이 다른 경우
+  // 3. (테스트 작성 X) alias가 없는 경우에는 다른 케이스에서 커버됨
+  // 4. alias 에 @Config를 붙여줘야 할까?
+  def " @ConfigAlias"() {
+    when:
+      def phone = subject().find(Phone.class)
+    then:
+      phone.call() == "+82 10-1234-5678"
+  }
+
+  def " @ConfigAlias alis uncompatible"() {
+    when:
+      subject().find(ConfigAliasMisuse.class)
+    then:
+      def e = thrown(ConfigException)
+      println(e)
   }
 }

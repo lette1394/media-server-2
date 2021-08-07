@@ -1,7 +1,7 @@
 package com.github.lette1394.mediaserver2.core.config2.infra;
 
-import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.readAllBytes;
-import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPathFileUtils.toClassPath;
+import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPaths.readAllBytes;
+import static com.github.lette1394.mediaserver2.core.config2.infra.ClassPaths.toClassPath;
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import java.nio.file.Files;
