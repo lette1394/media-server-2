@@ -6,7 +6,7 @@ abstract class FileKeyFactoryTest extends Specification {
   abstract FileKeyFactory subject()
 
   def "create() should not return null"() {
-    subject().create()
+    subject().singleKey()
   }
 
 

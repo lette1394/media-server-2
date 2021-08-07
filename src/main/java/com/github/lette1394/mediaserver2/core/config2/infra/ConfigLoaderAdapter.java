@@ -10,11 +10,11 @@ class ConfigLoaderAdapter implements AllConfigs {
 
   @Override
   public <T> T find(Class<T> deserializedType) {
-    return fileLoader.load(fileKeyFactory.create(deserializedType));
+    return fileLoader.load(fileKeyFactory.singleKey(deserializedType));
   }
 
   @Override
   public <T> T find(Class<T> deserializedType, String name) {
-    return fileLoader.load(fileKeyFactory.create(deserializedType, name));
+    return fileLoader.load(fileKeyFactory.multiKey(deserializedType, name));
   }
 }
